@@ -40,16 +40,19 @@ public class InputReader : MonoBehaviour, Control.IPlayerActions
 
     public void OnCrouch(InputAction.CallbackContext context)
     {
-        throw new System.NotImplementedException();
+        if(context.performed)
+            OnCrouchPressed?.Invoke();
     }
 
     public void OnJump(InputAction.CallbackContext context)
     {
-        throw new System.NotImplementedException();
+        if(context.performed)
+            OnJumpPressed?.Invoke();
     }
 
     public void OnSprint(InputAction.CallbackContext context)
     {
-        throw new System.NotImplementedException();
+        if(context.performed)
+            OnSprintPressed?.Invoke();
     }
 }
