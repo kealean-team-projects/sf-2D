@@ -106,3 +106,7 @@ InitTestScene*.unity*
 /[Aa]ssets/[Ss]ceneDependencyCache*
 
 /[Aa]ssets/[Bb]alioProductions
+
+# Third-party asset pack kept locally; do not publish it.
+/Assets/samvieten/
+/Assets/samvieten.meta
