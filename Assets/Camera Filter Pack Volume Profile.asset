@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4642eaa5c071a9b4282bc05315e98496, type: 3}
   m_Name: CameraFilterPackVolume_FX_Funk
   m_EditorClassIdentifier: BalioProductions.CameraFilterPack.URP::BalioProductions.CameraFilterPack.URP.CameraFilterPackVolume_FX_Funk
-  active: 1
+  active: 0
   intensity:
     m_OverrideState: 1
     m_Value: 1
