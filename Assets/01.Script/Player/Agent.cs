@@ -10,11 +10,11 @@ namespace _01.Script.Player {
         private bool _disposed;
         private bool _initialized;
         private Dictionary<Type, IAgentModule> _modules;
-        
+
         public void Dispose() {
             if (_disposed) return;
             _disposed = true;
-            foreach(var disposable in _disposables) disposable.Dispose();
+            foreach (var disposable in _disposables) disposable.Dispose();
 
             _disposables.Clear();
             _disposables = null;
