@@ -26,6 +26,7 @@ namespace _01.Script.Player {
         protected override void OnDispose() {
             base.OnDispose();
             _inputReader.OnJumpPressed -= HandleJumpInput;
+        
         }
     }
 }
