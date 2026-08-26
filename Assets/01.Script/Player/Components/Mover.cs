@@ -8,53 +8,61 @@ namespace _01.Script.Player.Components {
         [SerializeField] private float speed;
         [SerializeField] private float jumpForce;
 
-        private float _moveInput;
-
-        public Type Type => typeof(IMover);
-        
         [Header("CheckGround")]
-        [field: SerializeField] public bool IsGround { get; private set; }
-        [SerializeField] private Transform checker;
+        [field: SerializeField]
+        public bool IsGround { get; private set; }
+
+        [SerializeField] private Vector3 checker;
         [SerializeField] private Vector2 checkerSize;
         [SerializeField] private LayerMask whatIsGround;
-        
-        [Header("ExtraGravity Settings")]
-        [SerializeField] private float extraGravity = 15f;
-        [SerializeField] private float gravityDelay = 0.15f;
 
-        private float _timeInAir;
+        [Header("ExtraGravity Settings")] [SerializeField]
+        private float extraGravity = 15f;
+
+        [SerializeField] private float gravityDelay = 0.15f;
         private bool _canDoubleJump;
 
-        public void Initialize(Agent owner) { }
+        private float _moveInput;
 
-        private void Update()
-        {
-            CalculateAirTime();
-        }
-
-        private void FixedUpdate() 
-        {
-            rb.linearVelocityX = _moveInput * speed;
-            IsGround = CheckGround();
-            ApplyExtraGravity();
-        }
+        private float _timeInAir;
 
         private void Reset() {
             rb = transform.root.GetComponent<Rigidbody2D>();
         }
 
+        private void Update() {
+            CalculateAirTime();
+        }
+
+        private void FixedUpdate() {
+            rb.linearVelocityX = _moveInput * speed;
+            IsGround = CheckGround();
+            ApplyExtraGravity();
+        }
+
+
+#if UNITY_EDITOR
+        private void OnDrawGizmosSelected() {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireCube(transform.position + checker, checkerSize);
+            Gizmos.color = Color.yellow;
+        }
+#endif
+
+        public Type Type => typeof(IMover);
+
+        public void Initialize(Agent owner) { }
+
         public void SetMoveInput(float moveInput) {
             _moveInput = moveInput;
         }
 
-        public void Jump(float multiplier = 1) 
-        {
+        public void Jump(float multiplier = 1) {
             StopImmediately(false, true);
             rb.AddForceY(jumpForce * multiplier, ForceMode2D.Impulse);
         }
 
-        private void CalculateAirTime()
-        {
+        private void CalculateAirTime() {
             if (!IsGround)
                 _timeInAir += Time.deltaTime;
             else
@@ -62,34 +70,21 @@ namespace _01.Script.Player.Components {
         }
 
 
-        private void ApplyExtraGravity()
-        {
+        private void ApplyExtraGravity() {
             if (_timeInAir > gravityDelay)
                 rb.AddForceY(-extraGravity);
         }
 
-        private bool CheckGround()
-        {
-            var col = Physics2D.OverlapBox(checker.position,  checkerSize, 0f, whatIsGround);
+        private bool CheckGround() {
+            var col = Physics2D.OverlapBox(transform.position + checker, checkerSize, 0f, whatIsGround);
             return col != null;
         }
-        
-        private void StopImmediately(bool isXStop, bool isYStop)
-        {
+
+        private void StopImmediately(bool isXStop, bool isYStop) {
             if (isXStop)
                 rb.linearVelocityX = 0;
             if (isYStop)
                 rb.linearVelocityY = 0;
         }
-        
-        
-        #if UNITY_EDITOR
-        private void OnDrawGizmosSelected()
-        {
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireCube(checker.position, checkerSize);
-            Gizmos.color = Color.yellow;
-        }
-        #endif
     }
 }
