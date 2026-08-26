@@ -12,7 +12,7 @@ namespace _01.Script.Player.Components {
         [field: SerializeField]
         public bool IsGround { get; private set; }
 
-        [SerializeField] private Transform checker;
+        [SerializeField] private Vector3 checker;
         [SerializeField] private Vector2 checkerSize;
         [SerializeField] private LayerMask whatIsGround;
 
@@ -44,7 +44,7 @@ namespace _01.Script.Player.Components {
 #if UNITY_EDITOR
         private void OnDrawGizmosSelected() {
             Gizmos.color = Color.red;
-            Gizmos.DrawWireCube(checker.position, checkerSize);
+            Gizmos.DrawWireCube(transform.position + checker, checkerSize);
             Gizmos.color = Color.yellow;
         }
 #endif
@@ -76,7 +76,7 @@ namespace _01.Script.Player.Components {
         }
 
         private bool CheckGround() {
-            var col = Physics2D.OverlapBox(checker.position, checkerSize, 0f, whatIsGround);
+            var col = Physics2D.OverlapBox(transform.position + checker, checkerSize, 0f, whatIsGround);
             return col != null;
         }
 
