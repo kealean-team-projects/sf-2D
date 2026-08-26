@@ -1,6 +1,4 @@
-using System;
-using _01.Script.Player.Components;
-using UnityEngine;
+using _01.Script.Player.Interface;
 
 namespace _01.Script.Player {
     public class Player : Agent {

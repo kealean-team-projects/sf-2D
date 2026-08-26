@@ -2,6 +2,6 @@
 {
     public interface IInteractable
     {
-        public void Interact(Script.Player.Player owner);
+        public void Interact(Player owner);
     }
 }

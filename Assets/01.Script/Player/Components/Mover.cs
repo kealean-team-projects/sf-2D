@@ -1,4 +1,5 @@
 ﻿using System;
+using _01.Script.Player.Interface;
 using UnityEngine;
 
 namespace _01.Script.Player.Components {
