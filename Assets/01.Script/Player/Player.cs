@@ -6,7 +6,7 @@ namespace _01.Script.Player {
         private IInputReader _inputReader;
         private IInteractor _interactor;
         private IMover _mover;
-        public bool IsGrounded => _mover.IsGround;
+        private bool IsGrounded => _mover.IsGround;
 
         private void FixedUpdate() {
             _mover.SetMoveInput(_inputReader.MoveInput);

@@ -23,7 +23,7 @@ namespace _01.Script.Player.Components {
         private float _moveInput;
 
         private float _timeInAir;
-
+        
         private void Reset() {
             rb = transform.root.GetComponent<Rigidbody2D>();
         }

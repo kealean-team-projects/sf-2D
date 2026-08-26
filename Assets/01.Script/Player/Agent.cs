@@ -39,7 +39,7 @@ namespace _01.Script.Player {
             _modules = modules.ToDictionary(m => m.Type);
         }
 
-        public T GetModule<T>() where T : class {
+        protected T GetModule<T>() where T : class {
             if (_modules.TryGetValue(typeof(T), out var module)) return module as T;
             Debug.LogError($"Module {typeof(T)} not found)");
             return null;
