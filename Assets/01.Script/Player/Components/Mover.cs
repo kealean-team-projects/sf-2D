@@ -11,16 +11,14 @@ namespace _01.Script.Player.Components {
         [Header("CheckGround")]
         [field: SerializeField]
         public bool IsGround { get; private set; }
-
         [SerializeField] private Vector3 checker;
         [SerializeField] private Vector2 checkerSize;
         [SerializeField] private LayerMask whatIsGround;
 
-        [Header("ExtraGravity Settings")] [SerializeField]
-        private float extraGravity = 15f;
+        [Header("ExtraGravity Settings")] 
+        [SerializeField] private float extraGravity = 15f;
 
         [SerializeField] private float gravityDelay = 0.15f;
-        private bool _canDoubleJump;
 
         private float _moveInput;
 
@@ -58,6 +56,7 @@ namespace _01.Script.Player.Components {
         }
 
         public void Jump(float multiplier = 1) {
+            _timeInAir = 0;
             StopImmediately(false, true);
             rb.AddForceY(jumpForce * multiplier, ForceMode2D.Impulse);
         }
