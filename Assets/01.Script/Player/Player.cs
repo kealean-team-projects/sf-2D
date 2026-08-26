@@ -5,6 +5,7 @@ using UnityEngine;
 namespace _01.Script.Player {
     public class Player : Agent
     {
+        [SerializeField] private Interactor interactor;
         private IInputReader _inputReader;
         private IMover  _mover;
 
@@ -17,6 +18,7 @@ namespace _01.Script.Player {
             _inputReader = GetModule<IInputReader>();
             _mover = GetModule<IMover>();
             _inputReader.OnJumpPressed += HandleJumpInput;
+            _inputReader.OnInteractPressed += HandleInteractInput;
         }
 
         private void HandleJumpInput() {
@@ -26,7 +28,13 @@ namespace _01.Script.Player {
         protected override void OnDispose() {
             base.OnDispose();
             _inputReader.OnJumpPressed -= HandleJumpInput;
+            _inputReader.OnInteractPressed -= HandleInteractInput;
         
+        }
+
+        private void HandleInteractInput()
+        {
+            interactor.Interact(this);
         }
     }
 }
