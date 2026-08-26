@@ -8,6 +8,9 @@ namespace _01.Script.Player {
         private IInputReader _inputReader;
         private IMover  _mover;
 
+        public bool IsGrounded;
+        private bool _canDoubleJump;
+        
         private void FixedUpdate() {
             _mover.SetMoveInput(_inputReader.MoveInput);
         }
@@ -19,8 +22,22 @@ namespace _01.Script.Player {
             _inputReader.OnJumpPressed += HandleJumpInput;
         }
 
-        private void HandleJumpInput() {
+        private void HandleJumpInput() 
+        {
             _mover.Jump();
+            
+            // 이단 점프할 방법 근데 IMover인데 어케 IsGround 가져오지
+            //if (IsGrounded)
+            //{
+            //    _mover.Jump();
+            //    _canDoubleJump = true;
+            //}
+            //
+            //if (_canDoubleJump)
+            //{
+            //    _mover.Jump();
+            //    _canDoubleJump = false;
+            //}
         }
 
         protected override void OnDispose() {
@@ -28,5 +45,7 @@ namespace _01.Script.Player {
             _inputReader.OnJumpPressed -= HandleJumpInput;
         
         }
+
+        
     }
 }
