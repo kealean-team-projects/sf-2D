@@ -1,35 +1,30 @@
 using System;
+using _01.Script.Player;
+using _01.Script.Player.Components;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class InputReader : MonoBehaviour, Control.IPlayerActions
-{
+public class InputReader : MonoBehaviour, Control.IPlayerActions, IAgentModule, IDisposable, IInputReader {
     private Control _control;
 
-    private void Awake()
-    {
+    public Type Type => typeof(IInputReader);
+    
+    public void Initialize(Agent owner) {
         _control = new Control();
         _control.Player.Enable();
         _control.Player.SetCallbacks(this);
-    }
-
-    private void OnDestroy()
-    {
-        _control.Disable();
-        _control.Dispose();
-        
     }
 
     public event Action OnInteractPressed;
     public event Action OnJumpPressed;
     public event Action OnSprintPressed;
     public event Action OnCrouchPressed;
-    public event Action<float> OnMovePressed;
-    
-    
+    public float MoveInput { get; private set; }
+
+
     public void OnMove(InputAction.CallbackContext context)
     {
-        OnMovePressed?.Invoke(context.ReadValue<float>());
+        MoveInput = context.ReadValue<float>();
     }
 
     public void OnInteract(InputAction.CallbackContext context)
@@ -54,5 +49,11 @@ public class InputReader : MonoBehaviour, Control.IPlayerActions
     {
         if(context.performed)
             OnSprintPressed?.Invoke();
+    }
+
+    public void Dispose() {
+        _control.Disable();
+        _control?.Dispose();
+        _control = null;
     }
 }
