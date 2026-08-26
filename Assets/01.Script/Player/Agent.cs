@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using _01.Script.Player.Components;
+using _01.Script.Player.Interface;
 using UnityEngine;
 
 namespace _01.Script.Player {

@@ -1,23 +1,23 @@
 ﻿using System;
+using _01.Script.Player.Interface;
 using UnityEngine;
 
 namespace _01.Script.Player.Components
 {
-    public class Interactor : MonoBehaviour
-    {
+    public class Interactor : MonoBehaviour, IAgentModule, IInteractor {
         [SerializeField] private float radius;
         [SerializeField] private Vector2 offset;
         [SerializeField] private ContactFilter2D target;
         [SerializeField] private bool debug;
 
-
         private Vector2 Offset => offset + (Vector2)transform.position;
         private Collider2D[] _results;
 
-        private void Awake()
-        {
+        public void Initialize(Agent owner) {
             _results = new Collider2D[10];
         }
+
+        public Type Type => typeof(IInteractor);
 
         public void Interact(Player owner)
         {
@@ -49,5 +49,5 @@ namespace _01.Script.Player.Components
             Gizmos.DrawWireSphere(Offset, radius);
         }
     }
-    
+
 }

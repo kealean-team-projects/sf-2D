@@ -1,6 +1,6 @@
 using System;
 using _01.Script.Player;
-using _01.Script.Player.Components;
+using _01.Script.Player.Interface;
 using UnityEngine;
 using UnityEngine.InputSystem;
 

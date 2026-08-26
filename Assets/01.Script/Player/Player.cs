@@ -1,10 +1,8 @@
-using System;
-using _01.Script.Player.Components;
-using UnityEngine;
+using _01.Script.Player.Interface;
 
 namespace _01.Script.Player {
-    public class Player : Agent
-    {
+    public class Player : Agent {
+        private IInteractor _interactor;
         private IInputReader _inputReader;
         private IMover  _mover;
 
@@ -19,7 +17,9 @@ namespace _01.Script.Player {
             base.Afterinitialize();
             _inputReader = GetModule<IInputReader>();
             _mover = GetModule<IMover>();
+            _interactor = GetModule<IInteractor>();
             _inputReader.OnJumpPressed += HandleJumpInput;
+            _inputReader.OnInteractPressed += HandleInteractInput;
         }
 
         private void HandleJumpInput() 
@@ -43,9 +43,13 @@ namespace _01.Script.Player {
         protected override void OnDispose() {
             base.OnDispose();
             _inputReader.OnJumpPressed -= HandleJumpInput;
+            _inputReader.OnInteractPressed -= HandleInteractInput;
         
         }
 
-        
+        private void HandleInteractInput()
+        {
+            _interactor.Interact(this);
+        }
     }
 }

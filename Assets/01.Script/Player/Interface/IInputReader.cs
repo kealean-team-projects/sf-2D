@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace _01.Script.Player.Components {
+namespace _01.Script.Player.Interface {
     public interface IInputReader {
         event Action OnInteractPressed;
         event Action OnJumpPressed;
