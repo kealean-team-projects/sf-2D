@@ -10828,7 +10828,7 @@ Transform:
   m_GameObject: {fileID: 1811515458}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.94, z: 0}
+  m_LocalPosition: {x: 0, y: -0.993, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -10850,11 +10850,11 @@ MonoBehaviour:
   speed: 10
   jumpForce: 20
   <IsGround>k__BackingField: 0
-  checker: {fileID: 0}
-  checkerSize: {x: 0, y: 0}
+  checker: {x: 0, y: 0, z: 0}
+  checkerSize: {x: 1, y: 0.3}
   whatIsGround:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   extraGravity: 15
   gravityDelay: 0.15
 --- !u!1 &1858437623
@@ -10972,7 +10972,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 038d06262ebbea544995a5acb3d140fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_01.Script.Player.Player
-  IsGrounded: 0
 --- !u!1 &2066594116
 GameObject:
   m_ObjectHideFlags: 0
