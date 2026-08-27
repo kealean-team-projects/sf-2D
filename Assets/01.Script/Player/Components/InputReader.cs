@@ -26,6 +26,7 @@ public class InputReader : MonoBehaviour, Control.IPlayerActions, IAgentModule, 
     public event Action OnSprintPressed;
     public event Action OnSprintReleased;
     public event Action OnCrouchPressed;
+    public event Action OnCrouchReleased;
     public float MoveInput { get; private set; }
     public float ClimbInput { get; private set; }
 
@@ -42,6 +43,8 @@ public class InputReader : MonoBehaviour, Control.IPlayerActions, IAgentModule, 
     public void OnCrouch(InputAction.CallbackContext context) {
         if (context.performed)
             OnCrouchPressed?.Invoke();
+        if(context.canceled)
+            OnCrouchReleased?.Invoke();
     }
 
     public void OnJump(InputAction.CallbackContext context) {

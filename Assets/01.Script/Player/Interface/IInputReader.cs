@@ -9,5 +9,6 @@ namespace _01.Script.Player.Interface {
         event Action OnSprintPressed;
         event Action OnSprintReleased;
         event Action OnCrouchPressed;
+        event Action OnCrouchReleased;
     }
 }
