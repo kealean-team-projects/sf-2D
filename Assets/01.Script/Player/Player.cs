@@ -1,4 +1,5 @@
 using _01.Script.Player.Interface;
+using UnityEngine;
 
 namespace _01.Script.Player {
     public class Player : Agent {
@@ -8,9 +9,11 @@ namespace _01.Script.Player {
         private IMover _mover;
         private bool IsGrounded => _mover.IsGround;
         private bool _isSprint = false;
+        private bool _isCrouch = false;
+        private CapsuleCollider2D _collider;
 
         private void FixedUpdate() {
-            _mover.SetMoveInput(_inputReader.MoveInput * (_isSprint ? 2f : 1f));
+            _mover.SetMoveInput(_inputReader.MoveInput * (_isSprint ? 2f : 1f) * (_isCrouch ? 0.5f : 1f));
         }
 
         protected override void Afterinitialize() {
@@ -18,10 +21,25 @@ namespace _01.Script.Player {
             _inputReader = GetModule<IInputReader>();
             _mover = GetModule<IMover>();
             _interactor = GetModule<IInteractor>();
+            _collider = GetComponent<CapsuleCollider2D>();
             _inputReader.OnJumpPressed += HandleJumpInput;
             _inputReader.OnInteractPressed += HandleInteractInput;
             _inputReader.OnSprintPressed += HandleSprintInput;
             _inputReader.OnSprintReleased += HandleSprintRelease;
+            _inputReader.OnCrouchPressed += HandleCrouchPressed;
+            _inputReader.OnCrouchReleased += HandleCrouchRelease;
+        }
+
+        private void HandleCrouchRelease() {
+            _collider.offset = Vector2.zero;
+            _collider.size = new Vector2(1, 2);
+            _isCrouch = false;
+        }
+
+        private void HandleCrouchPressed() {
+            _collider.size = new Vector2(1, 1);
+            _collider.offset = new Vector2(0, -0.5f);
+            _isCrouch = true;
         }
 
         private void HandleSprintRelease() {
