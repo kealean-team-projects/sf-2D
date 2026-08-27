@@ -9,16 +9,17 @@ namespace _01.Script.Player.Components {
         [SerializeField] private float jumpForce;
 
         [Header("CheckGround")]
-        [field: SerializeField]
-        public bool IsGround { get; private set; }
+        [field: SerializeField] public bool IsGround { get; private set; }
         [SerializeField] private Vector3 checker;
         [SerializeField] private Vector2 checkerSize;
         [SerializeField] private LayerMask whatIsGround;
 
         [Header("ExtraGravity Settings")] 
         [SerializeField] private float extraGravity = 15f;
-
         [SerializeField] private float gravityDelay = 0.15f;
+        
+        [Header("CheckWall Settings")]
+        
 
         private float _moveInput;
 
