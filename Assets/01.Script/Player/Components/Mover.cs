@@ -167,7 +167,10 @@ namespace _01.Script.Player.Components {
             if (type == MotionType.WallJump)
                 return;
 
-            if (!checkClimbWall.IsClimbed) return;
+            if (!checkClimbWall.IsClimbed) {
+                ChangeMotion(MotionType.ManualMove);
+                return;
+            }
 
             StopImmediately(false, true);
             ChangeMotion(MotionType.Climb);
