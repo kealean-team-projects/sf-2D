@@ -16,8 +16,10 @@ namespace _01.Script.Player {
             FlipCheck();
         }
 
-        private void FixedUpdate() {
+        private void FixedUpdate() 
+        {
             _mover.SetMoveInput(_inputReader.MoveInput * (_isSprint ? 2f : 1f));
+            _mover.ClimbInput(_inputReader.ClimbInput);
         }
 
         protected override void Afterinitialize() {
@@ -39,14 +41,21 @@ namespace _01.Script.Player {
             _isSprint = true;
         }
 
-        private void HandleJumpInput() 
+        private void HandleJumpInput()
         {
+            if (_mover.IsClimbed)
+            {
+                if (_inputReader.MoveInput != 0f)
+                    _mover.WallJump(IsFlipX ? 1f : -1f);
+
+                return;
+            }
+
             if (IsGrounded)
             {
                 _mover.Jump();
                 _canDoubleJump = true;
             }
-            
             else if (_canDoubleJump)
             {
                 _mover.Jump(1.3f);
@@ -71,8 +80,11 @@ namespace _01.Script.Player {
         public bool IsFlipX { get; private set; }
         private void FlipCheck()
         {
+            if (_mover.IsClimbed) return;
             if (_inputReader.MoveInput == 0) return;
+
             bool checkFlipX = _inputReader.MoveInput < 0;
+
             if (checkFlipX != IsFlipX)
             {
                 IsFlipX = checkFlipX;

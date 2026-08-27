@@ -27,6 +27,7 @@ public class InputReader : MonoBehaviour, Control.IPlayerActions, IAgentModule, 
     public event Action OnSprintReleased;
     public event Action OnCrouchPressed;
     public float MoveInput { get; private set; }
+    public float ClimbInput { get; private set; }
 
 
     public void OnMove(InputAction.CallbackContext context) {
@@ -53,5 +54,10 @@ public class InputReader : MonoBehaviour, Control.IPlayerActions, IAgentModule, 
             OnSprintPressed?.Invoke();
         if(context.canceled)
             OnSprintReleased?.Invoke();
+    }
+
+    public void OnClimb(InputAction.CallbackContext context)
+    {
+        ClimbInput = context.ReadValue<float>();
     }
 }
