@@ -23,7 +23,6 @@ namespace _01.Script.Player {
             _mover.SetMoveInput(_inputReader.MoveInput * (_isSprint ? 2f : 1f) * (_isCrouch ? 0.5f : 1f));
             _mover.ClimbInput(_inputReader.ClimbInput);
         }
-        }
 
         protected override void Afterinitialize() {
             base.Afterinitialize();
