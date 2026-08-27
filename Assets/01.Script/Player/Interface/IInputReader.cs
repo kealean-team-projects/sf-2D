@@ -6,6 +6,7 @@ namespace _01.Script.Player.Interface {
         event Action OnInteractPressed;
         event Action OnJumpPressed;
         event Action OnSprintPressed;
+        event Action OnSprintReleased;
         event Action OnCrouchPressed;
     }
 }
