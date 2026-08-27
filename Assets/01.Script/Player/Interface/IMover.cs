@@ -1,7 +1,6 @@
 ﻿namespace _01.Script.Player.Interface {
-    public interface IMover
-    {
-        bool IsGround {get;}
+    public interface IMover {
+        bool IsGround { get; }
         bool IsClimbed { get; }
         void SetMoveInput(float moveInput);
         void ClimbInput(float climbInput);

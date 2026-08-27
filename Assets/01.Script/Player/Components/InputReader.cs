@@ -43,7 +43,7 @@ public class InputReader : MonoBehaviour, Control.IPlayerActions, IAgentModule, 
     public void OnCrouch(InputAction.CallbackContext context) {
         if (context.performed)
             OnCrouchPressed?.Invoke();
-        if(context.canceled)
+        if (context.canceled)
             OnCrouchReleased?.Invoke();
     }
 
@@ -55,12 +55,11 @@ public class InputReader : MonoBehaviour, Control.IPlayerActions, IAgentModule, 
     public void OnSprint(InputAction.CallbackContext context) {
         if (context.performed)
             OnSprintPressed?.Invoke();
-        if(context.canceled)
+        if (context.canceled)
             OnSprintReleased?.Invoke();
     }
 
-    public void OnClimb(InputAction.CallbackContext context)
-    {
+    public void OnClimb(InputAction.CallbackContext context) {
         ClimbInput = context.ReadValue<float>();
     }
 }

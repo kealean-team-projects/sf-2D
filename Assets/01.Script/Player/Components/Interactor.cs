@@ -31,13 +31,13 @@ namespace _01.Script.Player.Components {
             IInteractable _currentInteractable = null;
             for (var i = 0; i < count; i++) {
                 var collider = _results[i];
-                if (collider.TryGetComponent<IInteractable>(out var interactable)) {
-                    var _currentDistance = (collider.transform.position - transform.position).sqrMagnitude;
-                    if (_currentDistance <= distance) {
-                        distance = _currentDistance;
-                        _currentInteractable = interactable;
-                    }
-                }
+
+                if (!collider.TryGetComponent<IInteractable>(out var interactable)) continue;
+                var _currentDistance = (collider.transform.position - transform.position).sqrMagnitude;
+
+                if (!(_currentDistance <= distance)) continue;
+                distance = _currentDistance;
+                _currentInteractable = interactable;
             }
 
             _currentInteractable?.Interact(owner);

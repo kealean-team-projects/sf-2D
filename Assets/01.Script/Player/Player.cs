@@ -1,25 +1,22 @@
-using System;
 using _01.Script.Player.Interface;
 using UnityEngine;
 
 namespace _01.Script.Player {
     public class Player : Agent {
         private bool _canDoubleJump;
+        private CapsuleCollider2D _collider;
         private IInputReader _inputReader;
         private IInteractor _interactor;
+        private bool _isCrouch;
+        private bool _isSprint;
         private IMover _mover;
         private bool IsGrounded => _mover.IsGround;
-        private bool _isSprint = false;
-        private bool _isCrouch = false;
-        private CapsuleCollider2D _collider;
 
-        private void Update()
-        {
+        private void Update() {
             FlipCheck();
         }
 
-        private void FixedUpdate() 
-        {
+        private void FixedUpdate() {
             _mover.SetMoveInput(_inputReader.MoveInput * (_isSprint ? 2f : 1f) * (_isCrouch ? 0.5f : 1f));
             _mover.ClimbInput(_inputReader.ClimbInput);
         }
@@ -58,26 +55,17 @@ namespace _01.Script.Player {
             _isSprint = true;
         }
 
-        private void HandleJumpInput()
-        {
-            if (_mover.IsClimbed)
-            {
+        private void HandleJumpInput() {
+            if (_mover.IsClimbed) {
                 if (_inputReader.MoveInput != 0f)
                     _mover.WallJump(IsFlipX ? 1f : -1f);
 
                 return;
             }
 
-            if (IsGrounded)
-            {
-                _mover.Jump();
-                _canDoubleJump = true;
-            }
-            else if (_canDoubleJump)
-            {
-                _mover.Jump(1.3f);
-                _canDoubleJump = false;
-            }
+            if (!IsGrounded) return;
+            _mover.Jump();
+            _canDoubleJump = true;
         }
 
         protected override void OnDispose() {
@@ -91,28 +79,27 @@ namespace _01.Script.Player {
         private void HandleInteractInput() {
             _interactor.Interact(this);
         }
-        
+
         #region FlipController
-        
+
         public bool IsFlipX { get; private set; }
-        private void FlipCheck()
-        {
+
+        private void FlipCheck() {
             if (_mover.IsClimbed) return;
             if (_inputReader.MoveInput == 0) return;
 
-            bool checkFlipX = _inputReader.MoveInput < 0;
+            var checkFlipX = _inputReader.MoveInput < 0;
 
-            if (checkFlipX != IsFlipX)
-            {
-                IsFlipX = checkFlipX;
-                FlipX();
-            }
+            if (checkFlipX == IsFlipX) return;
+            IsFlipX = checkFlipX;
+            FlipX();
         }
-        private void FlipX()
-        {
+
+        private void FlipX() {
             var targetRot = IsFlipX ? 180f : 0f;
             transform.rotation = Quaternion.Euler(0f, targetRot, 0f);
         }
+
         #endregion
     }
 }
