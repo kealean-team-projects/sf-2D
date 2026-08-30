@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
+using System.Threading;
 using _01.Script.Player.Interface;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public enum MotionType {
@@ -44,10 +46,10 @@ namespace _01.Script.Player.Components {
         [Header("CheckWall Settings")] private float _originGravityScale;
 
         private float _timeInAir;
-        private Coroutine _wallJumpCoroutine;
 
         private float _wallJumpDir;
         private MotionType type = MotionType.ManualMove;
+        private UniTask _wallJump;
 
         private void Awake() {
             _originGravityScale = rb.gravityScale;
@@ -119,7 +121,7 @@ namespace _01.Script.Player.Components {
         }
 
         public void WallJump(float xDirection) {
-            if (_wallJumpCoroutine != null)
+            if (!_wallJump.Status.IsCompleted())
                 return;
 
             _wallJumpDir = xDirection;
@@ -127,7 +129,7 @@ namespace _01.Script.Player.Components {
         }
 
         private void ApplyWallJump() {
-            if (_wallJumpCoroutine != null)
+            if (!_wallJump.Status.IsCompleted())
                 return;
 
             _timeInAir = 0f;
@@ -136,13 +138,12 @@ namespace _01.Script.Player.Components {
             var x = _wallJumpDir * wallJumpXForce;
 
             rb.linearVelocity = new Vector2(x, wallJumpYForce);
-            _wallJumpCoroutine = StartCoroutine(WallJumpCoroutine());
+            _wallJump = WallJumpUniTask();
         }
 
-        private IEnumerator WallJumpCoroutine() {
-            yield return new WaitForSeconds(wallJumpDuration);
-
-            _wallJumpCoroutine = null;
+        private async UniTask WallJumpUniTask() {
+            await UniTask.Delay(TimeSpan.FromSeconds(wallJumpDuration));
+            
             ChangeMotion(MotionType.ManualMove);
         }
 
