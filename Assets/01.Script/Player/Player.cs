@@ -1,8 +1,14 @@
+using _01.Script.Player.Components;
 using _01.Script.Player.Interface;
 using UnityEngine;
 
 namespace _01.Script.Player {
     public class Player : Agent {
+        [SerializeField] private float useStaminaInRun;
+        [SerializeField] private float useStaminaInWall;
+        [SerializeField] private float useStaminaInWallDash;
+        [SerializeField] private float useStaminaInWallJump;
+        
         private bool _canDoubleJump;
         private CapsuleCollider2D _collider;
         private IInputReader _inputReader;
@@ -11,9 +17,21 @@ namespace _01.Script.Player {
         private bool _isSprint;
         private IMover _mover;
         private bool IsGrounded => _mover.IsGround;
+        private IStats _stats;
+        private ICheckClimbWall _checkClimbWall;
 
         private void Update() {
             FlipCheck();
+            _mover.Climb(_checkClimbWall);
+            _mover.CalculateAirTime(_checkClimbWall);
+            _stats.StaminaUpdate(IsGrounded, _inputReader.MoveInput != 0);
+            if (_isSprint) {
+                _stats.UseStamina(useStaminaInRun);
+            }
+
+            if (_checkClimbWall.IsClimbed) {
+                _stats.UseStamina(useStaminaInWall);
+            }
         }
 
         private void FixedUpdate() {
@@ -26,6 +44,8 @@ namespace _01.Script.Player {
             _inputReader = GetModule<IInputReader>();
             _mover = GetModule<IMover>();
             _interactor = GetModule<IInteractor>();
+            _stats = GetModule<IStats>();
+            _checkClimbWall = GetModule<ICheckClimbWall>();
             _collider = GetComponent<CapsuleCollider2D>();
             _inputReader.OnJumpPressed += HandleJumpInput;
             _inputReader.OnInteractPressed += HandleInteractInput;
@@ -56,11 +76,15 @@ namespace _01.Script.Player {
         }
 
         private void HandleJumpInput() {
-            if (_mover.IsClimbed) {
-                if (_inputReader.MoveInput != 0f)
+            if (_checkClimbWall.IsClimbed) {
+                if (_inputReader.MoveInput != 0f) {
                     _mover.WallJump(IsFlipX ? 1f : -1f);
-                else if(_inputReader.ClimbInput > 0f)
+                    _stats.UseStamina(useStaminaInWallJump);
+                }
+                else if(_inputReader.ClimbInput > 0f) {
                     _mover.WallDash();
+                    _stats.UseStamina(useStaminaInWallDash);
+                }
                 else if (_inputReader.ClimbInput < 0f)
                     _mover.CancelClimb();
                 return;
@@ -88,7 +112,7 @@ namespace _01.Script.Player {
         public bool IsFlipX { get; private set; }
 
         private void FlipCheck() {
-            if (_mover.IsClimbed) return;
+            if (_checkClimbWall.IsClimbed) return;
             if (_inputReader.MoveInput == 0) return;
 
             var checkFlipX = _inputReader.MoveInput < 0;

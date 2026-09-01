@@ -22,16 +22,15 @@ namespace _01.Script.Player.Components {
         [SerializeField] private Vector2 checkerSize;
         [SerializeField] private LayerMask whatIsGround;
 
-        [Header("ExtraGravity Settings")] [SerializeField]
-        private float extraGravity = 15f;
+        [Header("ExtraGravity Settings")] 
+        [SerializeField] private float extraGravity = 15f;
 
         [SerializeField] private float gravityDelay = 0.15f;
 
-        [Header("Climb Settings")] [SerializeField]
-        private float climbUpSpeed = 5f;
-
+        [Header("Climb Settings")] 
+        [SerializeField] private float climbUpSpeed = 5f;
+    
         [SerializeField] private float climbDownSpeed = 18f;
-        [field: SerializeField] private CheckClimbWall checkClimbWall;
         [SerializeField] private float wallDashSpeed;
 
 
@@ -59,11 +58,6 @@ namespace _01.Script.Player.Components {
         private void Reset() {
             rb = transform.root.GetComponent<Rigidbody2D>();
             _originGravityScale = rb.gravityScale;
-        }
-
-        private void Update() {
-            CalculateAirTime();
-            Climb();
         }
 
         private void FixedUpdate() {
@@ -125,8 +119,6 @@ namespace _01.Script.Player.Components {
         [field: SerializeField]
         public bool IsGround { get; private set; }
 
-        public bool IsClimbed => checkClimbWall != null && checkClimbWall.IsClimbed;
-
         public void SetMoveInput(float moveInput) {
             _moveInput = moveInput;
         }
@@ -180,7 +172,7 @@ namespace _01.Script.Player.Components {
             ChangeMotion(MotionType.ManualMove);
         }
 
-        private void CalculateAirTime() {
+        public void CalculateAirTime(ICheckClimbWall checkClimbWall) {
             if (checkClimbWall.IsClimbed) return;
             if (!IsGround) {
                 _timeInAir += Time.deltaTime;
@@ -197,12 +189,12 @@ namespace _01.Script.Player.Components {
                 rb.AddForceY(-extraGravity);
         }
 
-        private void Climb() {
+        public void Climb(ICheckClimbWall check) {
             if(!_climbable) return;
             if (type == MotionType.WallJump)
                 return;
 
-            if (!checkClimbWall.IsClimbed) {
+            if (!check.IsClimbed) {
                 ChangeMotion(MotionType.ManualMove);
                 return;
             }
