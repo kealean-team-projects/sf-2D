@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Threading;
 using _01.Script.Player.Interface;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -10,7 +8,8 @@ public enum MotionType {
     Dash,
     Fall,
     Climb,
-    WallJump
+    WallJump,
+    WallDash
 }
 
 namespace _01.Script.Player.Components {
@@ -33,6 +32,8 @@ namespace _01.Script.Player.Components {
 
         [SerializeField] private float climbDownSpeed = 18f;
         [field: SerializeField] private CheckClimbWall checkClimbWall;
+        [SerializeField] private float wallDashSpeed;
+
 
         [Header("WallJump Settings")] [SerializeField]
         private float wallJumpXForce = 8f;
@@ -40,16 +41,16 @@ namespace _01.Script.Player.Components {
         [SerializeField] private float wallJumpYForce = 12f;
 
         [SerializeField] private float wallJumpDuration = 0.2f;
-
         private float _moveInput;
 
         [Header("CheckWall Settings")] private float _originGravityScale;
 
         private float _timeInAir;
+        private UniTask _wallJump;
 
         private float _wallJumpDir;
         private MotionType type = MotionType.ManualMove;
-        private UniTask _wallJump;
+        private bool _climbable = true;
 
         private void Awake() {
             _originGravityScale = rb.gravityScale;
@@ -83,12 +84,28 @@ namespace _01.Script.Player.Components {
                     ApplyWallJump();
                     break;
 
+                case MotionType.WallDash:
+                    ApplyWallDash();
+                    break;
                 case MotionType.Dash:
                 case MotionType.Fall:
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+        }
+
+        private void ApplyWallDash() {
+            WallDashUniTask().Forget();
+        }
+
+        private async UniTaskVoid WallDashUniTask() {
+            
+            rb.AddForceY(wallDashSpeed, ForceMode2D.Impulse);
+            await UniTask.Delay(TimeSpan.FromSeconds(0.2f));
+
+            _climbable = true;
+            ChangeMotion(MotionType.Climb);
         }
 
 
@@ -128,6 +145,11 @@ namespace _01.Script.Player.Components {
             ChangeMotion(MotionType.WallJump);
         }
 
+        public void WallDash() {
+            _climbable = false;
+            ChangeMotion(MotionType.WallDash);
+        }
+
         private void ApplyWallJump() {
             if (!_wallJump.Status.IsCompleted())
                 return;
@@ -143,7 +165,7 @@ namespace _01.Script.Player.Components {
 
         private async UniTask WallJumpUniTask() {
             await UniTask.Delay(TimeSpan.FromSeconds(wallJumpDuration));
-            
+
             ChangeMotion(MotionType.ManualMove);
         }
 
@@ -165,6 +187,7 @@ namespace _01.Script.Player.Components {
         }
 
         private void Climb() {
+            if(!_climbable) return;
             if (type == MotionType.WallJump)
                 return;
 
@@ -173,7 +196,6 @@ namespace _01.Script.Player.Components {
                 return;
             }
 
-            StopImmediately(false, true);
             ChangeMotion(MotionType.Climb);
         }
 
@@ -207,7 +229,6 @@ namespace _01.Script.Player.Components {
 
             var climbSpeed = 0f;
 
-            rb.linearVelocityX = 0f;
             if (_climbInput != 0)
                 climbSpeed = _climbInput > 0f ? climbUpSpeed : climbDownSpeed;
 

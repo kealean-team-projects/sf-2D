@@ -147,7 +147,7 @@ Shader "TextMeshPro/Mobile/Distance Field SSD - SpaceWarp"
             {
                 pixel_t output;
 
-                    UNITY_INITIALIZE_OUTPUT(pixel_t, output);
+                UNITY_INITIALIZE_OUTPUT(pixel_t, output);
                 UNITY_SETUP_INSTANCE_ID(input);
                 UNITY_TRANSFER_INSTANCE_ID(input, output);
                 UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(output);
@@ -232,7 +232,7 @@ Shader "TextMeshPro/Mobile/Distance Field SSD - SpaceWarp"
 
                 #if OUTLINE_ON
                 float4 outlineColor = lerp(input.faceColor, input.outlineColor,
-                                              sqrt(min(1.0, input.param.z * scale * 2)));
+                                       sqrt(min(1.0, input.param.z * scale * 2)));
                 faceColor = lerp(outlineColor, input.faceColor,
                       saturate((d - input.param.x - input.param.z) * scale + 0.5));
                 faceColor *= saturate((d - input.param.x + input.param.z) * scale + 0.5);
@@ -262,7 +262,7 @@ Shader "TextMeshPro/Mobile/Distance Field SSD - SpaceWarp"
 
                 #if UNITY_UI_CLIP_RECT
                 half2 maskSoftness = half2(max(_UIMaskSoftnessX, _MaskSoftnessX),
-                                           max(_UIMaskSoftnessY, _MaskSoftnessY));
+                                max(_UIMaskSoftnessY, _MaskSoftnessY));
                 float2 maskZW = 0.25 / (0.25 * maskSoftness + 1 / scale);
                 float2 m = saturate((_ClipRect.zw - _ClipRect.xy - abs(input.mask.xy)) * maskZW);
                 faceColor *= m.x * m.y;
@@ -355,7 +355,7 @@ Shader "TextMeshPro/Mobile/Distance Field SSD - SpaceWarp"
             {
                 pixel_t output;
 
-                    UNITY_INITIALIZE_OUTPUT(pixel_t, output);
+                UNITY_INITIALIZE_OUTPUT(pixel_t, output);
                 UNITY_SETUP_INSTANCE_ID(input);
                 UNITY_TRANSFER_INSTANCE_ID(input, output);
                 UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(output);
@@ -446,9 +446,10 @@ Shader "TextMeshPro/Mobile/Distance Field SSD - SpaceWarp"
 
                 #if OUTLINE_ON
                 float4 outlineColor = lerp(input.faceColor, input.outlineColor,
-        sqrt(min(1.0, input.param.z * scale * 2)));
+                                       sqrt(min(1.0, input.param.z * scale * 2)));
                 faceColor = lerp(outlineColor, input.faceColor,
-        saturate((d - input.param.x - input.param.z) * scale + 0.5));
+                                                            saturate(
+                                                                (d - input.param.x - input.param.z) * scale + 0.5));
                 faceColor *= saturate((d - input.param.x + input.param.z) * scale + 0.5);
                 #endif
 
@@ -476,7 +477,7 @@ Shader "TextMeshPro/Mobile/Distance Field SSD - SpaceWarp"
 
                 #if UNITY_UI_CLIP_RECT
                 half2 maskSoftness = half2(max(_UIMaskSoftnessX, _MaskSoftnessX),
-                                           max(_UIMaskSoftnessY, _MaskSoftnessY));
+                      max(_UIMaskSoftnessY, _MaskSoftnessY));
                 float2 maskZW = 0.25 / (0.25 * maskSoftness + 1 / scale);
                 float2 m = saturate((_ClipRect.zw - _ClipRect.xy - abs(input.mask.xy)) * maskZW);
                 faceColor *= m.x * m.y;

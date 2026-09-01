@@ -21,8 +21,8 @@ namespace _01.Script.Player {
             _mover.ClimbInput(_inputReader.ClimbInput);
         }
 
-        protected override void Afterinitialize() {
-            base.Afterinitialize();
+        protected override void AfterInitialize() {
+            base.AfterInitialize();
             _inputReader = GetModule<IInputReader>();
             _mover = GetModule<IMover>();
             _interactor = GetModule<IInteractor>();
@@ -59,7 +59,8 @@ namespace _01.Script.Player {
             if (_mover.IsClimbed) {
                 if (_inputReader.MoveInput != 0f)
                     _mover.WallJump(IsFlipX ? 1f : -1f);
-
+                else
+                    _mover.WallDash();
                 return;
             }
 

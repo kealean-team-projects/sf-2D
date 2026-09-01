@@ -28,10 +28,10 @@ namespace _01.Script.Player {
             _disposables = new List<IDisposable>();
             InitializeDictionary();
             _initialized = true;
-            Afterinitialize();
+            AfterInitialize();
         }
 
-        protected virtual void Afterinitialize() { }
+        protected virtual void AfterInitialize() { }
 
         private void InitializeDictionary() {
             var modules = GetComponentsInChildren<IAgentModule>();

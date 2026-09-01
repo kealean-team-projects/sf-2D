@@ -15002,6 +15002,7 @@ MonoBehaviour:
   climbUpSpeed: 5
   climbDownSpeed: 18
   checkClimbWall: {fileID: 631261800}
+  wallDashSpeed: 1
   wallJumpXForce: 8
   wallJumpYForce: 12
   wallJumpDuration: 0.2
