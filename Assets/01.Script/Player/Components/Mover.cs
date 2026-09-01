@@ -150,6 +150,17 @@ namespace _01.Script.Player.Components {
             ChangeMotion(MotionType.WallDash);
         }
 
+        public void CancelClimb() {
+            _climbable = false;
+            ChangeMotion(MotionType.ManualMove);
+            CancelClimbUniTask().Forget();
+        }
+
+        private async UniTaskVoid CancelClimbUniTask() {
+            await UniTask.Delay(TimeSpan.FromSeconds(2f));
+            _climbable = true;
+        }
+
         private void ApplyWallJump() {
             if (!_wallJump.Status.IsCompleted())
                 return;

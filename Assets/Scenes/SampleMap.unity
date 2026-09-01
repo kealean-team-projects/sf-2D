@@ -15000,7 +15000,7 @@ MonoBehaviour:
   extraGravity: 15
   gravityDelay: 0.3
   climbUpSpeed: 5
-  climbDownSpeed: 18
+  climbDownSpeed: 5
   checkClimbWall: {fileID: 631261800}
   wallDashSpeed: 1
   wallJumpXForce: 8

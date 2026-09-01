@@ -7,5 +7,6 @@
         void Jump(float multiplier = 1);
         void WallJump(float dir);
         void WallDash();
+        void CancelClimb();
     }
 }

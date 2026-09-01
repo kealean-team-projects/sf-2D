@@ -59,8 +59,10 @@ namespace _01.Script.Player {
             if (_mover.IsClimbed) {
                 if (_inputReader.MoveInput != 0f)
                     _mover.WallJump(IsFlipX ? 1f : -1f);
-                else
+                else if(_inputReader.ClimbInput > 0f)
                     _mover.WallDash();
+                else if (_inputReader.ClimbInput < 0f)
+                    _mover.CancelClimb();
                 return;
             }
 
