@@ -4,14 +4,15 @@ using UnityEngine;
 
 namespace _01.Script.Player.Components {
     public class Stats : MonoBehaviour, IAgentModule, IStats {
-        [SerializeField] private float staminaHealTimer;
         [SerializeField] private float staminaHealSlow;
         [SerializeField] private float staminaHealBoost;
         [SerializeField] private float maxStamina;
         
         public float Stamina { get; private set; }
-        
-        public void Initialize(Agent owner) { }
+
+        public void Initialize(Agent owner) {
+            Stamina = maxStamina;
+        }
         
         public Type Type => typeof(IStats);
 
@@ -21,9 +22,10 @@ namespace _01.Script.Player.Components {
             Stamina = Mathf.Clamp(Stamina + healRate * Time.deltaTime, 0, maxStamina);
         }
 
-        public void UseStamina(float usedStamina) {
+        public void UseStamina(float usedStamina, bool immediate) {
             if(Stamina == 0f) return;
-            Stamina = Mathf.Clamp(Stamina - usedStamina * Time.deltaTime, 0, maxStamina);
+            if(!immediate) Stamina = Mathf.Clamp(Stamina - usedStamina * Time.deltaTime, 0, maxStamina);
+            else Stamina = Mathf.Clamp(Stamina - usedStamina, 0, maxStamina);
         }
     }
 }

@@ -9,7 +9,6 @@ namespace _01.Script.Player {
         [SerializeField] private float useStaminaInWallDash;
         [SerializeField] private float useStaminaInWallJump;
         
-        private bool _canDoubleJump;
         private CapsuleCollider2D _collider;
         private IInputReader _inputReader;
         private IInteractor _interactor;
@@ -26,12 +25,15 @@ namespace _01.Script.Player {
             _mover.CalculateAirTime(_checkClimbWall);
             _stats.StaminaUpdate(IsGrounded, _inputReader.MoveInput != 0);
             if (_isSprint) {
-                _stats.UseStamina(useStaminaInRun);
+                _stats.UseStamina(useStaminaInRun, false);
             }
 
             if (_checkClimbWall.IsClimbed) {
-                _stats.UseStamina(useStaminaInWall);
+                _stats.UseStamina(useStaminaInWall, false);
             }
+
+            if (_stats.Stamina < useStaminaInRun) _isSprint = false;
+            if (_stats.Stamina < useStaminaInWall) _mover.CancelClimb();
         }
 
         private void FixedUpdate() {
@@ -78,21 +80,25 @@ namespace _01.Script.Player {
         private void HandleJumpInput() {
             if (_checkClimbWall.IsClimbed) {
                 if (_inputReader.MoveInput != 0f) {
+                    if(_stats.Stamina < useStaminaInWallJump) return;
                     _mover.WallJump(IsFlipX ? 1f : -1f);
-                    _stats.UseStamina(useStaminaInWallJump);
+                    _stats.UseStamina(useStaminaInWallJump, true);
                 }
-                else if(_inputReader.ClimbInput > 0f) {
-                    _mover.WallDash();
-                    _stats.UseStamina(useStaminaInWallDash);
+                else switch (_inputReader.ClimbInput) {
+                    case > 0f:
+                        if(_stats.Stamina < useStaminaInWallDash) return;
+                        _mover.WallDash();
+                        _stats.UseStamina(useStaminaInWallDash, true);
+                        break;
+                    case < 0f:
+                        _mover.CancelClimb();
+                        break;
                 }
-                else if (_inputReader.ClimbInput < 0f)
-                    _mover.CancelClimb();
                 return;
             }
 
             if (!IsGrounded) return;
             _mover.Jump();
-            _canDoubleJump = true;
         }
 
         protected override void OnDispose() {

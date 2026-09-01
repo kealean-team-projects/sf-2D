@@ -2603,6 +2603,53 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 692966408}
   m_CullTransparentMesh: 1
+--- !u!1 &695474440
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 695474441}
+  - component: {fileID: 695474442}
+  m_Layer: 0
+  m_Name: Stats
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &695474441
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 695474440}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1858437626}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &695474442
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 695474440}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59169ac76f134b8590a70db67ef65f9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_01.Script.Player.Components.Stats
+  staminaHealSlow: 5
+  staminaHealBoost: 10
+  maxStamina: 100
 --- !u!1 &712836217
 GameObject:
   m_ObjectHideFlags: 0
@@ -15001,7 +15048,6 @@ MonoBehaviour:
   gravityDelay: 0.3
   climbUpSpeed: 5
   climbDownSpeed: 5
-  checkClimbWall: {fileID: 631261800}
   wallDashSpeed: 1
   wallJumpXForce: 8
   wallJumpYForce: 12
@@ -15184,6 +15230,7 @@ Transform:
   - {fileID: 343402914}
   - {fileID: 1200031497}
   - {fileID: 631261799}
+  - {fileID: 695474441}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1858437627
@@ -15198,6 +15245,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 038d06262ebbea544995a5acb3d140fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_01.Script.Player.Player
+  useStaminaInRun: 20
+  useStaminaInWall: 20
+  useStaminaInWallDash: 20
+  useStaminaInWallJump: 20
 --- !u!1 &1918708741
 GameObject:
   m_ObjectHideFlags: 0
