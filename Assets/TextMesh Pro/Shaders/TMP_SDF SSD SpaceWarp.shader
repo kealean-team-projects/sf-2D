@@ -227,7 +227,7 @@ Shader "TextMeshPro/Distance Field SSD - SpaceWarp"
                 output.weight = weight;
                 output.mask = half2(vert.xy * 2 - clampedRect.xy - clampedRect.zw);
                 output.viewDir = mul((float3x3)_EnvMatrix,
-                                 _WorldSpaceCameraPos.xyz - mul(unity_ObjectToWorld, vert).xyz);
+                                     _WorldSpaceCameraPos.xyz - mul(unity_ObjectToWorld, vert).xyz);
                 #if (UNDERLAY_ON || UNDERLAY_INNER)
                 output.texcoord2 = input.texcoord0 + bOffset;
                 output.underlayColor = underlayColor;
@@ -262,7 +262,7 @@ Shader "TextMeshPro/Distance Field SSD - SpaceWarp"
 
                 faceColor *= tex2D(_FaceTex, input.textures.xy + float2(_FaceUVSpeedX, _FaceUVSpeedY) * _Time.y);
                 outlineColor *= tex2D(_OutlineTex,
-                input.textures.zw + float2(_OutlineUVSpeedX, _OutlineUVSpeedY) * _Time.y);
+                                          input.textures.zw + float2(_OutlineUVSpeedX, _OutlineUVSpeedY) * _Time.y);
 
                 faceColor = GetColor(sd, faceColor, outlineColor, outline, softness);
 
@@ -310,7 +310,7 @@ Shader "TextMeshPro/Distance Field SSD - SpaceWarp"
 
                 #if UNITY_UI_CLIP_RECT
                 half2 maskSoftness = half2(max(_UIMaskSoftnessX, _MaskSoftnessX),
-                                                                          max(_UIMaskSoftnessY, _MaskSoftnessY));
+                                                                         max(_UIMaskSoftnessY, _MaskSoftnessY));
                 float2 maskZW = 0.25 / (0.25 * maskSoftness + 1 / scale);
                 half2 m = saturate((_ClipRect.zw - _ClipRect.xy - abs(input.mask.xy)) * maskZW);
                 faceColor *= m.x * m.y;
@@ -482,7 +482,7 @@ Shader "TextMeshPro/Distance Field SSD - SpaceWarp"
 
                 #if UNITY_UI_CLIP_RECT
                 half2 maskSoftness = half2(max(_UIMaskSoftnessX, _MaskSoftnessX),
-                                       max(_UIMaskSoftnessY, _MaskSoftnessY));
+                                           max(_UIMaskSoftnessY, _MaskSoftnessY));
                 float2 maskZW = 0.25 / (0.25 * maskSoftness + 1 / scale);
                 half2 m = saturate((_ClipRect.zw - _ClipRect.xy - abs(input.mask.xy)) * maskZW);
                 faceColor *= m.x * m.y;

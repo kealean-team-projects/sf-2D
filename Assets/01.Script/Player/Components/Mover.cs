@@ -22,14 +22,14 @@ namespace _01.Script.Player.Components {
         [SerializeField] private Vector2 checkerSize;
         [SerializeField] private LayerMask whatIsGround;
 
-        [Header("ExtraGravity Settings")] 
-        [SerializeField] private float extraGravity = 15f;
+        [Header("ExtraGravity Settings")] [SerializeField]
+        private float extraGravity = 15f;
 
         [SerializeField] private float gravityDelay = 0.15f;
 
-        [Header("Climb Settings")] 
-        [SerializeField] private float climbUpSpeed = 5f;
-    
+        [Header("Climb Settings")] [SerializeField]
+        private float climbUpSpeed = 5f;
+
         [SerializeField] private float climbDownSpeed = 18f;
         [SerializeField] private float wallDashSpeed;
 
@@ -40,6 +40,7 @@ namespace _01.Script.Player.Components {
         [SerializeField] private float wallJumpYForce = 12f;
 
         [SerializeField] private float wallJumpDuration = 0.2f;
+        private bool _climbable = true;
         private float _moveInput;
 
         [Header("CheckWall Settings")] private float _originGravityScale;
@@ -49,7 +50,6 @@ namespace _01.Script.Player.Components {
 
         private float _wallJumpDir;
         private MotionType type = MotionType.ManualMove;
-        private bool _climbable = true;
 
         private void Awake() {
             _originGravityScale = rb.gravityScale;
@@ -87,19 +87,6 @@ namespace _01.Script.Player.Components {
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-        }
-
-        private void ApplyWallDash() {
-            WallDashUniTask().Forget();
-        }
-
-        private async UniTaskVoid WallDashUniTask() {
-            
-            rb.AddForceY(wallDashSpeed, ForceMode2D.Impulse);
-            await UniTask.Delay(TimeSpan.FromSeconds(0.2f));
-
-            _climbable = true;
-            ChangeMotion(MotionType.Climb);
         }
 
 
@@ -148,6 +135,42 @@ namespace _01.Script.Player.Components {
             CancelClimbUniTask().Forget();
         }
 
+        public void CalculateAirTime(ICheckClimbWall checkClimbWall) {
+            if (checkClimbWall.IsClimbed) return;
+            if (!IsGround) {
+                _timeInAir += Time.deltaTime;
+            }
+            else {
+                _timeInAir = 0;
+                ChangeMotion(MotionType.ManualMove);
+            }
+        }
+
+        public void Climb(ICheckClimbWall check) {
+            if (!_climbable) return;
+            if (type == MotionType.WallJump)
+                return;
+
+            if (!check.IsClimbed) {
+                ChangeMotion(MotionType.ManualMove);
+                return;
+            }
+
+            ChangeMotion(MotionType.Climb);
+        }
+
+        private void ApplyWallDash() {
+            WallDashUniTask().Forget();
+        }
+
+        private async UniTaskVoid WallDashUniTask() {
+            rb.AddForceY(wallDashSpeed, ForceMode2D.Impulse);
+            await UniTask.Delay(TimeSpan.FromSeconds(0.2f));
+
+            _climbable = true;
+            ChangeMotion(MotionType.Climb);
+        }
+
         private async UniTaskVoid CancelClimbUniTask() {
             await UniTask.Delay(TimeSpan.FromSeconds(2f));
             _climbable = true;
@@ -172,34 +195,10 @@ namespace _01.Script.Player.Components {
             ChangeMotion(MotionType.ManualMove);
         }
 
-        public void CalculateAirTime(ICheckClimbWall checkClimbWall) {
-            if (checkClimbWall.IsClimbed) return;
-            if (!IsGround) {
-                _timeInAir += Time.deltaTime;
-            }
-            else {
-                _timeInAir = 0;
-                ChangeMotion(MotionType.ManualMove);
-            }
-        }
-
 
         private void ApplyExtraGravity() {
             if (_timeInAir > gravityDelay)
                 rb.AddForceY(-extraGravity);
-        }
-
-        public void Climb(ICheckClimbWall check) {
-            if(!_climbable) return;
-            if (type == MotionType.WallJump)
-                return;
-
-            if (!check.IsClimbed) {
-                ChangeMotion(MotionType.ManualMove);
-                return;
-            }
-
-            ChangeMotion(MotionType.Climb);
         }
 
 

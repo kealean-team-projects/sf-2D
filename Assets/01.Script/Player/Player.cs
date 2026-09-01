@@ -8,29 +8,25 @@ namespace _01.Script.Player {
         [SerializeField] private float useStaminaInWall;
         [SerializeField] private float useStaminaInWallDash;
         [SerializeField] private float useStaminaInWallJump;
-        
+        private ICheckClimbWall _checkClimbWall;
+
         private CapsuleCollider2D _collider;
         private IInputReader _inputReader;
         private IInteractor _interactor;
         private bool _isCrouch;
         private bool _isSprint;
         private IMover _mover;
-        private bool IsGrounded => _mover.IsGround;
         private IStats _stats;
-        private ICheckClimbWall _checkClimbWall;
+        private bool IsGrounded => _mover.IsGround;
 
         private void Update() {
             FlipCheck();
             _mover.Climb(_checkClimbWall);
             _mover.CalculateAirTime(_checkClimbWall);
             _stats.StaminaUpdate(IsGrounded, _inputReader.MoveInput != 0);
-            if (_isSprint) {
-                _stats.UseStamina(useStaminaInRun, false);
-            }
+            if (_isSprint) _stats.UseStamina(useStaminaInRun, false);
 
-            if (_checkClimbWall.IsClimbed) {
-                _stats.UseStamina(useStaminaInWall, false);
-            }
+            if (_checkClimbWall.IsClimbed) _stats.UseStamina(useStaminaInWall, false);
 
             if (_stats.Stamina < useStaminaInRun) _isSprint = false;
             if (_stats.Stamina < useStaminaInWall) _mover.CancelClimb();
@@ -80,20 +76,23 @@ namespace _01.Script.Player {
         private void HandleJumpInput() {
             if (_checkClimbWall.IsClimbed) {
                 if (_inputReader.MoveInput != 0f) {
-                    if(_stats.Stamina < useStaminaInWallJump) return;
+                    if (_stats.Stamina < useStaminaInWallJump) return;
                     _mover.WallJump(IsFlipX ? 1f : -1f);
                     _stats.UseStamina(useStaminaInWallJump, true);
                 }
-                else switch (_inputReader.ClimbInput) {
-                    case > 0f:
-                        if(_stats.Stamina < useStaminaInWallDash) return;
-                        _mover.WallDash();
-                        _stats.UseStamina(useStaminaInWallDash, true);
-                        break;
-                    case < 0f:
-                        _mover.CancelClimb();
-                        break;
+                else {
+                    switch (_inputReader.ClimbInput) {
+                        case > 0f:
+                            if (_stats.Stamina < useStaminaInWallDash) return;
+                            _mover.WallDash();
+                            _stats.UseStamina(useStaminaInWallDash, true);
+                            break;
+                        case < 0f:
+                            _mover.CancelClimb();
+                            break;
+                    }
                 }
+
                 return;
             }
 
