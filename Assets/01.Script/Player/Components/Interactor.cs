@@ -28,19 +28,19 @@ namespace _01.Script.Player.Components {
             var count = Physics2D.OverlapCircle(Offset, radius, target, _results);
             if (count <= 0) return;
             var distance = float.MaxValue;
-            IInteractable _currentInteractable = null;
+            IInteractable currentInteractable = null;
             for (var i = 0; i < count; i++) {
                 var collider = _results[i];
 
                 if (!collider.TryGetComponent<IInteractable>(out var interactable)) continue;
-                var _currentDistance = (collider.transform.position - transform.position).sqrMagnitude;
+                var currentDistance = (collider.transform.position - transform.position).sqrMagnitude;
 
-                if (!(_currentDistance <= distance)) continue;
-                distance = _currentDistance;
-                _currentInteractable = interactable;
+                if (!(currentDistance <= distance)) continue;
+                distance = currentDistance;
+                currentInteractable = interactable;
             }
 
-            _currentInteractable?.Interact(owner);
+            currentInteractable?.Interact(owner);
         }
     }
 }
