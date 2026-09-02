@@ -50,7 +50,7 @@ namespace _01.Script.Player.Components {
 
         private float _wallJumpDir;
         private MotionType _type = MotionType.ManualMove;
-
+        
         private void Awake() {
             _originGravityScale = rb.gravityScale;
         }
@@ -87,6 +87,11 @@ namespace _01.Script.Player.Components {
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+        }
+
+        public void PushForce(Vector2 pushDir, float power, ForceMode2D forceMode)
+        {
+            rb.AddForce(pushDir * power, forceMode);
         }
 
 
