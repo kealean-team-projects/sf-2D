@@ -16,6 +16,102 @@ MonoBehaviour:
   intensity:
     m_OverrideState: 1
     m_Value: 1
+--- !u!114 &-5604149160385401318
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a475593846ad5d4481cc4493a8d291a, type: 3}
+  m_Name: CameraFilterPackVolume_FX_Drunk
+  m_EditorClassIdentifier: BalioProductions.CameraFilterPack.URP::BalioProductions.CameraFilterPack.URP.CameraFilterPackVolume_FX_Drunk
+  active: 1
+  intensity:
+    m_OverrideState: 0
+    m_Value: 1
+  _ChangeBlue:
+    m_OverrideState: 0
+    m_Value: 0
+  _ChangeGreen:
+    m_OverrideState: 0
+    m_Value: 0
+  _ChangeRed:
+    m_OverrideState: 0
+    m_Value: 0
+  _Colored:
+    m_OverrideState: 0
+    m_Value: 1
+  _ColoredChange:
+    m_OverrideState: 0
+    m_Value: 0
+  _Distortion:
+    m_OverrideState: 0
+    m_Value: 0
+  _DistortionWave:
+    m_OverrideState: 0
+    m_Value: 0
+  _Fade:
+    m_OverrideState: 0
+    m_Value: 1
+  _Speed:
+    m_OverrideState: 0
+    m_Value: 1
+  _Wavy:
+    m_OverrideState: 0
+    m_Value: 1
+--- !u!114 &-507963512096926233
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b2db86121404754db890f4c8dfe81b2, type: 3}
+  m_Name: Bloom
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.Bloom
+  active: 0
+  skipIterations:
+    m_OverrideState: 0
+    m_Value: 1
+  threshold:
+    m_OverrideState: 0
+    m_Value: 0.9
+  intensity:
+    m_OverrideState: 0
+    m_Value: 0
+  scatter:
+    m_OverrideState: 0
+    m_Value: 0.7
+  clamp:
+    m_OverrideState: 0
+    m_Value: 65472
+  tint:
+    m_OverrideState: 0
+    m_Value: {r: 1, g: 1, b: 1, a: 1}
+  highQualityFiltering:
+    m_OverrideState: 0
+    m_Value: 0
+  filter:
+    m_OverrideState: 0
+    m_Value: 0
+  downscale:
+    m_OverrideState: 0
+    m_Value: 0
+  maxIterations:
+    m_OverrideState: 0
+    m_Value: 6
+  dirtTexture:
+    m_OverrideState: 0
+    m_Value: {fileID: 0}
+    dimension: 1
+  dirtIntensity:
+    m_OverrideState: 0
+    m_Value: 0
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -30,3 +126,83 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.RenderPipelines.Core.Runtime::UnityEngine.Rendering.VolumeProfile
   components:
   - {fileID: -6011165554465725633}
+  - {fileID: 8242685504475938911}
+  - {fileID: -5604149160385401318}
+  - {fileID: 3701794378123291586}
+  - {fileID: -507963512096926233}
+  - {fileID: 1713550204636836340}
+--- !u!114 &1713550204636836340
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eaaade30e42ed4142866937b9969d005, type: 3}
+  m_Name: CameraFilterPackVolume_FX_Psycho
+  m_EditorClassIdentifier: BalioProductions.CameraFilterPack.URP::BalioProductions.CameraFilterPack.URP.CameraFilterPackVolume_FX_Psycho
+  active: 0
+  intensity:
+    m_OverrideState: 0
+    m_Value: 1
+  _Distortion:
+    m_OverrideState: 0
+    m_Value: 1
+--- !u!114 &3701794378123291586
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f2e9b862b8aab54a911a984905c802a, type: 3}
+  m_Name: CameraFilterPackVolume_FX_Damage
+  m_EditorClassIdentifier: BalioProductions.CameraFilterPack.URP::BalioProductions.CameraFilterPack.URP.CameraFilterPackVolume_FX_Damage
+  active: 0
+  intensity:
+    m_OverrideState: 0
+    m_Value: 1
+  _DamageColor:
+    m_OverrideState: 0
+    m_Value: {r: 1, g: 0, b: 0, a: 1}
+  _ColorIntensity:
+    m_OverrideState: 0
+    m_Value: 1
+  _BlurIntensity:
+    m_OverrideState: 0
+    m_Value: 0.3
+  _DistortionIntensity:
+    m_OverrideState: 0
+    m_Value: 0.05
+  _Brightness:
+    m_OverrideState: 0
+    m_Value: 0
+  _Speed:
+    m_OverrideState: 0
+    m_Value: 2
+--- !u!114 &8242685504475938911
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b4dbf389b62a0b43a2693215ab0022f, type: 3}
+  m_Name: CameraFilterPackVolume_FX_Glitch3
+  m_EditorClassIdentifier: BalioProductions.CameraFilterPack.URP::BalioProductions.CameraFilterPack.URP.CameraFilterPackVolume_FX_Glitch3
+  active: 1
+  intensity:
+    m_OverrideState: 0
+    m_Value: 1
+  _Glitch:
+    m_OverrideState: 0
+    m_Value: 1
+  _Noise:
+    m_OverrideState: 0
+    m_Value: 1
