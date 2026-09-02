@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &1
+MonoBehaviour:
+  m_ObjectHideFlags: 53
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e038de6f5bdbb143a252cd7d5fd2682, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_VFX_Lib._03._Scripts.Editor.HierarchyStyler.HierarchyStylerStore
+  itemStyles:
+  - globalObjectId: GlobalObjectId_V1-2-3acce8fd2d3f1c34bbcd9bcf78ba6116-526231598-0
+    isDivider: 1
+    objectColor: {r: 0.25, g: 0.5, b: 0.9, a: 0.3}
+    dividerText: Lightning
+    dividerBackgroundColor: {r: 0.40251565, g: 0.40251565, b: 0.21138398, a: 1}
+    dividerTextColor: {r: 1, g: 1, b: 1, a: 1}
+  treeLines:
+    enabled: 1
+    color: {r: 0.7, g: 0.7, b: 0.7, a: 0.45}
+    thickness: 1
+    indentWidth: 8
+    branchOffset: 21.5
+    branchEndPadding: 12
