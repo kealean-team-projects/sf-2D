@@ -1,4 +1,3 @@
-using System;
 using _02._Script.Player.Interface;
 using _02._Script.UI;
 using UnityEngine;

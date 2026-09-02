@@ -2426,7 +2426,7 @@ GameObject:
   m_Component:
   - component: {fileID: 631261799}
   - component: {fileID: 631261800}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: WallChecker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4792,7 +4792,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1200031497}
   - component: {fileID: 1200031498}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Interactor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15344,7 +15344,7 @@ GameObject:
   - component: {fileID: 1858437625}
   - component: {fileID: 1858437624}
   - component: {fileID: 1858437627}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
