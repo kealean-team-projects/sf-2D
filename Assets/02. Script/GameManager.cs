@@ -1,11 +1,13 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace _02._Script {
     namespace _00_Scripts._07_Managers {
         public class GameManager : MonoBehaviour {
             public static GameManager Instance;
-
+            
             public Transform player;
             public ScreenFade fader;
 
@@ -31,22 +33,23 @@ namespace _02._Script {
 
             public void Restart() {
                 if (IsRestarting) return;
-                StartCoroutine(RestartCoroutine());
-            }
+                    RestartCoroutine().Forget();
+                }
 
-            private IEnumerator RestartCoroutine() {
+            private async UniTaskVoid RestartCoroutine() {
                 IsRestarting = true;
 
-                yield return fader?.FadeOut();
+                await fader?.FadeOut();
 
                 Time.timeScale = 0f;
 
                 SaveManager.Instance?.RestoreProgress();
 
-                yield return new WaitForSecondsRealtime(2f);
+                await UniTask.Delay(TimeSpan.FromSeconds(2f));
 
                 Time.timeScale = 1f;
-                yield return fader?.FadeIn();
+                await fader?.FadeIn();
+                
                 IsRestarting = false;
             }
         }
