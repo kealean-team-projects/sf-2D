@@ -9,24 +9,24 @@ namespace _02._Script {
             public Transform player;
             public ScreenFade fader;
 
-            private float defaultFixedDeltaTime;
+            private float _defaultFixedDeltaTime;
 
             public bool IsRestarting { get; private set; }
 
             private void Awake() {
                 if (Instance == null) Instance = this;
 
-                defaultFixedDeltaTime = Time.fixedDeltaTime;
+                _defaultFixedDeltaTime = Time.fixedDeltaTime;
             }
 
             public void SlowMotion(float slowTime) {
                 Time.timeScale = slowTime;
-                Time.fixedDeltaTime = defaultFixedDeltaTime * slowTime;
+                Time.fixedDeltaTime = _defaultFixedDeltaTime * slowTime;
             }
 
             public void NormalTime() {
                 Time.timeScale = 1;
-                Time.fixedDeltaTime = defaultFixedDeltaTime;
+                Time.fixedDeltaTime = _defaultFixedDeltaTime;
             }
 
             public void Restart() {
