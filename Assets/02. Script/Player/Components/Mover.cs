@@ -47,10 +47,10 @@ namespace _02.Script.Player.Components {
         [Header("CheckWall Settings")] private float _originGravityScale;
 
         private float _timeInAir;
+        private MotionType _type = MotionType.ManualMove;
         private UniTask _wallJump;
 
         private float _wallJumpDir;
-        private MotionType _type = MotionType.ManualMove;
 
         private void Awake() {
             _originGravityScale = rb.gravityScale;

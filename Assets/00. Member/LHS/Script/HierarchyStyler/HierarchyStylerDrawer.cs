@@ -1,28 +1,24 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace _VFX_Lib._03._Scripts.Editor.HierarchyStyler
-{
+namespace _VFX_Lib._03._Scripts.Editor.HierarchyStyler {
     [InitializeOnLoad]
-    internal static class HierarchyStylerDrawer
-    {
+    internal static class HierarchyStylerDrawer {
         private static GUIStyle dividerLabelStyle;
 
         private static bool rebuildQueued;
 
-        static HierarchyStylerDrawer()
-        {
+        static HierarchyStylerDrawer() {
             EditorApplication
                     .hierarchyWindowItemByEntityIdOnGUI
                 += HandleHierarchyItem;
 
             EditorApplication
-                .hierarchyChanged
+                    .hierarchyChanged
                 += HandleHierarchyChanged;
         }
 
-        private static void HandleHierarchyChanged()
-        {
+        private static void HandleHierarchyChanged() {
             if (rebuildQueued)
                 return;
 
@@ -32,8 +28,7 @@ namespace _VFX_Lib._03._Scripts.Editor.HierarchyStyler
                 += FlushPendingRebuild;
         }
 
-        private static void FlushPendingRebuild()
-        {
+        private static void FlushPendingRebuild() {
             rebuildQueued = false;
 
             HierarchyStylerStore
@@ -46,34 +41,30 @@ namespace _VFX_Lib._03._Scripts.Editor.HierarchyStyler
 
         private static void HandleHierarchyItem(
             EntityId instanceId,
-            Rect selectionRect)
-        {
+            Rect selectionRect) {
             if (Event.current.type
                 != EventType.Repaint)
-            {
                 return;
-            }
 
-            GameObject gameObject =
+            var gameObject =
                 EditorUtility
-                    .EntityIdToObject(
-                        instanceId)
+                        .EntityIdToObject(
+                            instanceId)
                     as GameObject;
 
             if (gameObject == null)
                 return;
 
-            HierarchyStylerStore store =
+            var store =
                 HierarchyStylerStore.instance;
 
-            bool hasStyle =
+            var hasStyle =
                 store.TryGetStyle(
                     instanceId,
-                    out HierarchyItemStyle style);
+                    out var style);
 
             if (hasStyle &&
-                style.IsDivider)
-            {
+                style.IsDivider) {
                 DrawDivider(
                     gameObject,
                     selectionRect,
@@ -83,28 +74,23 @@ namespace _VFX_Lib._03._Scripts.Editor.HierarchyStyler
             }
 
             if (hasStyle)
-            {
                 DrawObjectTint(
                     gameObject,
                     selectionRect,
                     style.ObjectColor);
-            }
 
             if (store.TreeLines.Enabled)
-            {
                 DrawTreeLines(
                     gameObject.transform,
                     selectionRect,
                     store.TreeLines);
-            }
         }
 
         private static void DrawObjectTint(
             GameObject gameObject,
             Rect selectionRect,
-            Color color)
-        {
-            Rect backgroundRect =
+            Color color) {
+            var backgroundRect =
                 selectionRect;
 
             backgroundRect.xMin -= 2f;
@@ -118,10 +104,7 @@ namespace _VFX_Lib._03._Scripts.Editor.HierarchyStyler
                     color.a,
                     0.5f);
 
-            if (Selection.Contains(gameObject))
-            {
-                color.a *= 0.45f;
-            }
+            if (Selection.Contains(gameObject)) color.a *= 0.45f;
 
             EditorGUI.DrawRect(
                 backgroundRect,
@@ -131,11 +114,10 @@ namespace _VFX_Lib._03._Scripts.Editor.HierarchyStyler
         private static void DrawDivider(
             GameObject gameObject,
             Rect selectionRect,
-            HierarchyItemStyle style)
-        {
+            HierarchyItemStyle style) {
             EnsureGUIStyles();
 
-            Rect backgroundRect =
+            var backgroundRect =
                 selectionRect;
 
             backgroundRect.xMin = 0f;
@@ -149,9 +131,8 @@ namespace _VFX_Lib._03._Scripts.Editor.HierarchyStyler
                 style.DividerBackgroundColor);
 
             // Divider 선택 상태 표시
-            if (Selection.Contains(gameObject))
-            {
-                Rect selectionIndicator =
+            if (Selection.Contains(gameObject)) {
+                var selectionIndicator =
                     new Rect(
                         0f,
                         selectionRect.y,
@@ -168,17 +149,17 @@ namespace _VFX_Lib._03._Scripts.Editor.HierarchyStyler
             }
 
             dividerLabelStyle
-                .normal
-                .textColor =
+                    .normal
+                    .textColor =
                 style.DividerTextColor;
 
-            Rect labelRect =
+            var labelRect =
                 backgroundRect;
 
             labelRect.xMin += 20f;
             labelRect.xMax -= 10f;
 
-            string text =
+            var text =
                 string.IsNullOrWhiteSpace(
                     style.DividerText)
                     ? "SECTION"
@@ -193,26 +174,25 @@ namespace _VFX_Lib._03._Scripts.Editor.HierarchyStyler
         private static void DrawTreeLines(
             Transform transform,
             Rect selectionRect,
-            HierarchyTreeLineSettings settings)
-        {
-            Transform parent =
+            HierarchyTreeLineSettings settings) {
+            var parent =
                 transform.parent;
 
             if (parent == null)
                 return;
 
-            float branchX =
+            var branchX =
                 selectionRect.x
                 - settings.BranchOffset;
 
-            float centerY =
+            var centerY =
                 selectionRect.center.y;
 
-            bool isLastSibling =
+            var isLastSibling =
                 IsLastSibling(transform);
 
             // 현재 오브젝트의 세로선
-            float verticalEnd =
+            var verticalEnd =
                 isLastSibling
                     ? centerY
                     : selectionRect.yMax;
@@ -223,7 +203,7 @@ namespace _VFX_Lib._03._Scripts.Editor.HierarchyStyler
                 verticalEnd,
                 settings);
 
-            float horizontalEnd =
+            var horizontalEnd =
                 selectionRect.x
                 - settings.BranchEndPadding;
 
@@ -233,24 +213,21 @@ namespace _VFX_Lib._03._Scripts.Editor.HierarchyStyler
                 centerY,
                 settings);
 
-            Transform ancestor =
+            var ancestor =
                 parent;
 
-            float ancestorX =
+            var ancestorX =
                 branchX
                 - settings.IndentWidth;
 
             while (ancestor != null &&
-                   ancestor.parent != null)
-            {
+                   ancestor.parent != null) {
                 if (!IsLastSibling(ancestor))
-                {
                     DrawVerticalLine(
                         ancestorX,
                         selectionRect.y,
                         selectionRect.yMax,
                         settings);
-                }
 
                 ancestor =
                     ancestor.parent;
@@ -261,9 +238,8 @@ namespace _VFX_Lib._03._Scripts.Editor.HierarchyStyler
         }
 
         private static bool IsLastSibling(
-            Transform transform)
-        {
-            Transform parent =
+            Transform transform) {
+            var parent =
                 transform.parent;
 
             if (parent == null)
@@ -278,15 +254,14 @@ namespace _VFX_Lib._03._Scripts.Editor.HierarchyStyler
             float x,
             float startY,
             float endY,
-            HierarchyTreeLineSettings settings)
-        {
-            float height =
+            HierarchyTreeLineSettings settings) {
+            var height =
                 endY - startY;
 
             if (height <= 0f)
                 return;
 
-            Rect rect =
+            var rect =
                 new Rect(
                     x - settings.Thickness * 0.5f,
                     startY,
@@ -302,15 +277,14 @@ namespace _VFX_Lib._03._Scripts.Editor.HierarchyStyler
             float startX,
             float endX,
             float y,
-            HierarchyTreeLineSettings settings)
-        {
-            float width =
+            HierarchyTreeLineSettings settings) {
+            var width =
                 endX - startX;
 
             if (width <= 0f)
                 return;
 
-            Rect rect =
+            var rect =
                 new Rect(
                     startX,
                     y - settings.Thickness * 0.5f,
@@ -322,15 +296,13 @@ namespace _VFX_Lib._03._Scripts.Editor.HierarchyStyler
                 settings.Color);
         }
 
-        private static void EnsureGUIStyles()
-        {
+        private static void EnsureGUIStyles() {
             if (dividerLabelStyle != null)
                 return;
 
             dividerLabelStyle =
                 new GUIStyle(
-                    EditorStyles.boldLabel)
-                {
+                    EditorStyles.boldLabel) {
                     alignment =
                         TextAnchor.MiddleCenter,
 

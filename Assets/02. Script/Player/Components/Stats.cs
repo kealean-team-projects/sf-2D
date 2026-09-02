@@ -24,7 +24,9 @@ namespace _02._Script.Player.Components {
 
         public void UseStamina(float usedStamina, bool immediate) {
             if (Stamina == 0f) return;
-            Stamina = !immediate ? Mathf.Clamp(Stamina - usedStamina * Time.deltaTime, 0, maxStamina) : Mathf.Clamp(Stamina - usedStamina, 0, maxStamina);
+            Stamina = !immediate
+                ? Mathf.Clamp(Stamina - usedStamina * Time.deltaTime, 0, maxStamina)
+                : Mathf.Clamp(Stamina - usedStamina, 0, maxStamina);
         }
     }
 }

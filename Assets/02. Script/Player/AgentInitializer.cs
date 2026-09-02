@@ -1,5 +1,4 @@
-﻿using _01.Script.Player;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace _02._Script.Player {
     public class AgentInitializer : MonoBehaviour {

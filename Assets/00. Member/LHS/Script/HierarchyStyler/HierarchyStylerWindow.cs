@@ -3,38 +3,69 @@ using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace _VFX_Lib._03._Scripts.Editor.HierarchyStyler
-{
+namespace _VFX_Lib._03._Scripts.Editor.HierarchyStyler {
     internal sealed class HierarchyStylerWindow
-        : EditorWindow
-    {
-        private enum Page
-        {
-            SelectedObject,
-            TreeLines
-        }
-
+        : EditorWindow {
         private Page currentPage;
+
+        private Color dividerBackgroundColor =
+            HierarchyStylerDefaults.DividerBackgroundColor;
+
+        private string dividerText =
+            HierarchyStylerDefaults.DividerText;
+
+        private Color dividerTextColor =
+            HierarchyStylerDefaults.DividerTextColor;
 
         private bool isDivider;
 
         private Color objectColor =
             HierarchyStylerDefaults.ObjectColor;
 
-        private string dividerText =
-            HierarchyStylerDefaults.DividerText;
+        private void OnEnable() {
+            Selection.selectionChanged
+                += HandleSelectionChanged;
 
-        private Color dividerBackgroundColor =
-            HierarchyStylerDefaults.DividerBackgroundColor;
+            LoadSelectedStyle();
+        }
 
-        private Color dividerTextColor =
-            HierarchyStylerDefaults.DividerTextColor;
+        private void OnDisable() {
+            Selection.selectionChanged
+                -= HandleSelectionChanged;
+        }
+
+        private void OnGUI() {
+            EditorGUILayout.Space(8f);
+
+            currentPage =
+                (Page)GUILayout.Toolbar(
+                    (int)currentPage,
+                    new[] {
+                        "Selected",
+                        "Tree Lines"
+                    });
+
+            EditorGUILayout.Space(10f);
+
+            switch (currentPage) {
+                case Page.SelectedObject:
+
+                    DrawSelectedObjectPage();
+
+                    break;
+
+                case Page.TreeLines:
+
+                    DrawTreeLinePage();
+
+                    break;
+            }
+        }
 
         [MenuItem(
             "Tools/Hierarchy Styler")]
-        private static void OpenWindow()
-        {
-            HierarchyStylerWindow window =
+        private static void OpenWindow() {
+            var window =
                 GetWindow<HierarchyStylerWindow>();
 
             window.titleContent =
@@ -51,8 +82,7 @@ namespace _VFX_Lib._03._Scripts.Editor.HierarchyStyler
             "GameObject/Hierarchy Styler/Create Divider",
             false,
             0)]
-        private static void CreateDividerMenu()
-        {
+        private static void CreateDividerMenu() {
             CreateDivider();
         }
 
@@ -60,67 +90,19 @@ namespace _VFX_Lib._03._Scripts.Editor.HierarchyStyler
             "GameObject/Hierarchy Styler/Edit Selected",
             false,
             1)]
-        private static void EditSelectedMenu()
-        {
+        private static void EditSelectedMenu() {
             OpenWindow();
         }
 
-        private void OnEnable()
-        {
-            Selection.selectionChanged
-                += HandleSelectionChanged;
 
-            LoadSelectedStyle();
-        }
-
-        private void OnDisable()
-        {
-            Selection.selectionChanged
-                -= HandleSelectionChanged;
-        }
-
-
-        private void HandleSelectionChanged()
-        {
+        private void HandleSelectionChanged() {
             LoadSelectedStyle();
 
             Repaint();
         }
 
-        private void OnGUI()
-        {
-            EditorGUILayout.Space(8f);
-
-            currentPage =
-                (Page)GUILayout.Toolbar(
-                    (int)currentPage,
-                    new[]
-                    {
-                        "Selected",
-                        "Tree Lines"
-                    });
-
-            EditorGUILayout.Space(10f);
-
-            switch (currentPage)
-            {
-                case Page.SelectedObject:
-
-                    DrawSelectedObjectPage();
-
-                    break;
-
-                case Page.TreeLines:
-
-                    DrawTreeLinePage();
-
-                    break;
-            }
-        }
-
-        private void DrawSelectedObjectPage()
-        {
-            GameObject selected =
+        private void DrawSelectedObjectPage() {
+            var selected =
                 Selection.activeGameObject;
 
             EditorGUILayout.LabelField(
@@ -129,8 +111,7 @@ namespace _VFX_Lib._03._Scripts.Editor.HierarchyStyler
 
             EditorGUILayout.Space(5f);
 
-            if (selected == null)
-            {
+            if (selected == null) {
                 EditorGUILayout.HelpBox(
                     "Hierarchy에서 GameObject를 선택하세요.",
                     MessageType.Info);
@@ -140,9 +121,7 @@ namespace _VFX_Lib._03._Scripts.Editor.HierarchyStyler
                 if (GUILayout.Button(
                         "Create Divider",
                         GUILayout.Height(28f)))
-                {
                     CreateDivider();
-                }
 
                 DrawMaintenanceSection();
 
@@ -160,18 +139,14 @@ namespace _VFX_Lib._03._Scripts.Editor.HierarchyStyler
             EditorGUI.EndDisabledGroup();
 
             if (Selection.gameObjects.Length > 1)
-            {
                 EditorGUILayout.LabelField(
                     $"Selected Objects: {Selection.gameObjects.Length}");
-            }
 
             if (string.IsNullOrEmpty(
                     selected.scene.path))
-            {
                 EditorGUILayout.HelpBox(
                     "Hierarchy 스타일을 저장하려면 Scene을 먼저 저장해야 합니다.",
                     MessageType.Warning);
-            }
 
             EditorGUILayout.Space(10f);
 
@@ -183,32 +158,22 @@ namespace _VFX_Lib._03._Scripts.Editor.HierarchyStyler
             EditorGUILayout.Space(5f);
 
             if (isDivider)
-            {
                 DrawDividerSettings();
-            }
             else
-            {
                 DrawObjectSettings();
-            }
 
             EditorGUILayout.Space(12f);
 
-            using (new EditorGUILayout
-                       .HorizontalScope())
-            {
+            using (new EditorGUILayout.HorizontalScope()) {
                 if (GUILayout.Button(
                         "Apply",
                         GUILayout.Height(26f)))
-                {
                     ApplyToSelection();
-                }
 
                 if (GUILayout.Button(
                         "Clear",
                         GUILayout.Height(26f)))
-                {
                     ClearSelection();
-                }
             }
 
             EditorGUILayout.Space(15f);
@@ -220,15 +185,12 @@ namespace _VFX_Lib._03._Scripts.Editor.HierarchyStyler
             if (GUILayout.Button(
                     "Create Divider",
                     GUILayout.Height(28f)))
-            {
                 CreateDivider();
-            }
 
             DrawMaintenanceSection();
         }
 
-        private void DrawMaintenanceSection()
-        {
+        private void DrawMaintenanceSection() {
             EditorGUILayout.Space(15f);
 
             EditorGUILayout.LabelField(
@@ -242,13 +204,10 @@ namespace _VFX_Lib._03._Scripts.Editor.HierarchyStyler
             if (GUILayout.Button(
                     "Clean Up Unused Styles",
                     GUILayout.Height(26f)))
-            {
                 CleanUpUnusedStyles();
-            }
         }
 
-        private void DrawObjectSettings()
-        {
+        private void DrawObjectSettings() {
             EditorGUILayout.LabelField(
                 "Object Highlight",
                 EditorStyles.boldLabel);
@@ -263,8 +222,7 @@ namespace _VFX_Lib._03._Scripts.Editor.HierarchyStyler
                 MessageType.None);
         }
 
-        private void DrawDividerSettings()
-        {
+        private void DrawDividerSettings() {
             EditorGUILayout.LabelField(
                 "Divider Settings",
                 EditorStyles.boldLabel);
@@ -285,12 +243,11 @@ namespace _VFX_Lib._03._Scripts.Editor.HierarchyStyler
                     dividerTextColor);
         }
 
-        private void DrawTreeLinePage()
-        {
-            HierarchyStylerStore store =
+        private void DrawTreeLinePage() {
+            var store =
                 HierarchyStylerStore.instance;
 
-            HierarchyTreeLineSettings settings =
+            var settings =
                 store.TreeLines;
 
             EditorGUILayout.LabelField(
@@ -306,10 +263,8 @@ namespace _VFX_Lib._03._Scripts.Editor.HierarchyStyler
                     "Show Tree Lines",
                     settings.Enabled);
 
-            using (new EditorGUI
-                       .DisabledScope(
-                           !settings.Enabled))
-            {
+            using (new EditorGUI.DisabledScope(
+                       !settings.Enabled)) {
                 settings.Color =
                     EditorGUILayout.ColorField(
                         "Line Color",
@@ -344,10 +299,7 @@ namespace _VFX_Lib._03._Scripts.Editor.HierarchyStyler
                         12f);
             }
 
-            if (EditorGUI.EndChangeCheck())
-            {
-                store.SaveChanges();
-            }
+            if (EditorGUI.EndChangeCheck()) store.SaveChanges();
 
             EditorGUILayout.Space(10f);
 
@@ -360,33 +312,28 @@ namespace _VFX_Lib._03._Scripts.Editor.HierarchyStyler
             if (GUILayout.Button(
                     "Reset Tree Line Settings",
                     GUILayout.Height(26f)))
-            {
                 store.ResetTreeLineSettings();
-            }
         }
 
-        private void ApplyToSelection()
-        {
-            GameObject[] selectedObjects =
+        private void ApplyToSelection() {
+            var selectedObjects =
                 Selection.gameObjects;
 
             if (selectedObjects.Length == 0)
                 return;
 
-            HierarchyStylerStore store =
+            var store =
                 HierarchyStylerStore.instance;
 
-            int failedCount = 0;
+            var failedCount = 0;
 
-            foreach (GameObject gameObject
-                     in selectedObjects)
-            {
-                HierarchyItemStyle style =
+            foreach (var gameObject
+                     in selectedObjects) {
+                var style =
                     store.GetOrCreateStyle(
                         gameObject);
 
-                if (style == null)
-                {
+                if (style == null) {
                     failedCount++;
                     continue;
                 }
@@ -410,39 +357,33 @@ namespace _VFX_Lib._03._Scripts.Editor.HierarchyStyler
             store.SaveChanges();
 
             if (failedCount > 0)
-            {
                 ShowNotification(
                     new GUIContent(
                         "Scene을 먼저 저장하세요."));
-            }
         }
 
-        private void ClearSelection()
-        {
-            GameObject[] selectedObjects =
+        private void ClearSelection() {
+            var selectedObjects =
                 Selection.gameObjects;
 
             if (selectedObjects.Length == 0)
                 return;
 
-            HierarchyStylerStore store =
+            var store =
                 HierarchyStylerStore.instance;
 
-            foreach (GameObject gameObject
+            foreach (var gameObject
                      in selectedObjects)
-            {
                 store.RemoveStyle(
                     gameObject);
-            }
 
             store.SaveChanges();
 
             LoadSelectedStyle();
         }
 
-        private void LoadSelectedStyle()
-        {
-            GameObject selected =
+        private void LoadSelectedStyle() {
+            var selected =
                 Selection.activeGameObject;
 
             if (selected == null)
@@ -452,8 +393,7 @@ namespace _VFX_Lib._03._Scripts.Editor.HierarchyStyler
                     .instance
                     .TryGetStyle(
                         selected,
-                        out HierarchyItemStyle style))
-            {
+                        out var style)) {
                 ResetLocalStyle();
 
                 return;
@@ -475,8 +415,7 @@ namespace _VFX_Lib._03._Scripts.Editor.HierarchyStyler
                 style.DividerTextColor;
         }
 
-        private void ResetLocalStyle()
-        {
+        private void ResetLocalStyle() {
             isDivider = false;
 
             objectColor =
@@ -492,9 +431,8 @@ namespace _VFX_Lib._03._Scripts.Editor.HierarchyStyler
                 HierarchyStylerDefaults.DividerTextColor;
         }
 
-        private static void CleanUpUnusedStyles()
-        {
-            bool confirmed =
+        private static void CleanUpUnusedStyles() {
+            var confirmed =
                 EditorUtility.DisplayDialog(
                     "Hierarchy Styler",
                     "삭제된 오브젝트의 스타일 정보를 정리합니다.\n" +
@@ -506,7 +444,7 @@ namespace _VFX_Lib._03._Scripts.Editor.HierarchyStyler
             if (!confirmed)
                 return;
 
-            int removedCount =
+            var removedCount =
                 HierarchyStylerStore
                     .instance
                     .CleanUpUnresolvedStyles();
@@ -519,15 +457,13 @@ namespace _VFX_Lib._03._Scripts.Editor.HierarchyStyler
                 "확인");
         }
 
-        private static void CreateDivider()
-        {
-            Scene activeScene =
+        private static void CreateDivider() {
+            var activeScene =
                 SceneManager.GetActiveScene();
 
             if (!activeScene.IsValid() ||
                 string.IsNullOrEmpty(
-                    activeScene.path))
-            {
+                    activeScene.path)) {
                 EditorUtility.DisplayDialog(
                     "Hierarchy Styler",
                     "Divider를 만들기 전에 Scene을 먼저 저장해주세요.",
@@ -536,10 +472,10 @@ namespace _VFX_Lib._03._Scripts.Editor.HierarchyStyler
                 return;
             }
 
-            Transform selectedTransform =
+            var selectedTransform =
                 Selection.activeTransform;
 
-            GameObject divider =
+            var divider =
                 new GameObject(
                     "Hierarchy Divider");
 
@@ -550,33 +486,29 @@ namespace _VFX_Lib._03._Scripts.Editor.HierarchyStyler
             // 선택한 오브젝트 바로 아래에 생성함
             if (selectedTransform != null &&
                 selectedTransform.gameObject.scene
-                == divider.scene)
-            {
-                Transform parent =
+                == divider.scene) {
+                var parent =
                     selectedTransform.parent;
 
                 if (parent != null)
-                {
                     Undo.SetTransformParent(
                         divider.transform,
                         parent,
                         "Create Hierarchy Divider");
-                }
 
                 divider.transform.SetSiblingIndex(
                     selectedTransform
                         .GetSiblingIndex() + 1);
             }
 
-            HierarchyStylerStore store =
+            var store =
                 HierarchyStylerStore.instance;
 
-            HierarchyItemStyle style =
+            var style =
                 store.GetOrCreateStyle(
                     divider);
 
-            if (style != null)
-            {
+            if (style != null) {
                 style.IsDivider = true;
 
                 style.DividerText =
@@ -596,6 +528,11 @@ namespace _VFX_Lib._03._Scripts.Editor.HierarchyStyler
 
             Selection.activeGameObject =
                 divider;
+        }
+
+        private enum Page {
+            SelectedObject,
+            TreeLines
         }
     }
 }
