@@ -12,11 +12,11 @@ namespace _02._Script {
             canvasGroup.alpha = 0;
         }
 
-        public async UniTaskVoid FadeOut() {
+        public async UniTask FadeOut() {
             await FadeCoroutine(0f, 1f);
         }
 
-        public async UniTaskVoid FadeIn() {
+        public async UniTask FadeIn() {
             await FadeCoroutine(1f, 0f);
         }
 

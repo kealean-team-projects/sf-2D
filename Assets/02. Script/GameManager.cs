@@ -39,7 +39,7 @@ namespace _02._Script {
             private async UniTaskVoid RestartCoroutine() {
                 IsRestarting = true;
 
-                await fader?.FadeOut();
+                await fader.FadeOut();
 
                 Time.timeScale = 0f;
 
@@ -48,7 +48,7 @@ namespace _02._Script {
                 await UniTask.Delay(TimeSpan.FromSeconds(2f));
 
                 Time.timeScale = 1f;
-                await fader?.FadeIn();
+                await fader.FadeIn();
                 
                 IsRestarting = false;
             }
