@@ -1,8 +1,7 @@
-using _01.Script.Player.Components;
-using _01.Script.Player.Interface;
+using _02._Script.Player.Interface;
 using UnityEngine;
 
-namespace _01.Script.Player {
+namespace _02._Script.Player {
     public class Player : Agent {
         [SerializeField] private float useStaminaInRun;
         [SerializeField] private float useStaminaInWall;

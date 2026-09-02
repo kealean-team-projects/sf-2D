@@ -1,8 +1,8 @@
 ﻿using System;
-using _01.Script.Player.Interface;
+using _02._Script.Player.Interface;
 using UnityEngine;
 
-namespace _01.Script.Player.Components {
+namespace _02._Script.Player.Components {
     public class Interactor : MonoBehaviour, IAgentModule, IInteractor {
         [SerializeField] private float radius;
         [SerializeField] private Vector2 offset;

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace _01.Script.Player.Interface {
+namespace _02._Script.Player.Interface {
     public interface IInputReader {
         float MoveInput { get; }
         float ClimbInput { get; }

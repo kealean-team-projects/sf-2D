@@ -1,8 +1,8 @@
 ﻿using System;
-using _01.Script.Player.Interface;
+using _02._Script.Player.Interface;
 using UnityEngine;
 
-namespace _01.Script.Player.Components {
+namespace _02._Script.Player.Components {
     public class Stats : MonoBehaviour, IAgentModule, IStats {
         [SerializeField] private float staminaHealSlow;
         [SerializeField] private float staminaHealBoost;
@@ -24,7 +24,9 @@ namespace _01.Script.Player.Components {
 
         public void UseStamina(float usedStamina, bool immediate) {
             if (Stamina == 0f) return;
-            Stamina = !immediate ? Mathf.Clamp(Stamina - usedStamina * Time.deltaTime, 0, maxStamina) : Mathf.Clamp(Stamina - usedStamina, 0, maxStamina);
+            Stamina = !immediate
+                ? Mathf.Clamp(Stamina - usedStamina * Time.deltaTime, 0, maxStamina)
+                : Mathf.Clamp(Stamina - usedStamina, 0, maxStamina);
         }
     }
 }

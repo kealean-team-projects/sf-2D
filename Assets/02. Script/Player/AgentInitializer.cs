@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace _01.Script.Player {
+namespace _02._Script.Player {
     public class AgentInitializer : MonoBehaviour {
         [SerializeField] private Agent agent;
 

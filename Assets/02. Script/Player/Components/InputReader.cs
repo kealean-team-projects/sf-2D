@@ -1,9 +1,10 @@
 using System;
-using _01.Script.Player.Interface;
+using _01.Script.Player.Components;
+using _02._Script.Player.Interface;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace _01.Script.Player.Components {
+namespace _02._Script.Player.Components {
     public class InputReader : MonoBehaviour, Control.IPlayerActions, IAgentModule, IDisposable, IInputReader {
         private Control _control;
 

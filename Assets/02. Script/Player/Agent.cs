@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using _01.Script.Player.Interface;
+using _02._Script.Player.Interface;
 using UnityEngine;
 
-namespace _01.Script.Player {
+namespace _02._Script.Player {
     public abstract class Agent : MonoBehaviour, IDisposable {
         private List<IDisposable> _disposables;
         private bool _disposed;

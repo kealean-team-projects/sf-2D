@@ -1,4 +1,4 @@
-﻿namespace _01.Script.Player.Interface {
+﻿namespace _02._Script.Player.Interface {
     public interface IInteractor {
         void Interact(Player owner);
     }

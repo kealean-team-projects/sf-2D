@@ -1,5 +1,6 @@
 ﻿using System;
-using _01.Script.Player.Interface;
+using _02._Script.Player;
+using _02._Script.Player.Interface;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
@@ -12,7 +13,7 @@ public enum MotionType {
     WallDash
 }
 
-namespace _01.Script.Player.Components {
+namespace _02.Script.Player.Components {
     public class Mover : MonoBehaviour, IAgentModule, IMover {
         [SerializeField] private Rigidbody2D rb;
         [SerializeField] private float speed;
@@ -46,10 +47,10 @@ namespace _01.Script.Player.Components {
         [Header("CheckWall Settings")] private float _originGravityScale;
 
         private float _timeInAir;
+        private MotionType _type = MotionType.ManualMove;
         private UniTask _wallJump;
 
         private float _wallJumpDir;
-        private MotionType _type = MotionType.ManualMove;
 
         private void Awake() {
             _originGravityScale = rb.gravityScale;
@@ -87,6 +88,11 @@ namespace _01.Script.Player.Components {
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+        }
+
+        public void PushForce(Vector2 pushDir, float power, ForceMode2D forceMode)
+        {
+            rb.AddForce(pushDir * power, forceMode);
         }
 
 
