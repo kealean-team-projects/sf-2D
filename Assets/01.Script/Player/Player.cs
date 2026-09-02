@@ -114,7 +114,7 @@ namespace _01.Script.Player {
 
         #region FlipController
 
-        public bool IsFlipX { get; private set; }
+        private bool IsFlipX { get; set; }
 
         private void FlipCheck() {
             if (_checkClimbWall.IsClimbed) return;

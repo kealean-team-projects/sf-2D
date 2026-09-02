@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class ScreenFade : MonoBehaviour
@@ -24,17 +25,17 @@ public class ScreenFade : MonoBehaviour
     }
 
 
-    private IEnumerator FadeCoroutine(float start, float end)
+    private async UniTaskVoid FadeCoroutine(float start, float end)
     {
-        float elapsedTime = 0f;
+        var elapsedTime = 0f;
 
         while (elapsedTime < fadeDuration)
         {
             elapsedTime += Time.unscaledDeltaTime;
-            float t = Mathf.Clamp01(elapsedTime / fadeDuration);
+            var t = Mathf.Clamp01(elapsedTime / fadeDuration);
             canvasGroup.alpha = Mathf.Lerp(start, end, t);
 
-            yield return null;
+            await UniTask.Yield();
         }
 
         canvasGroup.alpha = end;

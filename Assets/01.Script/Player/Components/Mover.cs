@@ -49,7 +49,7 @@ namespace _01.Script.Player.Components {
         private UniTask _wallJump;
 
         private float _wallJumpDir;
-        private MotionType type = MotionType.ManualMove;
+        private MotionType _type = MotionType.ManualMove;
 
         private void Awake() {
             _originGravityScale = rb.gravityScale;
@@ -63,7 +63,7 @@ namespace _01.Script.Player.Components {
         private void FixedUpdate() {
             IsGround = CheckGround();
 
-            switch (type) {
+            switch (_type) {
                 case MotionType.ManualMove:
                     rb.gravityScale = _originGravityScale;
                     rb.linearVelocityX = _moveInput * speed;
@@ -148,7 +148,7 @@ namespace _01.Script.Player.Components {
 
         public void Climb(ICheckClimbWall check) {
             if (!_climbable) return;
-            if (type == MotionType.WallJump)
+            if (_type == MotionType.WallJump)
                 return;
 
             if (!check.IsClimbed) {
@@ -215,7 +215,7 @@ namespace _01.Script.Player.Components {
         }
 
         private void ChangeMotion(MotionType motion) {
-            type = motion;
+            _type = motion;
         }
 
         #region Climb Settings

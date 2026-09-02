@@ -28,7 +28,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a475593846ad5d4481cc4493a8d291a, type: 3}
   m_Name: CameraFilterPackVolume_FX_Drunk
   m_EditorClassIdentifier: BalioProductions.CameraFilterPack.URP::BalioProductions.CameraFilterPack.URP.CameraFilterPackVolume_FX_Drunk
-  active: 1
+  active: 0
   intensity:
     m_OverrideState: 0
     m_Value: 1
@@ -196,7 +196,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b4dbf389b62a0b43a2693215ab0022f, type: 3}
   m_Name: CameraFilterPackVolume_FX_Glitch3
   m_EditorClassIdentifier: BalioProductions.CameraFilterPack.URP::BalioProductions.CameraFilterPack.URP.CameraFilterPackVolume_FX_Glitch3
-  active: 1
+  active: 0
   intensity:
     m_OverrideState: 0
     m_Value: 1
