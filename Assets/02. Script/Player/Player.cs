@@ -1,4 +1,6 @@
+using System;
 using _02._Script.Player.Interface;
+using _02._Script.UI;
 using UnityEngine;
 
 namespace _02._Script.Player {
@@ -7,6 +9,8 @@ namespace _02._Script.Player {
         [SerializeField] private float useStaminaInWall;
         [SerializeField] private float useStaminaInWallDash;
         [SerializeField] private float useStaminaInWallJump;
+        [SerializeField] private StaminaHUD staminaHUD;
+        
         private ICheckClimbWall _checkClimbWall;
 
         private CapsuleCollider2D _collider;
@@ -34,6 +38,10 @@ namespace _02._Script.Player {
         private void FixedUpdate() {
             _mover.SetMoveInput(_inputReader.MoveInput * (_isSprint ? 2f : 1f) * (_isCrouch ? 0.5f : 1f));
             _mover.ClimbInput(_inputReader.ClimbInput);
+        }
+
+        private void LateUpdate() {
+            staminaHUD.UpdateStamina(_stats.Stamina);
         }
 
         protected override void AfterInitialize() {

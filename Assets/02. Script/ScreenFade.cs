@@ -12,16 +12,16 @@ namespace _02._Script {
             canvasGroup.alpha = 0;
         }
 
-        public IEnumerator FadeOut() {
-            yield return FadeCoroutine(0f, 1f);
+        public async UniTaskVoid FadeOut() {
+            await FadeCoroutine(0f, 1f);
         }
 
-        public IEnumerator FadeIn() {
-            yield return FadeCoroutine(1f, 0f);
+        public async UniTaskVoid FadeIn() {
+            await FadeCoroutine(1f, 0f);
         }
 
 
-        private async UniTaskVoid FadeCoroutine(float start, float end) {
+        private async UniTask FadeCoroutine(float start, float end) {
             var elapsedTime = 0f;
 
             while (elapsedTime < fadeDuration) {
