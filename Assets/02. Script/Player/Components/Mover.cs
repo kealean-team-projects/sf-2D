@@ -1,5 +1,6 @@
 ﻿using System;
-using _01.Script.Player.Interface;
+using _02._Script.Player;
+using _02._Script.Player.Interface;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
@@ -12,7 +13,7 @@ public enum MotionType {
     WallDash
 }
 
-namespace _01.Script.Player.Components {
+namespace _02.Script.Player.Components {
     public class Mover : MonoBehaviour, IAgentModule, IMover {
         [SerializeField] private Rigidbody2D rb;
         [SerializeField] private float speed;

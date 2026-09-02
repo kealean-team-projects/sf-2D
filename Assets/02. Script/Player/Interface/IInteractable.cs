@@ -1,5 +1,5 @@
-﻿namespace _01.Script.Player.Interface {
+﻿namespace _02._Script.Player.Interface {
     public interface IInteractable {
-        public void Interact(Player owner);
+        public void Interact(_02._Script.Player.Player owner);
     }
 }

@@ -1,20 +1,20 @@
 ﻿using System;
 using UnityEngine;
 
-namespace _01.Script
+namespace _02._Script
 {
     public class SaveManager : MonoBehaviour
     {
-        public static SaveManager instance;
+        public static SaveManager Instance;
 
         public static event Action<int> OnCaptureRequested;
         public static event Action OnRestoreRequested;
 
         private void Awake()
         {
-            if (instance == null)
+            if (Instance == null)
             {
-                instance = this;
+                Instance = this;
             
                 DontDestroyOnLoad(gameObject);
             }

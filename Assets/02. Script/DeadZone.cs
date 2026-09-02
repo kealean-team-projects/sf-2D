@@ -1,7 +1,7 @@
-﻿using _01.Script._00_Scripts._07_Managers;
+﻿using _02._Script._00_Scripts._07_Managers;
 using UnityEngine;
 
-namespace _01.Script.Player
+namespace _02._Script
 {
     public class DeadZone : MonoBehaviour
     {

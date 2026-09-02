@@ -1,6 +1,6 @@
 ﻿using _01.Script.Player.Components;
 
-namespace _01.Script.Player.Interface {
+namespace _02._Script.Player.Interface {
     public interface IMover {
         bool IsGround { get; }
         void SetMoveInput(float moveInput);

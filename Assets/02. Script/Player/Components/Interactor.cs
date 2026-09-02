@@ -1,8 +1,8 @@
 ﻿using System;
-using _01.Script.Player.Interface;
+using _02._Script.Player.Interface;
 using UnityEngine;
 
-namespace _01.Script.Player.Components {
+namespace _02._Script.Player.Components {
     public class Interactor : MonoBehaviour, IAgentModule, IInteractor {
         [SerializeField] private float radius;
         [SerializeField] private Vector2 offset;
@@ -24,7 +24,7 @@ namespace _01.Script.Player.Components {
 
         public Type Type => typeof(IInteractor);
 
-        public void Interact(Player owner) {
+        public void Interact(_02._Script.Player.Player owner) {
             var count = Physics2D.OverlapCircle(Offset, radius, target, _results);
             if (count <= 0) return;
             var distance = float.MaxValue;

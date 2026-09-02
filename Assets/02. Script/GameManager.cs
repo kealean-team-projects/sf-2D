@@ -1,10 +1,8 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
-namespace _01.Script
+namespace _02._Script
 {
-    using System.Collections;
-    using UnityEngine;
-
     namespace _00_Scripts._07_Managers
     {
         public class GameManager : MonoBehaviour
@@ -54,7 +52,7 @@ namespace _01.Script
             
                 Time.timeScale = 0f;
 
-                SaveManager.instance?.RestoreProgress();
+                SaveManager.Instance?.RestoreProgress();
             
                 yield return new WaitForSecondsRealtime(2f);
             

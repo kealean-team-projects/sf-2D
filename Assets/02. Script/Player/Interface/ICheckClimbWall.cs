@@ -1,4 +1,4 @@
-﻿namespace _01.Script.Player.Components {
+﻿namespace _02._Script.Player.Interface {
     public interface ICheckClimbWall {
         bool IsClimbed { get; }
     }
