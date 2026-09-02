@@ -16,8 +16,9 @@ namespace _02._Script.Player.Components {
 
         public float Stamina { get; private set; }
 
-        public void StaminaUpdate(bool isGrounded, bool isWalking) {
+        public void StaminaUpdate(bool isGrounded, bool isWalking, bool isClimb) {
             if (!isGrounded) return;
+            if (isClimb) return;
             var healRate = isWalking ? staminaHealSlow : staminaHealBoost;
             Stamina = Mathf.Clamp(Stamina + healRate * Time.deltaTime, 0, maxStamina);
         }

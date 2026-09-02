@@ -25,10 +25,10 @@ namespace _02._Script.Player {
             FlipCheck();
             _mover.Climb(_checkClimbWall);
             _mover.CalculateAirTime(_checkClimbWall);
-            _stats.StaminaUpdate(IsGrounded, _inputReader.MoveInput != 0);
-            if (_isSprint) _stats.UseStamina(useStaminaInRun, false);
+            _stats.StaminaUpdate(IsGrounded, _inputReader.MoveInput != 0, _checkClimbWall.IsClimbed);
+            if (_isSprint && _inputReader.MoveInput != 0) _stats.UseStamina(useStaminaInRun, false);
 
-            if (_checkClimbWall.IsClimbed) _stats.UseStamina(useStaminaInWall, false);
+            if (_checkClimbWall.IsClimbed && _inputReader.ClimbInput != 0) _stats.UseStamina(useStaminaInWall, false);
 
             if (_stats.Stamina < useStaminaInRun) _isSprint = false;
             if (_stats.Stamina < useStaminaInWall) _mover.CancelClimb();
