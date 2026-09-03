@@ -19,6 +19,18 @@ MonoBehaviour:
     dividerText: Lightning
     dividerBackgroundColor: {r: 0.40251565, g: 0.40251565, b: 0.21138398, a: 1}
     dividerTextColor: {r: 1, g: 1, b: 1, a: 1}
+  - globalObjectId: GlobalObjectId_V1-2-1c506f46038f293458eea3a792489a72-101731865-0
+    isDivider: 1
+    objectColor: {r: 0.25, g: 0.5, b: 0.9, a: 0.3}
+    dividerText: NEW SECTION
+    dividerBackgroundColor: {r: 0.16, g: 0.18, b: 0.22, a: 1}
+    dividerTextColor: {r: 1, g: 1, b: 1, a: 1}
+  - globalObjectId: GlobalObjectId_V1-2-1c506f46038f293458eea3a792489a72-1927127392-0
+    isDivider: 1
+    objectColor: {r: 0.25, g: 0.5, b: 0.9, a: 0.3}
+    dividerText: NEW SECTION
+    dividerBackgroundColor: {r: 0.16, g: 0.18, b: 0.22, a: 1}
+    dividerTextColor: {r: 1, g: 1, b: 1, a: 1}
   treeLines:
     enabled: 1
     color: {r: 0.7, g: 0.7, b: 0.7, a: 0.45}
