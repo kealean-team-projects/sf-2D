@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 using _02._Script.Player.Interface;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -12,8 +11,7 @@ namespace _02._Script.Player.Components {
         [SerializeField] private float staminaHealWaitTime;
 
         private bool _canCharge = true;
-        private UniTask _task;
-        private CancellationTokenSource _cancellationTokenSource = new();
+        private bool _uniTaskIsRunning;
         
         public void Initialize(Agent owner) {
             Stamina = maxStamina;
@@ -25,6 +23,7 @@ namespace _02._Script.Player.Components {
 
         public void StaminaUpdate(bool isGrounded, bool isWalking, bool isClimb) {
             if (!_canCharge) {
+                if(!_uniTaskIsRunning) WaitCharge().Forget();
                 return;
             }
             if (!isGrounded) return;
@@ -39,17 +38,13 @@ namespace _02._Script.Player.Components {
             Stamina = !immediate
                 ? Mathf.Clamp(Stamina - usedStamina * Time.deltaTime, 0, maxStamina)
                 : Mathf.Clamp(Stamina - usedStamina, 0, maxStamina);
-            _cancellationTokenSource.Cancel();
-            _cancellationTokenSource.Dispose();
-            
-            _cancellationTokenSource = new CancellationTokenSource();
-            
-            WaitCharge().Forget();
         }
 
-        private async UniTaskVoid WaitCharge() {
-            await UniTask.Delay(TimeSpan.FromSeconds(staminaHealWaitTime), cancellationToken: _cancellationTokenSource.Token);
+        private async UniTask WaitCharge() {
+            _uniTaskIsRunning = true;
+            await UniTask.Delay(TimeSpan.FromSeconds(staminaHealWaitTime));
             _canCharge = true;
+            _uniTaskIsRunning = false;
         }
     }
 }

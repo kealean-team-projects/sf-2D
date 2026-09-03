@@ -2801,7 +2801,7 @@ MonoBehaviour:
   staminaHealSlow: 5
   staminaHealBoost: 10
   maxStamina: 100
-  staminaHealWaitTime: 1
+  staminaHealWaitTime: 3.19
 --- !u!1 &712836217
 GameObject:
   m_ObjectHideFlags: 0
