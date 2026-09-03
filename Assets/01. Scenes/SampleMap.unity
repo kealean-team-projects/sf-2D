@@ -2769,7 +2769,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &695474441
 Transform:
@@ -2801,6 +2801,7 @@ MonoBehaviour:
   staminaHealSlow: 5
   staminaHealBoost: 10
   maxStamina: 100
+  staminaHealWaitTime: 1
 --- !u!1 &712836217
 GameObject:
   m_ObjectHideFlags: 0

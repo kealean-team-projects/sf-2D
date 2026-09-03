@@ -30,8 +30,8 @@ namespace _02._Script.Player {
 
             if (_checkClimbWall.IsClimbed && _inputReader.ClimbInput != 0) _stats.UseStamina(useStaminaInWall, false);
 
-            if (_stats.Stamina < useStaminaInRun) _isSprint = false;
-            if (_stats.Stamina < useStaminaInWall) _mover.CancelClimb();
+            if (_stats.Stamina <= 0) _isSprint = false;
+            if (_stats.Stamina <= 0) _mover.CancelClimb();
         }
 
         private void FixedUpdate() {
