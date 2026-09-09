@@ -3970,17 +3970,17 @@ MonoBehaviour:
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
-    - position: {x: -4.58984, y: -26.341736, z: 0}
-      leftTangent: {x: 1.3872261, y: 0.13938904, z: 0}
+    - position: {x: -4.219372, y: -25.071564, z: 0}
+      leftTangent: {x: 0, y: 0, z: 0}
       rightTangent: {x: 0, y: 0, z: 0}
-      mode: 2
+      mode: 0
       height: 1
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
-    - position: {x: -2.941471, y: -15.693939, z: 0}
-      leftTangent: {x: 1.4871368, y: -0.1493988, z: 0}
-      rightTangent: {x: -14.956055, y: 1.5025024, z: 0}
+    - position: {x: -4.1186066, y: -15.423843, z: 0}
+      leftTangent: {x: 1.9798698, y: -0.7516327, z: 0}
+      rightTangent: {x: -14.052753, y: 5.3349457, z: 0}
       mode: 1
       height: 1
       spriteIndex: 0
