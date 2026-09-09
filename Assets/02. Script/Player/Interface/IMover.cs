@@ -9,7 +9,6 @@
         void WallJump(float dir);
         void WallDash();
         void CancelClimb();
-        void DontMove();
         void SpeedControl(float newSpeed);
     }
 }

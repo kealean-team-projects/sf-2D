@@ -125,10 +125,6 @@ namespace _02._Script.Player {
             );
         }
 
-        public void ApplyDontMove() {
-            _mover.DontMove();
-        }
-
         private void SubscribeInputEvents()
         {
             _inputReader.OnJumpPressed += HandleJumpInput;
@@ -152,18 +148,7 @@ namespace _02._Script.Player {
         public void ChangeSpeed(float speed) {
             _mover.SpeedControl(speed);
         }
-
-        #region FlipController
-
-        private bool IsFlipX { get; set; }
-
-        private void FlipCheck() {
-            if (_checkClimbWall.IsClimbed) return;
-            if (_inputReader.MoveInput == 0) return;
-        }
-
-        #endregion
-
+        
         #region ModulesGet
 
         private void GetModules()

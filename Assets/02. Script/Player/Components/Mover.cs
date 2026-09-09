@@ -10,8 +10,7 @@ public enum MotionType {
     Fall,
     Climb,
     WallJump,
-    WallDash,
-    DontMove
+    WallDash
 }
 
 namespace _02.Script.Player.Components {
@@ -83,20 +82,12 @@ namespace _02.Script.Player.Components {
                 case MotionType.WallDash:
                     ApplyWallDash();
                     break;
-                case MotionType.DontMove:
-                    ApplyDontMove();
-                    break;
                 case MotionType.Dash:
                 case MotionType.Fall:
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-        }
-
-        private void ApplyDontMove() {
-            StopImmediately(true, true);
-            ChangeMotion(MotionType.DontMove);
         }
 
         public void PushForce(Vector2 pushDir, float power, ForceMode2D forceMode)
@@ -148,10 +139,6 @@ namespace _02.Script.Player.Components {
             _climbable = false;
             ChangeMotion(MotionType.ManualMove);
             CancelClimbUniTask().Forget();
-        }
-
-        public void DontMove() {
-            ChangeMotion(MotionType.DontMove);
         }
 
         public void SpeedControl(float newSpeed) {
