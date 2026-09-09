@@ -1,9 +1,11 @@
 using _02._Script.Player.Interface;
+using _02._Script.Player.MoveState;
+using _02._Script.Player.Sprint;
 using _02._Script.UI;
 using UnityEngine;
 
 namespace _02._Script.Player {
-    public class Player : Agent {
+    public class Player : Agent, IPlayerMoveContext {
         [SerializeField] private float useStaminaInRun;
         [SerializeField] private float useStaminaInWall;
         [SerializeField] private float useStaminaInWallDash;
@@ -12,78 +14,71 @@ namespace _02._Script.Player {
         
         private ICheckClimbWall _checkClimbWall;
 
-        private CapsuleCollider2D _collider;
         private IInputReader _inputReader;
         private IInteractor _interactor;
-        private bool _isCrouch;
-        private bool _isSprint;
+        
+        private ICrouchController _crouchController;
+        private IFacingController _facingController;
+        private SprintController _sprintController;
+        
         private IMover _mover;
         private IStats _stats;
         private bool IsGrounded => _mover.IsGround;
 
         private void Update() {
-            FlipCheck();
+            var isClimbing = _checkClimbWall.IsClimbed;
+            var isMoving = _inputReader.MoveInput != 0f;
+
+            if (!isClimbing)
+                _facingController.UpdateFacing(_inputReader.MoveInput);
+
             _mover.Climb(_checkClimbWall);
             _mover.CalculateAirTime(_checkClimbWall);
-            _stats.StaminaUpdate(IsGrounded, _inputReader.MoveInput != 0, _checkClimbWall.IsClimbed);
-            if (_isSprint && _inputReader.MoveInput != 0) _stats.UseStamina(useStaminaInRun, false);
 
-            if (_checkClimbWall.IsClimbed && _inputReader.ClimbInput != 0) _stats.UseStamina(useStaminaInWall, false);
+            _stats.StaminaUpdate(IsGrounded, isMoving, isClimbing);
+            _sprintController.Tick(isMoving);
 
-            if (_stats.Stamina <= 0) _isSprint = false;
+            if (isClimbing && _inputReader.ClimbInput != 0f)
+                _stats.UseStamina(useStaminaInWall, false);
+
             if (_stats.Stamina <= 0) _mover.CancelClimb();
         }
 
         private void FixedUpdate() {
-            _mover.SetMoveInput(_inputReader.MoveInput * (_isSprint ? 2f : 1f) * (_isCrouch ? 0.5f : 1f));
+            if (IsGrounded && !_checkClimbWall.IsClimbed)
+                _moveStateMachine.Tick();
+            else
+                ApplyMoveInput(MoveInput);
+
             _mover.ClimbInput(_inputReader.ClimbInput);
         }
 
         private void LateUpdate() {
-            staminaHUD.UpdateStamina(_stats.Stamina);
+            staminaHUD?.UpdateStamina(_stats.Stamina);
         }
 
         protected override void AfterInitialize() {
             base.AfterInitialize();
-            _inputReader = GetModule<IInputReader>();
-            _mover = GetModule<IMover>();
-            _interactor = GetModule<IInteractor>();
-            _stats = GetModule<IStats>();
-            _checkClimbWall = GetModule<ICheckClimbWall>();
-            _collider = GetComponent<CapsuleCollider2D>();
-            _inputReader.OnJumpPressed += HandleJumpInput;
-            _inputReader.OnInteractPressed += HandleInteractInput;
-            _inputReader.OnSprintPressed += HandleSprintInput;
-            _inputReader.OnSprintReleased += HandleSprintRelease;
-            _inputReader.OnCrouchPressed += HandleCrouchPressed;
-            _inputReader.OnCrouchReleased += HandleCrouchRelease;
+            
+            GetModules();
+            SubscribeInputEvents();
+            
+            _sprintController = new SprintController(_stats, useStaminaInRun);
+            _moveStateMachine = PlayerMoveStateFactory.Create(this);
         }
 
-        private void HandleCrouchRelease() {
-            _collider.offset = Vector2.zero;
-            _collider.size = new Vector2(1, 2);
-            _isCrouch = false;
-        }
+        private void HandleCrouchRelease() => _crouchController.Stand();
+        private void HandleCrouchPressed() =>_crouchController.Crouch();
+        
 
-        private void HandleCrouchPressed() {
-            _collider.size = new Vector2(1, 1);
-            _collider.offset = new Vector2(0, -0.5f);
-            _isCrouch = true;
-        }
-
-        private void HandleSprintRelease() {
-            _isSprint = false;
-        }
-
-        private void HandleSprintInput() {
-            _isSprint = true;
-        }
+        private void HandleSprintInput() => _sprintController.StartSprint();
+        private void HandleSprintRelease() => _sprintController.StopSprint();
 
         private void HandleJumpInput() {
             if (_checkClimbWall.IsClimbed) {
                 if (_inputReader.MoveInput != 0f) {
                     if (_stats.Stamina < useStaminaInWallJump) return;
-                    _mover.WallJump(IsFlipX ? 1f : -1f);
+                    _mover.WallJump(_facingController.IsFacingLeft ? 1f : -1f);
                     _stats.UseStamina(useStaminaInWallJump, true);
                 }
                 else {
@@ -106,16 +101,50 @@ namespace _02._Script.Player {
             _mover.Jump();
         }
 
-        protected override void OnDispose() {
+        protected override void OnDispose() 
+        {
             base.OnDispose();
-            _inputReader.OnJumpPressed -= HandleJumpInput;
-            _inputReader.OnInteractPressed -= HandleInteractInput;
-            _inputReader.OnSprintPressed -= HandleSprintInput;
-            _inputReader.OnSprintReleased -= HandleSprintRelease;
+            UnsubscribeInputEvents();
         }
 
         private void HandleInteractInput() {
             _interactor.Interact(this);
+        }
+        
+        private MoveStateMachine _moveStateMachine;
+
+        public PlayerMoveState State => _moveStateMachine?.CurrentState;        
+
+        public float MoveInput => _inputReader.MoveInput;
+
+        public void ApplyMoveInput(float input)
+        {
+            _mover.SetMoveInput(
+                input * _sprintController.MoveSpeedMultiplier
+                      * _crouchController.MoveSpeedMultiplier
+            );
+        }
+
+        #region EventSubscriptions
+
+        private void SubscribeInputEvents()
+        {
+            _inputReader.OnJumpPressed += HandleJumpInput;
+            _inputReader.OnInteractPressed += HandleInteractInput;
+            _inputReader.OnSprintPressed += HandleSprintInput;
+            _inputReader.OnSprintReleased += HandleSprintRelease;
+            _inputReader.OnCrouchPressed += HandleCrouchPressed;
+            _inputReader.OnCrouchReleased += HandleCrouchRelease;
+        }
+        
+        private void UnsubscribeInputEvents()
+        {
+            _inputReader.OnJumpPressed -= HandleJumpInput;
+            _inputReader.OnInteractPressed -= HandleInteractInput;
+            _inputReader.OnSprintPressed -= HandleSprintInput;
+            _inputReader.OnSprintReleased -= HandleSprintRelease;
+            _inputReader.OnCrouchPressed -= HandleCrouchPressed;
+            _inputReader.OnCrouchReleased -= HandleCrouchRelease;
         }
 
         public void ChangeSpeed(float speed) {
@@ -129,17 +158,19 @@ namespace _02._Script.Player {
         private void FlipCheck() {
             if (_checkClimbWall.IsClimbed) return;
             if (_inputReader.MoveInput == 0) return;
+        #endregion
 
-            var checkFlipX = _inputReader.MoveInput < 0;
+        #region ModulesGet
 
-            if (checkFlipX == IsFlipX) return;
-            IsFlipX = checkFlipX;
-            FlipX();
-        }
-
-        private void FlipX() {
-            var targetRot = IsFlipX ? 180f : 0f;
-            transform.rotation = Quaternion.Euler(0f, targetRot, 0f);
+        private void GetModules()
+        {
+            _inputReader = GetModule<IInputReader>();
+            _mover = GetModule<IMover>();
+            _interactor = GetModule<IInteractor>();
+            _stats = GetModule<IStats>();
+            _checkClimbWall = GetModule<ICheckClimbWall>();
+            _crouchController = GetModule<ICrouchController>();
+            _facingController = GetModule<IFacingController>();
         }
 
         #endregion
