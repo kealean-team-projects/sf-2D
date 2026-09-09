@@ -1,14 +1,11 @@
 ﻿using _02._Script.Player.Interface;
 
-namespace _02._Script.Player.Sprint
-{
-    public sealed class SprintController
-    {
-        private readonly IStats _stats;
+namespace _02._Script.Player.Sprint {
+    public sealed class SprintController {
         private readonly float _staminaCostPerSecond;
+        private readonly IStats _stats;
 
-        public SprintController(IStats stats, float staminaCostPerSecond)
-        {
+        public SprintController(IStats stats, float staminaCostPerSecond) {
             _stats = stats;
             _staminaCostPerSecond = staminaCostPerSecond;
         }
@@ -17,18 +14,15 @@ namespace _02._Script.Player.Sprint
 
         public float MoveSpeedMultiplier => IsSprinting ? 2f : 1f;
 
-        public void StartSprint()
-        {
+        public void StartSprint() {
             IsSprinting = true;
         }
 
-        public void StopSprint()
-        {
+        public void StopSprint() {
             IsSprinting = false;
         }
 
-        public void Tick(bool isMoving)
-        {
+        public void Tick(bool isMoving) {
             if (!IsSprinting)
                 return;
 

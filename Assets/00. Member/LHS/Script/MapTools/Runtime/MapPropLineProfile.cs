@@ -2,11 +2,9 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MapTools
-{
+namespace MapTools {
     [CreateAssetMenu(fileName = "MapPropLineProfile", menuName = "Map Tools/Prop Line Profile")]
-    public sealed class MapPropLineProfile : ScriptableObject
-    {
+    public sealed class MapPropLineProfile : ScriptableObject {
         [SerializeField] private GameObject prefab;
         [SerializeField] private List<SpriteVariantSet> spriteVariantSets = new();
 
@@ -15,11 +13,10 @@ namespace MapTools
     }
 
     [Serializable]
-    public sealed class SpriteVariantSet
-    {
+    public sealed class SpriteVariantSet {
         [SerializeField] private string rendererPath;
         [SerializeField] private List<Sprite> variants = new();
-        [SerializeField, Min(1)] private int maxConsecutiveSame = 1;
+        [SerializeField] [Min(1)] private int maxConsecutiveSame = 1;
 
         public string RendererPath => rendererPath;
         public IReadOnlyList<Sprite> Variants => variants;

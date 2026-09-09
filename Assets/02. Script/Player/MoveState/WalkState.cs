@@ -1,23 +1,16 @@
 ﻿using UnityEngine;
 
-namespace _02._Script.Player.MoveState
-{
-    public class WalkState : PlayerMoveState
-    {
-        public WalkState(IPlayerMoveContext context, MoveStateMachine stateMachine) : base(context, stateMachine)
-        {
-        }
+namespace _02._Script.Player.MoveState {
+    public class WalkState : PlayerMoveState {
+        public WalkState(IPlayerMoveContext context, MoveStateMachine stateMachine) : base(context, stateMachine) { }
 
-        public override void Enter()
-        {
+        public override void Enter() {
             _context.ApplyMoveInput(_context.MoveInput);
             Debug.Log("WalkState 진입");
         }
 
-        public override void Tick()
-        {
-            if (_context.MoveInput == 0f)
-            {
+        public override void Tick() {
+            if (_context.MoveInput == 0f) {
                 _stateMachine.ChangeState<IdleState>();
                 return;
             }
@@ -25,8 +18,6 @@ namespace _02._Script.Player.MoveState
             _context.ApplyMoveInput(_context.MoveInput);
         }
 
-        public override void Exit()
-        {
-        }
+        public override void Exit() { }
     }
 }

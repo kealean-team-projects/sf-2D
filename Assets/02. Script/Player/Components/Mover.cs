@@ -90,11 +90,6 @@ namespace _02.Script.Player.Components {
             }
         }
 
-        public void PushForce(Vector2 pushDir, float power, ForceMode2D forceMode)
-        {
-            rb.AddForce(pushDir * power, forceMode);
-        }
-
 
 #if UNITY_EDITOR
         private void OnDrawGizmosSelected() {
@@ -167,6 +162,10 @@ namespace _02.Script.Player.Components {
             }
 
             ChangeMotion(MotionType.Climb);
+        }
+
+        public void PushForce(Vector2 pushDir, float power, ForceMode2D forceMode) {
+            rb.AddForce(pushDir * power, forceMode);
         }
 
         private void ApplyWallDash() {
