@@ -47,7 +47,8 @@ namespace _02._Script {
                 await UniTask.Delay(TimeSpan.FromSeconds(2f));
 
                 Time.timeScale = 1f;
-                await fader.FadeIn();
+                if (fader != null)
+                    await fader.FadeIn();
                 
                 IsRestarting = false;
             }

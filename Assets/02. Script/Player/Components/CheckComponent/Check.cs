@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace _02._Script.Player.Components {
+namespace _02._Script.Player.Components.CheckComponent {
     public abstract class Check : MonoBehaviour {
         public bool isGizmos;
         public Color gizmosColor = Color.red;

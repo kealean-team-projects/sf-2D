@@ -2,7 +2,7 @@ using System;
 using _02._Script.Player.Interface;
 using UnityEngine;
 
-namespace _02._Script.Player.Components {
+namespace _02._Script.Player.Components.CheckComponent {
     public class CheckClimbWall : Check, ICheckClimbWall, IAgentModule {
         private void FixedUpdate() {
             var col = CheckCol();
