@@ -118,6 +118,10 @@ namespace _02._Script.Player {
             _interactor.Interact(this);
         }
 
+        public void ChangeSpeed(float speed) {
+            _mover.SpeedControl(speed);
+        }
+
         #region FlipController
 
         private bool IsFlipX { get; set; }

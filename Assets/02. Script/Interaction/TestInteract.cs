@@ -1,7 +1,7 @@
 ﻿using _02._Script.Player.Interface;
 using UnityEngine;
 
-namespace _01.Script.Interaction {
+namespace _02._Script.Interaction {
     public class TestInteract : MonoBehaviour, IInteractable {
         public void Interact(_02._Script.Player.Player owner) {
             Debug.Log("호승아 미소녀 캐릭터 그려줘");
