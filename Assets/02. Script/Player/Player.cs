@@ -125,8 +125,6 @@ namespace _02._Script.Player {
             );
         }
 
-        #region EventSubscriptions
-
         private void SubscribeInputEvents()
         {
             _inputReader.OnJumpPressed += HandleJumpInput;
@@ -158,6 +156,8 @@ namespace _02._Script.Player {
         private void FlipCheck() {
             if (_checkClimbWall.IsClimbed) return;
             if (_inputReader.MoveInput == 0) return;
+        }
+
         #endregion
 
         #region ModulesGet
