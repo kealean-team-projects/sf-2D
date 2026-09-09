@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a0f719389010b341ba129f1c361a7d9, type: 3}
+  m_Name: cloud02MPLP
+  m_EditorClassIdentifier: Assembly-CSharp::MapTools.MapPropLineProfile
+  prefab: {fileID: 707799407222469689, guid: 45e6f3ba7e3269a4f996d8469602f428, type: 3}
+  spriteVariantSets:
+  - rendererPath: cloud
+    variants:
+    - {fileID: -1115256706364395465, guid: 5423b7576f3a5574ea973841fa6ea018, type: 3}
+    - {fileID: -8294918184612582425, guid: 5423b7576f3a5574ea973841fa6ea018, type: 3}
+    - {fileID: 5291327898690728900, guid: 5423b7576f3a5574ea973841fa6ea018, type: 3}
+    - {fileID: -3052748074778076258, guid: 5423b7576f3a5574ea973841fa6ea018, type: 3}
+    - {fileID: 4522440564201344832, guid: 5423b7576f3a5574ea973841fa6ea018, type: 3}
+    - {fileID: 21300006, guid: 721e3dac411a92f44a4271dd499f3ee2, type: 3}
+    maxConsecutiveSame: 1

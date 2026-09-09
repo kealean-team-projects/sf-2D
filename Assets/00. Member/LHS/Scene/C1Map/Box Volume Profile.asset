@@ -1,0 +1,99 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7fd9488000d3734a9e00ee676215985, type: 3}
+  m_Name: Box Volume Profile
+  m_EditorClassIdentifier: Unity.RenderPipelines.Core.Runtime::UnityEngine.Rendering.VolumeProfile
+  components:
+  - {fileID: 8001923713277585377}
+  - {fileID: 5557018076461794835}
+--- !u!114 &5557018076461794835
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82602d4a5e605104aa30156d456bbd7f, type: 3}
+  m_Name: CameraFilterPackVolume_TV_Vignetting
+  m_EditorClassIdentifier: BalioProductions.CameraFilterPack.URP::BalioProductions.CameraFilterPack.URP.CameraFilterPackVolume_TV_Vignetting
+  active: 1
+  intensity:
+    m_OverrideState: 1
+    m_Value: 0.25
+  _Vignetting:
+    m_OverrideState: 1
+    m_Value: 0.49
+  _Vignetting2:
+    m_OverrideState: 1
+    m_Value: 0
+  _VignettingDirt:
+    m_OverrideState: 1
+    m_Value: 0
+  _VignettingColor:
+    m_OverrideState: 1
+    m_Value: {r: 0.85796916, g: 1, b: 0.68238986, a: 1}
+  Vignette:
+    m_OverrideState: 1
+    m_Value: {fileID: 2800000, guid: 6dad0511e8f7b4146a6c05621060157d, type: 3}
+    dimension: 1
+--- !u!114 &8001923713277585377
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b2db86121404754db890f4c8dfe81b2, type: 3}
+  m_Name: Bloom
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.Bloom
+  active: 1
+  skipIterations:
+    m_OverrideState: 1
+    m_Value: 1
+  threshold:
+    m_OverrideState: 1
+    m_Value: 0.16
+  intensity:
+    m_OverrideState: 1
+    m_Value: 0.78
+  scatter:
+    m_OverrideState: 1
+    m_Value: 0.85
+  clamp:
+    m_OverrideState: 1
+    m_Value: 65472
+  tint:
+    m_OverrideState: 1
+    m_Value: {r: 0.86647546, g: 1, b: 0.77672946, a: 1}
+  highQualityFiltering:
+    m_OverrideState: 1
+    m_Value: 0
+  filter:
+    m_OverrideState: 1
+    m_Value: 0
+  downscale:
+    m_OverrideState: 0
+    m_Value: 0
+  maxIterations:
+    m_OverrideState: 0
+    m_Value: 6
+  dirtTexture:
+    m_OverrideState: 1
+    m_Value: {fileID: 0}
+    dimension: 1
+  dirtIntensity:
+    m_OverrideState: 1
+    m_Value: 0
