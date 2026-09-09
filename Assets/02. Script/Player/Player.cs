@@ -125,6 +125,10 @@ namespace _02._Script.Player {
             );
         }
 
+        public void ApplyDontMove() {
+            _mover.DontMove();
+        }
+
         private void SubscribeInputEvents()
         {
             _inputReader.OnJumpPressed += HandleJumpInput;
