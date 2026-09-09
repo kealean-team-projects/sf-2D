@@ -125,8 +125,6 @@ namespace _02._Script.Player {
             );
         }
 
-        #region EventSubscriptions
-
         private void SubscribeInputEvents()
         {
             _inputReader.OnJumpPressed += HandleJumpInput;
@@ -147,8 +145,10 @@ namespace _02._Script.Player {
             _inputReader.OnCrouchReleased -= HandleCrouchRelease;
         }
 
-        #endregion
-
+        public void ChangeSpeed(float speed) {
+            _mover.SpeedControl(speed);
+        }
+        
         #region ModulesGet
 
         private void GetModules()

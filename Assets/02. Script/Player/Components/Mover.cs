@@ -141,6 +141,10 @@ namespace _02.Script.Player.Components {
             CancelClimbUniTask().Forget();
         }
 
+        public void SpeedControl(float newSpeed) {
+            speed = newSpeed;
+        }
+
         public void CalculateAirTime(ICheckClimbWall checkClimbWall) {
             if (checkClimbWall.IsClimbed) return;
             if (!IsGround) {
