@@ -3536,6 +3536,7 @@ GameObject:
   m_Component:
   - component: {fileID: 819381995}
   - component: {fileID: 819381996}
+  - component: {fileID: 819381997}
   m_Layer: 0
   m_Name: Visual
   m_TagString: Untagged
@@ -3618,6 +3619,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
+--- !u!114 &819381997
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 819381994}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ab589e11f2f4e739c843f1972fea1c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_02._Script.Player.Components.ControllerCompo.FacingController
 --- !u!1 &845932576
 GameObject:
   m_ObjectHideFlags: 0
@@ -15363,6 +15376,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1811515459}
   - component: {fileID: 1811515460}
+  - component: {fileID: 1811515461}
   m_Layer: 0
   m_Name: Mover
   m_TagString: Untagged
@@ -15414,6 +15428,22 @@ MonoBehaviour:
   wallJumpYForce: 12
   wallJumpDuration: 0.2
   <IsGround>k__BackingField: 0
+--- !u!114 &1811515461
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1811515458}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3e9322ea27246719236510517ad3ad8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_02._Script.Player.Components.ControllerCompo.CrouchController
+  targetCollider: {fileID: 1858437625}
+  crouchingSize: {x: 1, y: 1}
+  crouchingOffset: {x: 0, y: -0.5}
+  crouchingSpeedMultiplier: 0.5
 --- !u!1 &1845603965
 GameObject:
   m_ObjectHideFlags: 0
