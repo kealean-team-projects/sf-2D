@@ -4,7 +4,7 @@ using UnityEngine;
 namespace _02._Script.Interaction {
     public class Light : MonoBehaviour, IInteractable {
         public void Interact(Player.Player owner) {
-            UnityEngine.Debug.Log("빛");
+            Debug.Log("빛");
         }
     }
 }

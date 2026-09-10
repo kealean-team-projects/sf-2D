@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace _02._Script.Interaction {
     public class TestInteract : MonoBehaviour, IInteractable {
-        public void Interact(_02._Script.Player.Player owner) {
+        public void Interact(Player.Player owner) {
             Debug.Log("호승아 미소녀 캐릭터 그려줘");
         }
     }

@@ -11,19 +11,23 @@ namespace _02._Script.Player {
         [SerializeField] private float useStaminaInWallDash;
         [SerializeField] private float useStaminaInWallJump;
         [SerializeField] private StaminaHUD staminaHUD;
-        
+
         private ICheckClimbWall _checkClimbWall;
+
+        private ICrouchController _crouchController;
+        private IFacingController _facingController;
 
         private IInputReader _inputReader;
         private IInteractor _interactor;
-        
-        private ICrouchController _crouchController;
-        private IFacingController _facingController;
-        private SprintController _sprintController;
-        
+
+        private MoveStateMachine _moveStateMachine;
+
         private IMover _mover;
+        private SprintController _sprintController;
         private IStats _stats;
         private bool IsGrounded => _mover.IsGround;
+
+        public PlayerMoveState State => _moveStateMachine?.CurrentState;
 
         private void Update() {
             var isClimbing = _checkClimbWall.IsClimbed;
@@ -57,22 +61,41 @@ namespace _02._Script.Player {
             staminaHUD?.UpdateStamina(_stats.Stamina);
         }
 
+        public float MoveInput => _inputReader.MoveInput;
+
+        public void ApplyMoveInput(float input) {
+            _mover.SetMoveInput(
+                input * _sprintController.MoveSpeedMultiplier
+                      * _crouchController.MoveSpeedMultiplier
+            );
+        }
+
         protected override void AfterInitialize() {
             base.AfterInitialize();
-            
+
             GetModules();
             SubscribeInputEvents();
-            
+
             _sprintController = new SprintController(_stats, useStaminaInRun);
             _moveStateMachine = PlayerMoveStateFactory.Create(this);
         }
 
-        private void HandleCrouchRelease() => _crouchController.Stand();
-        private void HandleCrouchPressed() =>_crouchController.Crouch();
-        
+        private void HandleCrouchRelease() {
+            _crouchController.Stand();
+        }
 
-        private void HandleSprintInput() => _sprintController.StartSprint();
-        private void HandleSprintRelease() => _sprintController.StopSprint();
+        private void HandleCrouchPressed() {
+            _crouchController.Crouch();
+        }
+
+
+        private void HandleSprintInput() {
+            _sprintController.StartSprint();
+        }
+
+        private void HandleSprintRelease() {
+            _sprintController.StopSprint();
+        }
 
         private void HandleJumpInput() {
             if (_checkClimbWall.IsClimbed) {
@@ -101,8 +124,7 @@ namespace _02._Script.Player {
             _mover.Jump();
         }
 
-        protected override void OnDispose() 
-        {
+        protected override void OnDispose() {
             base.OnDispose();
             UnsubscribeInputEvents();
         }
@@ -110,23 +132,8 @@ namespace _02._Script.Player {
         private void HandleInteractInput() {
             _interactor.Interact(this);
         }
-        
-        private MoveStateMachine _moveStateMachine;
 
-        public PlayerMoveState State => _moveStateMachine?.CurrentState;        
-
-        public float MoveInput => _inputReader.MoveInput;
-
-        public void ApplyMoveInput(float input)
-        {
-            _mover.SetMoveInput(
-                input * _sprintController.MoveSpeedMultiplier
-                      * _crouchController.MoveSpeedMultiplier
-            );
-        }
-
-        private void SubscribeInputEvents()
-        {
+        private void SubscribeInputEvents() {
             _inputReader.OnJumpPressed += HandleJumpInput;
             _inputReader.OnInteractPressed += HandleInteractInput;
             _inputReader.OnSprintPressed += HandleSprintInput;
@@ -134,9 +141,8 @@ namespace _02._Script.Player {
             _inputReader.OnCrouchPressed += HandleCrouchPressed;
             _inputReader.OnCrouchReleased += HandleCrouchRelease;
         }
-        
-        private void UnsubscribeInputEvents()
-        {
+
+        private void UnsubscribeInputEvents() {
             _inputReader.OnJumpPressed -= HandleJumpInput;
             _inputReader.OnInteractPressed -= HandleInteractInput;
             _inputReader.OnSprintPressed -= HandleSprintInput;
@@ -148,11 +154,10 @@ namespace _02._Script.Player {
         public void ChangeSpeed(float speed) {
             _mover.SpeedControl(speed);
         }
-        
+
         #region ModulesGet
 
-        private void GetModules()
-        {
+        private void GetModules() {
             _inputReader = GetModule<IInputReader>();
             _mover = GetModule<IMover>();
             _interactor = GetModule<IInteractor>();

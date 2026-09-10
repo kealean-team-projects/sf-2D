@@ -2,10 +2,8 @@ using System;
 using UnityEditor;
 using UnityEngine;
 
-namespace MapTools.Editor
-{
-    public sealed class MapPropLineWindow : EditorWindow
-    {
+namespace MapTools.Editor {
+    public sealed class MapPropLineWindow : EditorWindow {
         [SerializeField] private MapPropLineProfile profile;
         [SerializeField] private Transform parent;
         [SerializeField] private Vector3 startPosition;
@@ -14,14 +12,7 @@ namespace MapTools.Editor
         [SerializeField] private Vector2 zOffsetRange = new(-1f, 1f);
         [SerializeField] private int seed = 12345;
 
-        [MenuItem("Tools/Map Tools/Prop Line Generator")]
-        private static void Open()
-        {
-            GetWindow<MapPropLineWindow>("Prop Line Generator");
-        }
-
-        private void OnGUI()
-        {
+        private void OnGUI() {
             EditorGUILayout.Space(6f);
 
             profile = (MapPropLineProfile)EditorGUILayout.ObjectField(
@@ -46,8 +37,7 @@ namespace MapTools.Editor
 
             EditorGUILayout.Space(6f);
 
-            using (new EditorGUILayout.HorizontalScope())
-            {
+            using (new EditorGUILayout.HorizontalScope()) {
                 if (GUILayout.Button("Start From Selection"))
                     SetFromSelection(true);
 
@@ -57,15 +47,18 @@ namespace MapTools.Editor
 
             EditorGUILayout.Space(8f);
 
-            using (new EditorGUI.DisabledScope(profile == null || profile.Prefab == null))
-            {
+            using (new EditorGUI.DisabledScope(profile == null || profile.Prefab == null)) {
                 if (GUILayout.Button("Generate", GUILayout.Height(32f)))
                     Generate();
             }
         }
 
-        private void SetFromSelection(bool start)
-        {
+        [MenuItem("Tools/Map Tools/Prop Line Generator")]
+        private static void Open() {
+            GetWindow<MapPropLineWindow>("Prop Line Generator");
+        }
+
+        private void SetFromSelection(bool start) {
             if (Selection.activeTransform == null)
                 return;
 
@@ -77,10 +70,8 @@ namespace MapTools.Editor
             Repaint();
         }
 
-        private void Generate()
-        {
-            try
-            {
+        private void Generate() {
+            try {
                 PropLineRequest request = new(
                     profile,
                     parent,
@@ -92,8 +83,7 @@ namespace MapTools.Editor
 
                 PropLineGenerator.Generate(request);
             }
-            catch (Exception exception)
-            {
+            catch (Exception exception) {
                 Debug.LogException(exception);
             }
         }

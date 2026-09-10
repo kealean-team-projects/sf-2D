@@ -6,7 +6,7 @@ namespace _02._Script {
     namespace _00_Scripts._07_Managers {
         public class GameManager : MonoBehaviour {
             public static GameManager Instance;
-            
+
             public Transform player;
             public ScreenFade fader;
 
@@ -32,8 +32,8 @@ namespace _02._Script {
 
             public void Restart() {
                 if (IsRestarting) return;
-                    RestartCoroutine().Forget();
-                }
+                RestartCoroutine().Forget();
+            }
 
             private async UniTaskVoid RestartCoroutine() {
                 IsRestarting = true;
@@ -49,7 +49,7 @@ namespace _02._Script {
                 Time.timeScale = 1f;
                 if (fader != null)
                     await fader.FadeIn();
-                
+
                 IsRestarting = false;
             }
         }

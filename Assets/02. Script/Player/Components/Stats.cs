@@ -12,7 +12,7 @@ namespace _02._Script.Player.Components {
 
         private bool _canCharge = true;
         private bool _uniTaskIsRunning;
-        
+
         public void Initialize(Agent owner) {
             Stamina = maxStamina;
         }
@@ -23,9 +23,10 @@ namespace _02._Script.Player.Components {
 
         public void StaminaUpdate(bool isGrounded, bool isWalking, bool isClimb) {
             if (!_canCharge) {
-                if(!_uniTaskIsRunning) WaitCharge().Forget();
+                if (!_uniTaskIsRunning) WaitCharge().Forget();
                 return;
             }
+
             if (!isGrounded) return;
             if (isClimb) return;
             var healRate = isWalking ? staminaHealSlow : staminaHealBoost;

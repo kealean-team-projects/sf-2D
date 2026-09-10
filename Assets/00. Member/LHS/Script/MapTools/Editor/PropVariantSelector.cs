@@ -1,16 +1,12 @@
 using System;
 
-namespace MapTools.Editor
-{
-    internal sealed class PropVariantSelector
-    {
-        private int _lastIndex = -1;
+namespace MapTools.Editor {
+    internal sealed class PropVariantSelector {
         private int _consecutiveCount;
+        private int _lastIndex = -1;
 
-        public int Next(Random random, int variantCount, int maxConsecutiveSame)
-        {
-            if (variantCount <= 1)
-            {
+        public int Next(Random random, int variantCount, int maxConsecutiveSame) {
+            if (variantCount <= 1) {
                 _lastIndex = 0;
                 _consecutiveCount = variantCount == 1 ? _consecutiveCount + 1 : 0;
                 return 0;
@@ -18,22 +14,18 @@ namespace MapTools.Editor
 
             int index;
 
-            if (_lastIndex >= 0 && _consecutiveCount >= maxConsecutiveSame)
-            {
-                int candidate = random.Next(variantCount - 1);
+            if (_lastIndex >= 0 && _consecutiveCount >= maxConsecutiveSame) {
+                var candidate = random.Next(variantCount - 1);
                 index = candidate >= _lastIndex ? candidate + 1 : candidate;
             }
-            else
-            {
+            else {
                 index = random.Next(variantCount);
             }
 
-            if (index == _lastIndex)
-            {
+            if (index == _lastIndex) {
                 _consecutiveCount++;
             }
-            else
-            {
+            else {
                 _lastIndex = index;
                 _consecutiveCount = 1;
             }
