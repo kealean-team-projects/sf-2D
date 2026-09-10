@@ -30,7 +30,6 @@ namespace _02._Script.Players {
         private bool IsGrounded => _mover.IsGround;
 
         public bool canJump = true;
-        public PlayerMoveState State => _moveStateMachine?.CurrentState;
 
         private void Update() {
             var isClimbing = _checkClimbWall.IsClimbed;
