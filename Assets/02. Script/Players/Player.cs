@@ -22,7 +22,7 @@ namespace _02._Script.Players {
         private IInputReader _inputReader;
         private IInteractor _interactor;
 
-        private MoveStateMachine _moveStateMachine;
+        //private MoveStateMachine _moveStateMachine;
 
         private IMover _mover;
         private SprintController _sprintController;
@@ -52,12 +52,14 @@ namespace _02._Script.Players {
         }
 
         private void FixedUpdate() {
-            if (IsGrounded && !_checkClimbWall.IsClimbed)
-                _moveStateMachine.Tick();
-            else
-                ApplyMoveInput(MoveInput);
+            //if (IsGrounded && !_checkClimbWall.IsClimbed)
+                //_moveStateMachine.Tick();
 
-            _mover.ClimbInput(_inputReader.ClimbInput);
+
+                ApplyMoveInput(MoveInput);
+            
+                if (_checkClimbWall.IsClimbed)
+                    _mover.ClimbInput(_inputReader.ClimbInput);
         }
 
         private void LateUpdate() {
@@ -83,7 +85,7 @@ namespace _02._Script.Players {
             SubscribeInputEvents();
 
             _sprintController = new SprintController(_stats, useStaminaInRun);
-            _moveStateMachine = PlayerMoveStateFactory.Create(this);
+            //_moveStateMachine = PlayerMoveStateFactory.Create(this);
         }
 
         private void HandleCrouchRelease() {

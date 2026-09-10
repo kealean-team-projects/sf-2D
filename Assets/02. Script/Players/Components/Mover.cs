@@ -47,7 +47,7 @@ namespace _02._Script.Players.Components
         [Header("CheckWall Settings")] private float _originGravityScale;
 
         private float _timeInAir;
-        private MotionType _type = MotionType.ManualMove;
+        public MotionType MotionT { get; private set; } = MotionType.ManualMove;
         private UniTask _wallJump;
 
         private float _wallJumpDir;
@@ -64,7 +64,7 @@ namespace _02._Script.Players.Components
         private void FixedUpdate() {
             IsGround = CheckGround();
 
-            switch (_type) {
+            switch (MotionT) {
                 case MotionType.ManualMove:
                     rb.gravityScale = _originGravityScale;
                     rb.linearVelocityX = _moveInput * speed;
@@ -153,7 +153,7 @@ namespace _02._Script.Players.Components
 
         public void Climb(ICheckClimbWall check) {
             if (!_climbable) return;
-            if (_type == MotionType.WallJump)
+            if (MotionT == MotionType.WallJump)
                 return;
 
             if (!check.IsClimbed) {
@@ -224,7 +224,7 @@ namespace _02._Script.Players.Components
         }
 
         private void ChangeMotion(MotionType motion) {
-            _type = motion;
+            MotionT = motion;
         }
 
         #region Climb Settings
