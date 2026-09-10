@@ -5286,9 +5286,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59169ac76f134b8590a70db67ef65f9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_02._Script.Player.Components.Stats
-  staminaHealSlow: 0
-  staminaHealBoost: 0
-  maxStamina: 0
+  staminaHealSlow: 10
+  staminaHealBoost: 10
+  maxStamina: 100
+  staminaHealWaitTime: 3
 --- !u!1 &643258404
 GameObject:
   m_ObjectHideFlags: 0
@@ -19122,6 +19123,7 @@ MonoBehaviour:
   useStaminaInWall: 0
   useStaminaInWallDash: 0
   useStaminaInWallJump: 0
+  staminaHUD: {fileID: 0}
 --- !u!50 &1999535680
 Rigidbody2D:
   serializedVersion: 5
