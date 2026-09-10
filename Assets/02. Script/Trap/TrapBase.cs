@@ -25,7 +25,7 @@ namespace _02._Script.Trap
             
         }
 
-        protected virtual void Effect()
+        protected virtual void Effect(Collider2D other)
         {
             
         }
@@ -40,7 +40,7 @@ namespace _02._Script.Trap
                         Damage();
                         break;
                     case TrapType.Effect:
-                        Effect();
+                        Effect(other);
                         break;
                 }
             }
