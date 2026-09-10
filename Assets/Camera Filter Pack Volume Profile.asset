@@ -62,6 +62,25 @@ MonoBehaviour:
   _Wavy:
     m_OverrideState: 0
     m_Value: 1
+--- !u!114 &-3490026221829742339
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 491acdefe9a5c1347a15f9773fd962cd, type: 3}
+  m_Name: CameraFilterPackVolume_Color_GrayScale
+  m_EditorClassIdentifier: BalioProductions.CameraFilterPack.URP::BalioProductions.CameraFilterPack.URP.CameraFilterPackVolume_Color_GrayScale
+  active: 1
+  intensity:
+    m_OverrideState: 1
+    m_Value: 0
+  _Fade:
+    m_OverrideState: 0
+    m_Value: 1
 --- !u!114 &-507963512096926233
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -131,6 +150,8 @@ MonoBehaviour:
   - {fileID: 3701794378123291586}
   - {fileID: -507963512096926233}
   - {fileID: 1713550204636836340}
+  - {fileID: 7760715892339026404}
+  - {fileID: -3490026221829742339}
 --- !u!114 &1713550204636836340
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -184,6 +205,32 @@ MonoBehaviour:
   _Speed:
     m_OverrideState: 0
     m_Value: 2
+--- !u!114 &7760715892339026404
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7299db1d14dd8f64299b09a0691a8a0c, type: 3}
+  m_Name: CameraFilterPackVolume_TV_Horror
+  m_EditorClassIdentifier: BalioProductions.CameraFilterPack.URP::BalioProductions.CameraFilterPack.URP.CameraFilterPackVolume_TV_Horror
+  active: 1
+  intensity:
+    m_OverrideState: 1
+    m_Value: 0
+  Fade:
+    m_OverrideState: 0
+    m_Value: 1
+  Distortion:
+    m_OverrideState: 0
+    m_Value: 1
+  Texture2:
+    m_OverrideState: 0
+    m_Value: {fileID: 0}
+    dimension: 1
 --- !u!114 &8242685504475938911
 MonoBehaviour:
   m_ObjectHideFlags: 3

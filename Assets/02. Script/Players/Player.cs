@@ -1,8 +1,9 @@
-using _02._Script._00_Scripts._07_Managers;
+using System;
 using _02._Script.Players.Interface;
 using _02._Script.Players.MoveState;
 using _02._Script.Players.Sprint;
 using _02._Script.UI;
+using PrimeTween;
 using UnityEngine;
 
 namespace _02._Script.Players {
@@ -28,6 +29,7 @@ namespace _02._Script.Players {
         private IStats _stats;
         private bool IsGrounded => _mover.IsGround;
 
+        public bool canJump = true;
         public PlayerMoveState State => _moveStateMachine?.CurrentState;
 
         private void Update() {
@@ -62,6 +64,8 @@ namespace _02._Script.Players {
             staminaHUD?.UpdateStamina(_stats.Stamina);
         }
 
+        private void OnDestroy() { }
+
         public float MoveInput => _inputReader.MoveInput;
 
         public void ApplyMoveInput(float input) {
@@ -72,6 +76,7 @@ namespace _02._Script.Players {
         }
 
         protected override void AfterInitialize() {
+            canJump = true;
             base.AfterInitialize();
 
             GetModules();
@@ -99,6 +104,7 @@ namespace _02._Script.Players {
         }
 
         private void HandleJumpInput() {
+            if (!canJump) return;
             if (_checkClimbWall.IsClimbed) {
                 if (_inputReader.MoveInput != 0f) {
                     if (_stats.Stamina < useStaminaInWallJump) return;
@@ -155,9 +161,7 @@ namespace _02._Script.Players {
         public void ChangeSpeed(float speed) {
             _mover.SpeedControl(speed);
         }
-
-        #region ModulesGet
-
+        
         private void GetModules() {
             _inputReader = GetModule<IInputReader>();
             _mover = GetModule<IMover>();
@@ -167,7 +171,5 @@ namespace _02._Script.Players {
             _crouchController = GetModule<ICrouchController>();
             _facingController = GetModule<IFacingController>();
         }
-
-        #endregion
     }
 }
