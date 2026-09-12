@@ -15786,6 +15786,7 @@ MonoBehaviour:
   useStaminaInWallDash: 20
   useStaminaInWallJump: 20
   staminaHUD: {fileID: 399250622}
+  canJump: 0
 --- !u!1 &1918708741
 GameObject:
   m_ObjectHideFlags: 0
@@ -16613,8 +16614,8 @@ Transform:
   m_GameObject: {fileID: 2100139766}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 55.0165, y: -2.2, z: 0}
-  m_LocalScale: {x: 18.0329, y: 2.9612, z: 1}
+  m_LocalPosition: {x: 52.1607, y: -2.2, z: 0}
+  m_LocalScale: {x: 12.32188, y: 2.9612, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}

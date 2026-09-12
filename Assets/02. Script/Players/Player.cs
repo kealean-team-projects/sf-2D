@@ -5,6 +5,7 @@ using _02._Script.Players.Components;
 using _02._Script.Players.Interface;
 using _02._Script.Players.Sprint;
 using _02._Script.UI;
+using PrimeTween;
 using UnityEngine;
 
 namespace _02._Script.Players {
@@ -64,11 +65,14 @@ namespace _02._Script.Players {
             staminaHUD?.UpdateStamina(_stats.Stamina);
         }
 
+        private void OnDestroy() { }
+
         public float MoveInput => _inputReader.MoveInput;
 
         public float ClimbInput =>  _inputReader.ClimbInput;
 
         protected override void AfterInitialize() {
+            canJump = true;
             base.AfterInitialize();
 
             GetModules();
