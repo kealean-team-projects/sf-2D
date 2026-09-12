@@ -4,8 +4,7 @@ namespace _02._Script.Players.Interface {
     public interface IMover {
         public MotionType MotionT { get; }
         bool IsGround { get; }
-        void SetMoveInput(float moveInput);
-        void ClimbInput(float climbInput);
+        bool CanClimb { get; }
         void Climb(ICheckClimbWall check);
         void CalculateAirTime(ICheckClimbWall checkClimbWall);
         void Jump(float multiplier = 1);
@@ -13,5 +12,12 @@ namespace _02._Script.Players.Interface {
         void WallDash();
         void CancelClimb();
         void SpeedControl(float newSpeed);
+        
+        void ApplyManualMove(float moveSpeed);
+        void ApplyClimb(float climbSpeed);
+        void ApplyWallDash(float impulse);
+        void ApplyWallJump(float xSpeed, float ySpeed);
+        
+        void EndWallDash();
     }
 }

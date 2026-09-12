@@ -1,10 +1,9 @@
 ﻿using _02._Script.Component;
-using UnityEngine;
 
 namespace _02._Script.Interface
 {
-    public class IDamagable : MonoBehaviour
+    public interface IDamagable
     {
-        [field: SerializeField] public DamageModule DamageCompo { get; private set; }
+        public DamageModule DamageCompo { get; }
     }
 }

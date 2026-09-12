@@ -3333,12 +3333,6 @@ MonoBehaviour:
     m_Bits: 64
   extraGravity: 15
   gravityDelay: 0.3
-  climbUpSpeed: 10
-  climbDownSpeed: 18
-  wallDashSpeed: 0
-  wallJumpXForce: 8
-  wallJumpYForce: 12
-  wallJumpDuration: 0.2
   <IsGround>k__BackingField: 0
 --- !u!1 &164348362
 GameObject:
@@ -14678,7 +14672,7 @@ GameObject:
   - component: {fileID: 1061195182}
   - component: {fileID: 1061195181}
   m_Layer: 0
-  m_Name: EventSystem
+  m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -1,0 +1,9 @@
+﻿namespace _02._Script.Interface
+{
+    public interface IState
+    {
+        void Enter();
+        void Exit();
+        void UpdateState();
+    }
+}
