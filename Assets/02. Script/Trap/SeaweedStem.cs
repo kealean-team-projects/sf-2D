@@ -22,14 +22,14 @@ namespace _02._Script.Trap {
             if (other.gameObject.TryGetComponent(out _player)) {
                 Debug.Log("이건 늪이다");
                 _isSeaweed = true;
-                _player.canJump = false;
+                _player.CanJump = false;
             }
         }
 
         private void OnTriggerExit2D(Collider2D other) {
             _timer = 1f;
             _isSeaweed = false;
-            _player.canJump = true;
+            _player.CanJump = true;
             _player.ChangeSpeed(speed);
             _player = null;
         }
