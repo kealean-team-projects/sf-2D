@@ -12,12 +12,12 @@ namespace _02._Script.Players.Interface {
         void WallDash();
         void CancelClimb();
         void SpeedControl(float newSpeed);
-        
+
         void ApplyManualMove(float moveSpeed);
         void ApplyClimb(float climbSpeed);
         void ApplyWallDash(float impulse);
         void ApplyWallJump(float xSpeed, float ySpeed);
-        
+
         void EndWallDash();
     }
 }

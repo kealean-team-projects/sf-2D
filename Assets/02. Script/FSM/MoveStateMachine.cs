@@ -1,18 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using _02._Script.FSM.MoveState;
-using UnityEngine;
 
-namespace _02._Script.FSM 
-{
-    public class MoveStateMachine 
-    {
+namespace _02._Script.FSM {
+    public class MoveStateMachine {
         private readonly Dictionary<Type, PlayerMoveState> _states = new();
         public IEnumerable<PlayerMoveState> States => _states.Values;
         public PlayerMoveState CurrentState { get; private set; }
 
-        public void Tick() 
-        {
+        public void Tick() {
             CurrentState?.UpdateState();
         }
 
@@ -33,9 +28,8 @@ namespace _02._Script.FSM
             CurrentState = nextState;
             CurrentState.Enter();
         }
-        
-        public void HandleJumpInput()
-        {
+
+        public void HandleJumpInput() {
             CurrentState?.HandleJumpInput();
         }
     }

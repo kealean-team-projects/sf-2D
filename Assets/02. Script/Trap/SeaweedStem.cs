@@ -1,10 +1,11 @@
-﻿using UnityEngine;
+﻿using _02._Script.Players;
+using UnityEngine;
 
 namespace _02._Script.Trap {
     public class SeaweedStem : MonoBehaviour {
         [SerializeField] private float speed;
         private bool _isSeaweed;
-        private Players.Player _player;
+        private Player _player;
         private float _timer = 1f;
 
         private void Update() {

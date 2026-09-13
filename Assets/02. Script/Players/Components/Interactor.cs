@@ -24,7 +24,7 @@ namespace _02._Script.Players.Components {
 
         public Type Type => typeof(IInteractor);
 
-        public void Interact(Players.Player owner) {
+        public void Interact(Player owner) {
             var count = Physics2D.OverlapCircle(Offset, radius, target, _results);
             if (count <= 0) return;
             var distance = float.MaxValue;

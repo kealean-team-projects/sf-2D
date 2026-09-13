@@ -3,8 +3,7 @@ using _02._Script.Players.Interface;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-namespace _02._Script.Players.Components
-{
+namespace _02._Script.Players.Components {
     public enum MotionType {
         ManualMove,
         Dash,
@@ -27,17 +26,12 @@ namespace _02._Script.Players.Components
         private float extraGravity = 15f;
 
         [SerializeField] private float gravityDelay = 0.15f;
-        private float _wallJumpDir;
-
-        private bool _climbable = true;
 
         [Header("CheckWall Settings")] private float _originGravityScale;
 
         private float _timeInAir;
-        public MotionType MotionT { get; private set; } = MotionType.ManualMove;
         private UniTask _wallJump;
-
-        public bool CanClimb => _climbable;
+        private float _wallJumpDir;
 
 
         private void Awake() {
@@ -49,16 +43,8 @@ namespace _02._Script.Players.Components
             _originGravityScale = rb.gravityScale;
         }
 
-        private void FixedUpdate()
-        {
+        private void FixedUpdate() {
             IsGround = CheckGround();
-        }
-
-        public void ApplyManualMove(float moveSpeed)
-        {
-            rb.gravityScale = _originGravityScale;
-            rb.linearVelocityX = moveSpeed;
-            ApplyExtraGravity();
         }
 
 
@@ -73,6 +59,15 @@ namespace _02._Script.Players.Components
         public Type Type => typeof(IMover);
 
         public void Initialize(Agent owner) { }
+        public MotionType MotionT { get; private set; } = MotionType.ManualMove;
+
+        public bool CanClimb { get; private set; } = true;
+
+        public void ApplyManualMove(float moveSpeed) {
+            rb.gravityScale = _originGravityScale;
+            rb.linearVelocityX = moveSpeed;
+            ApplyExtraGravity();
+        }
 
         [Header("CheckGround")]
         [field: SerializeField]
@@ -84,18 +79,16 @@ namespace _02._Script.Players.Components
             rb.AddForceY(jumpForce * multiplier, ForceMode2D.Impulse);
         }
 
-        public void WallJump(float xDirection)
-        {
+        public void WallJump(float xDirection) {
             _wallJumpDir = xDirection;
         }
 
-        public void WallDash()
-        {
-            _climbable = false;
+        public void WallDash() {
+            CanClimb = false;
         }
 
         public void CancelClimb() {
-            _climbable = false;
+            CanClimb = false;
             ChangeMotion(MotionType.ManualMove);
             CancelClimbUniTask().Forget();
         }
@@ -116,7 +109,7 @@ namespace _02._Script.Players.Components
         }
 
         public void Climb(ICheckClimbWall check) {
-            if (!_climbable) return;
+            if (!CanClimb) return;
             if (MotionT == MotionType.WallJump)
                 return;
 
@@ -128,39 +121,44 @@ namespace _02._Script.Players.Components
             ChangeMotion(MotionType.Climb);
         }
 
+        public void ApplyWallDash(float impulse) {
+            rb.AddForceY(impulse, ForceMode2D.Impulse);
+        }
+
+        public void EndWallDash() {
+            CanClimb = true;
+        }
+
+        public void ApplyWallJump(float xSpeed, float ySpeed) {
+            _timeInAir = 0f;
+            rb.gravityScale = _originGravityScale;
+            rb.linearVelocity = new Vector2(_wallJumpDir * xSpeed, ySpeed);
+        }
+
+        #region Climb Settings
+
+        public void ApplyClimb(float climbSpeed) {
+            rb.gravityScale = 0f;
+            rb.linearVelocity = new Vector2(0f, climbSpeed);
+        }
+
+        #endregion
+
         public void PushForce(Vector2 pushDir, float power, ForceMode2D forceMode) {
             rb.AddForce(pushDir * power, forceMode);
         }
 
-        public void ApplyWallDash(float impulse)
-        {
-            rb.AddForceY(impulse, ForceMode2D.Impulse);
-        }
-        
-        public void EndWallDash()
-        {
-            _climbable = true;
-        }
-
-        private async UniTaskVoid WallDashUniTask(float impulse, float duration)
-        {
+        private async UniTaskVoid WallDashUniTask(float impulse, float duration) {
             rb.AddForceY(impulse, ForceMode2D.Impulse);
             await UniTask.Delay(TimeSpan.FromSeconds(duration));
 
-            _climbable = true;
+            CanClimb = true;
             ChangeMotion(MotionType.Climb);
         }
 
         private async UniTaskVoid CancelClimbUniTask() {
             await UniTask.Delay(TimeSpan.FromSeconds(2f));
-            _climbable = true;
-        }
-
-        public void ApplyWallJump(float xSpeed, float ySpeed)
-        {
-            _timeInAir = 0f;
-            rb.gravityScale = _originGravityScale;
-            rb.linearVelocity = new Vector2(_wallJumpDir * xSpeed, ySpeed);
+            CanClimb = true;
         }
 
 
@@ -185,16 +183,5 @@ namespace _02._Script.Players.Components
         private void ChangeMotion(MotionType motion) {
             MotionT = motion;
         }
-
-        #region Climb Settings
-
-
-        public void ApplyClimb(float climbSpeed) 
-        {
-            rb.gravityScale = 0f;
-            rb.linearVelocity = new Vector2(0f, climbSpeed);
-        }
-
-        #endregion
     }
 }
