@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace _02._Script.FSM {
@@ -19,6 +19,16 @@ namespace _02._Script.FSM {
 
         public void ChangeState<T>() where T : PlayerMoveState {
             if (_states.TryGetValue(typeof(T), out var nextState)) ChangeState(nextState);
+        }
+
+        public bool TryGetState<T>(out T state) where T : PlayerMoveState {
+            if (_states.TryGetValue(typeof(T), out var s) && s is T typedState) {
+                state = typedState;
+                return true;
+            }
+
+            state = null;
+            return false;
         }
 
         public void ChangeState(PlayerMoveState nextState) {

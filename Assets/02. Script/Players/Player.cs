@@ -13,7 +13,17 @@ namespace _02._Script.Players {
         [SerializeField] private float useStaminaInWallJump;
         [SerializeField] private StaminaHUD staminaHUD;
 
-        public bool CanJump;
+        private bool _canSJ = true;
+
+        public bool CanSJ {
+            get => _canSJ;
+            set {
+                _canSJ = value;
+                if (!_canSJ && SprintControl != null) {
+                    SprintControl.StopSprint();
+                }
+            }
+        }
 
         private ICheckClimbWall _checkClimbWall;
 
@@ -69,7 +79,7 @@ namespace _02._Script.Players {
         private void OnDestroy() { }
 
         protected override void AfterInitialize() {
-            CanJump = true;
+            CanSJ = true;
             base.AfterInitialize();
 
             GetModules();
@@ -90,8 +100,14 @@ namespace _02._Script.Players {
             UnsubscribeInputEvents();
         }
 
+        public float WalkSpeed => _moveStateMachine != null && _moveStateMachine.TryGetState<WalkState>(out var walkState)
+            ? walkState.walkSpeed
+            : 10f;
+
         public void ChangeSpeed(float speed) {
-            _mover.SpeedControl(speed);
+            if (_moveStateMachine != null && _moveStateMachine.TryGetState<WalkState>(out var walkState)) {
+                walkState.walkSpeed = speed;
+            }
         }
 
         #region ModulesGet
@@ -142,6 +158,7 @@ namespace _02._Script.Players {
         }
 
         private void HandleSprintInput() {
+            if (!CanSJ) return;
             SprintControl.StartSprint();
         }
 
@@ -154,6 +171,7 @@ namespace _02._Script.Players {
         }
 
         private void HandleJumpInput() {
+            if (!CanSJ) return;
             _moveStateMachine.HandleJumpInput();
         }
 
@@ -205,6 +223,7 @@ namespace _02._Script.Players {
         }
 
         public void Jump() {
+            if (!CanSJ) return;
             _mover.Jump();
         }
 

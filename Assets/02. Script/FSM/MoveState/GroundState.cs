@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using _02._Script.Players;
 
 namespace _02._Script.FSM.MoveState {
@@ -11,7 +11,7 @@ namespace _02._Script.FSM.MoveState {
         }
 
         public override void HandleJumpInput() {
-            if (!_player.IsGrounded) return;
+            if (!_player.CanSJ || !_player.IsGrounded) return;
             _player.Jump();
         }
     }
