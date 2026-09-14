@@ -16,6 +16,7 @@ namespace _02._Script {
 
             private void Awake() {
                 if (Instance == null) Instance = this;
+                else Destroy(gameObject);
 
                 _defaultFixedDeltaTime = Time.fixedDeltaTime;
             }
