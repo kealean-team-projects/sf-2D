@@ -23,7 +23,7 @@ namespace _02._Script.Core {
                 Debug.Log($"성공 {path}");
             }
             catch (Exception ex) {
-                Debug.LogError($"실패 {ex}");
+                Debug.LogError($"실패 \n{ex}");
             }
         }
 
@@ -45,7 +45,7 @@ namespace _02._Script.Core {
                 return default;
             }
             catch (Exception ex) {
-                Debug.LogError("실패");
+                Debug.LogError($"실패 \n{ex}");
                 return default;
             }
         }
