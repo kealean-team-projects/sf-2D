@@ -1,0 +1,26 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <Style src="project://database/Assets/00.%20Member/LHS/Script/DevLib/SoundSystem/Editor/SoundClipEditor_Style.uss?fileID=7433441132597879392&amp;guid=bb967ae67188be84891cf8763f0a1661&amp;type=3#SoundClipEditor_Style"/>
+    <ui:VisualElement name="container">
+        <uie:PropertyField binding-path="audioType" label="Audio Type" name="audio-type-field" data-source-type="DevLib.SoundSystem.Runtime.AudioType, SoundSystem_Assembly"/>
+        <uie:PropertyField binding-path="clip" label="Audio Clip" name="clip-field"/>
+        <uie:PropertyField binding-path="isLoop" label="Is Loop" name="is-loop-field"/>
+        <uie:PropertyField binding-path="randomizePitch" label="Random Pitch" name="random-pitch-field"/>
+        <uie:PropertyField binding-path="randomPitchModifier" label="Pitch Modifier" name="pitch-modifier-field"/>
+        <uie:PropertyField binding-path="volume" label="Volume" name="volume-field"/>
+        <uie:PropertyField binding-path="pitch" label="Pitch" name="pitch-field"/>
+        <uie:PropertyField binding-path="startTime" label="Start Time" name="start-time-field"/>
+        <uie:PropertyField binding-path="endTime" label="End Time" name="end-time-field"/>
+    </ui:VisualElement>
+    <ui:VisualElement name="control-container" style="flex-grow: 1;">
+        <ui:Label text="Clip Info Visuallizer" name="title-label" class="section-title"/>
+        <ui:VisualElement name="waveform-slot" class="waveform-slot"/>
+        <ui:VisualElement name="time-row" class="time-row">
+            <ui:Label text="Start : 0.000s" name="start-label" class="time-label"/>
+            <ui:VisualElement style="flex-grow: 1;"/>
+            <ui:Label text="End : 0.000s" name="end-label" class="time-label" style="-unity-text-align: upper-right;"/>
+        </ui:VisualElement>
+        <ui:VisualElement name="button-row" class="time-row" style="justify-content: center;">
+            <ui:Button text="Play" name="play-btn" class="play-btn"/>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
