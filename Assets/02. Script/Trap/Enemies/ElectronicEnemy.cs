@@ -1,12 +1,10 @@
-﻿using System;
-using _02._Script.Component;
-using _02._Script.Players;
+﻿using _02._Script.Players;
 using UnityEngine;
 
 namespace _02._Script.Trap.Enemies
 {
-    public class MorayEel : EnemyBase
-    {   
+    public class ElectronicEnemy : EnemyBase
+    {
         [SerializeField] private Rigidbody2D rb;
         [SerializeField] private float moveSpeed = 2f;
         [SerializeField] private float wallCheckDistance = 0.6f;
