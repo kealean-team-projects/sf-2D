@@ -12,10 +12,9 @@ namespace _02._Script.Trap {
         private bool _isCollider;
 
         private void Update() {
-            if (Keyboard.current.tKey.wasPressedThisFrame)
-                Sequence.Create()
+                /*Sequence.Create()
                     .Group(Tween.Scale(trm, 1f, 1f, Ease.OutExpo))
-                    .ChainCallback(() => _isCollider = true);
+                    .ChainCallback(() => _isCollider = true);*/
         }
 
         private void OnTriggerEnter2D(Collider2D other) {
