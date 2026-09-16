@@ -32,21 +32,22 @@ namespace _02._Script.Core {
 
             if (!File.Exists(path)) {
                 Debug.LogWarning("없어");
-                return default;
+                return null;
             }
 
             try {
                 var encryptedBytes = File.ReadAllBytes(path);
                 var json = Decrypt(encryptedBytes);
+                Debug.Log("성공");
                 return JsonConvert.DeserializeObject(json) as T;
             }
             catch (CryptographicException) {
                 Debug.LogError("이상한거 안받음");
-                return default;
+                return null;
             }
             catch (Exception ex) {
                 Debug.LogError($"실패 \n{ex}");
-                return default;
+                return null;
             }
         }
 

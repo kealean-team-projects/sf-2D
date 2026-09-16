@@ -9,20 +9,18 @@ namespace _02._Script.Trap {
         private float _timer = 1f;
 
         private void Update() {
-            if (_isSeaweed) {
-                if (_player == null) {
-                    _isSeaweed = false;
-                    return;
-                }
-
-                _timer += Time.deltaTime * 2;
-                _player.ChangeSpeed(speed / _timer);
-                if (_timer >= 5f) {
-                    Destroy(_player.gameObject);
-                    _player = null;
-                    _isSeaweed = false;
-                }
+            if (!_isSeaweed) return;
+            if (_player == null) {
+                _isSeaweed = false;
+                return;
             }
+
+            _timer += Time.deltaTime * 2;
+            _player.ChangeSpeed(speed / _timer);
+            if (!(_timer >= 5f)) return;
+            Destroy(_player.gameObject);
+            _player = null;
+            _isSeaweed = false;
         }
 
         private void OnTriggerEnter2D(Collider2D other) {
@@ -39,11 +37,10 @@ namespace _02._Script.Trap {
         private void OnTriggerExit2D(Collider2D other) {
             _timer = 1f;
             _isSeaweed = false;
-            if (_player != null) {
-                _player.CanSJ = true;
-                _player.ChangeSpeed(speed);
-                _player = null;
-            }
+            if (_player == null) return;
+            _player.CanSJ = true;
+            _player.ChangeSpeed(speed);
+            _player = null;
         }
     }
 }
