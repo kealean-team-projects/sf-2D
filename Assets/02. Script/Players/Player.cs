@@ -53,6 +53,8 @@ namespace _02._Script.Players {
 
         public float ClimbInput => _inputReader.ClimbInput;
 
+        private float pushSpeed;
+
         private void Update() {
             if (!IsClimb) _facingController.UpdateFacing(MoveInput);
 
@@ -203,7 +205,7 @@ namespace _02._Script.Players {
 
         public void ApplyManualMove(float input) {
             _mover.ApplyManualMove(input * SprintControl.MoveSpeedMultiplier
-                                         * CrouchControl.MoveSpeedMultiplier);
+                                         * CrouchControl.MoveSpeedMultiplier + pushSpeed);
         }
 
         public void ApplyClimb(float climbSpeed) {
@@ -229,6 +231,11 @@ namespace _02._Script.Players {
 
         public void CancelClimb() {
             _mover.CancelClimb();
+        }
+
+        public void SetPushSpeed(float speed)
+        {
+            pushSpeed = speed;
         }
 
         #endregion

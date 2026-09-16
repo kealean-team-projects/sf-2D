@@ -1,46 +1,58 @@
+using _02._Script.Component;
 using _02._Script.Players;
 using UnityEngine;
 
 namespace _02._Script.Trap {
-    public class SeaweedStem : MonoBehaviour {
-        [SerializeField] private float speed;
-        private bool _isSeaweed;
+    public class SeaweedStem : TrapBase {
         private Player _player;
+        private float _originalSpeed;
         private float _timer = 1f;
 
+        [SerializeField] private float dieTime = 5f;
+        
         private void Update() {
-            if (!_isSeaweed) return;
-            if (_player == null) {
-                _isSeaweed = false;
-                return;
-            }
-
-            _timer += Time.deltaTime * 2;
-            _player.ChangeSpeed(speed / _timer);
-            if (!(_timer >= 5f)) return;
-            Destroy(_player.gameObject);
-            _player = null;
-            _isSeaweed = false;
-        }
-
-        private void OnTriggerEnter2D(Collider2D other) {
-            if (other.gameObject.TryGetComponent(out _player)) {
-                Debug.Log("이건 늪이다");
-                _isSeaweed = true;
-                _player.CanSJ = false;
-                if (speed <= 0f) {
-                    speed = _player.WalkSpeed;
-                }
-            }
-        }
-
-        private void OnTriggerExit2D(Collider2D other) {
-            _timer = 1f;
-            _isSeaweed = false;
             if (_player == null) return;
-            _player.CanSJ = true;
-            _player.ChangeSpeed(speed);
+
+            _timer += Time.deltaTime * 2f;
+            _player.ChangeSpeed(_originalSpeed / _timer);
+
+            if (_timer >= dieTime)
+            {
+                var target = _player;
+                ReleasePlayer();
+                
+                if (target.TryGetComponent<DamageModule>(out var dmg))
+                    dmg.TakeDamage();
+            }
+        }
+
+        protected override void OnPlayerEnter(Player player)
+        {
+            if (_player != null) return;
+
+            _player = player;
+            _originalSpeed = player.WalkSpeed;
+            _timer = 1f;
+
+            player.CanSJ = false;
+        }
+
+        protected override void OnPlayerExit(Player player)
+        {
+            if (_player == player)
+                ReleasePlayer();
+        }
+        
+        private void ReleasePlayer()
+        {
+            if (_player != null)
+            {
+                _player.CanSJ = true;
+                _player.ChangeSpeed(_originalSpeed);
+            }
+
             _player = null;
+            _timer = 1f;
         }
     }
 }
