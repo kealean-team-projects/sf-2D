@@ -1,35 +1,36 @@
-﻿using UnityEngine;
+﻿using _02._Script.Component;
+using _02._Script.Players;
+using UnityEngine;
 
 namespace _02._Script.Trap {
-    public enum TrapType {
-        Damage,
-        Effect
+    public enum DamageType {
+        None,
+        Damage
     }
 
     [RequireComponent(typeof(Collider2D))]
-    public abstract class TrapBase : MonoBehaviour {
-        [SerializeField] private TrapType trapType;
+    public abstract class TrapBase : MonoBehaviour
+    {
+        private void OnTriggerEnter2D(Collider2D other)
+        {
+            var player = other.GetComponentInParent<Player>();
+            if (player == null) return;
 
-        private void Update() {
-            TriggerRule();
+            OnPlayerEnter(player);
         }
 
-        private void OnTriggerEnter2D(Collider2D other) {
-            if (other.CompareTag("Player"))
-                switch (trapType) {
-                    case TrapType.Damage:
-                        Damage();
-                        break;
-                    case TrapType.Effect:
-                        Effect(other);
-                        break;
-                }
+        private void OnTriggerExit2D(Collider2D other)
+        {
+            var player = other.GetComponentInParent<Player>();
+            if (player == null) return;
+
+            OnPlayerExit(player);
         }
 
-        public abstract void TriggerRule(); // 발동 조건 그러나 일단 보류
+        protected abstract void OnPlayerEnter(Player player);
 
-        protected virtual void Damage() { }
-
-        protected virtual void Effect(Collider2D other) { }
+        protected virtual void OnPlayerExit(Player player)
+        {
+        }
     }
 }

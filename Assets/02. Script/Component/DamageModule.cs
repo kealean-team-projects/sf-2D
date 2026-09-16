@@ -3,10 +3,12 @@ using UnityEngine;
 
 namespace _02._Script.Component {
     public sealed class DamageModule : MonoBehaviour {
-        private void OnTriggerEnter2D(Collider2D other) {
+        public event Action OnDamaged;
+
+        public void TakeDamage()
+        {
+            Debug.Log("사망 발동");
             OnDamaged?.Invoke();
         }
-
-        public event Action OnDamaged;
     }
 }

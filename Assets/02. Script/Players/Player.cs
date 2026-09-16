@@ -1,9 +1,13 @@
+using _02._Script.Component;
 using _02._Script.FSM;
 using _02._Script.FSM.MoveState;
 using _02._Script.Players.Interface;
 using _02._Script.Players.Sprint;
 using _02._Script.UI;
+using Cysharp.Threading.Tasks;
+using PrimeTween;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace _02._Script.Players {
     public class Player : Agent {
@@ -12,6 +16,8 @@ namespace _02._Script.Players {
         [SerializeField] private float useStaminaInWallDash;
         [SerializeField] private float useStaminaInWallJump;
         [SerializeField] private StaminaHUD staminaHUD;
+        [SerializeField] private Image fade;
+        
 
         private bool _canSJ = true;
 
@@ -37,6 +43,8 @@ namespace _02._Script.Players {
         private IMover _mover;
         private IStats _stats;
 
+        private DamageModule _damage;
+
         public ICrouchController CrouchControl { get; private set; }
         public SprintController SprintControl { get; private set; }
         public bool IsMoving => _inputReader.MoveInput != 0;
@@ -52,6 +60,8 @@ namespace _02._Script.Players {
         public float MoveInput => _inputReader.MoveInput;
 
         public float ClimbInput => _inputReader.ClimbInput;
+
+        private float pushSpeed;
 
         private void Update() {
             if (!IsClimb) _facingController.UpdateFacing(MoveInput);
@@ -85,6 +95,7 @@ namespace _02._Script.Players {
             GetModules();
             SubscribeInputEvents();
 
+            _damage = GetComponent<DamageModule>();
             SprintControl = new SprintController(_stats, useStaminaInRun);
             _moveStateMachine = PlayerMoveStateFactory.Create(this);
 
@@ -93,10 +104,13 @@ namespace _02._Script.Players {
 
             var viewer = viewerObject.AddComponent<StateMachineViewer>();
             viewer.Initialize(_moveStateMachine);
+
+            _damage.OnDamaged += OnDead;
         }
 
         protected override void OnDispose() {
             base.OnDispose();
+            _damage.OnDamaged += OnDead;
             UnsubscribeInputEvents();
         }
 
@@ -108,6 +122,15 @@ namespace _02._Script.Players {
             if (_moveStateMachine != null && _moveStateMachine.TryGetState<WalkState>(out var walkState)) {
                 walkState.walkSpeed = speed;
             }
+        }
+        
+        private void OnDead() {
+            DeadUni().Forget();
+        }
+
+        private async UniTaskVoid DeadUni() {
+            await Tween.Alpha(fade, 0, 1, 1, Ease.InExpo);
+            Destroy(gameObject);
         }
 
         #region ModulesGet
@@ -203,7 +226,7 @@ namespace _02._Script.Players {
 
         public void ApplyManualMove(float input) {
             _mover.ApplyManualMove(input * SprintControl.MoveSpeedMultiplier
-                                         * CrouchControl.MoveSpeedMultiplier);
+                                         * CrouchControl.MoveSpeedMultiplier + pushSpeed);
         }
 
         public void ApplyClimb(float climbSpeed) {
@@ -229,6 +252,11 @@ namespace _02._Script.Players {
 
         public void CancelClimb() {
             _mover.CancelClimb();
+        }
+
+        public void SetPushSpeed(float speed)
+        {
+            pushSpeed = speed;
         }
 
         #endregion
