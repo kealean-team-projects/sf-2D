@@ -110,7 +110,7 @@ namespace _02._Script.Players {
 
         protected override void OnDispose() {
             base.OnDispose();
-            _damage.OnDamaged += OnDead;
+            _damage.OnDamaged -= OnDead;
             UnsubscribeInputEvents();
         }
 
@@ -123,8 +123,17 @@ namespace _02._Script.Players {
                 walkState.walkSpeed = speed;
             }
         }
+
+        #region DeadHandler
+
+        private bool _isDead;
         
         private void OnDead() {
+            
+            if (_isDead) return;
+
+            _isDead = true;
+            
             DeadUni().Forget();
         }
 
@@ -133,6 +142,8 @@ namespace _02._Script.Players {
             Destroy(gameObject);
         }
 
+        #endregion
+        
         #region ModulesGet
 
         private void GetModules() {

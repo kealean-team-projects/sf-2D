@@ -19,6 +19,13 @@ namespace _02._Script.Trap {
             OnPlayerEnter(player);
         }
 
+        private void OnTriggerStay2D(Collider2D other)
+        {
+            var player = other.GetComponentInParent<Player>();
+            if (player == null) return;
+            OnPlayerStay(player);
+        }
+
         private void OnTriggerExit2D(Collider2D other)
         {
             var player = other.GetComponentInParent<Player>();
@@ -28,6 +35,8 @@ namespace _02._Script.Trap {
         }
 
         protected abstract void OnPlayerEnter(Player player);
+        
+        protected virtual void OnPlayerStay(Player player) { }
 
         protected virtual void OnPlayerExit(Player player)
         {
