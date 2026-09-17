@@ -5,9 +5,6 @@ using UnityEngine;
 namespace _02._Script.FSM.MoveState {
     [Serializable]
     public class WallDashState : PlayerMoveState {
-        public float dashImpulse = 15f;
-        public float dashDuration = 0.2f;
-
         private float _elapsedTime;
 
         public WallDashState(Player owner, MoveStateMachine stateMachine) : base(owner, stateMachine) { }
@@ -20,7 +17,7 @@ namespace _02._Script.FSM.MoveState {
         public override void Tick() {
             _elapsedTime += Time.fixedDeltaTime;
 
-            if (_elapsedTime < dashDuration)
+            if (_elapsedTime < _player.JumpDuration)
                 return;
 
             _player.EndWallDash();
