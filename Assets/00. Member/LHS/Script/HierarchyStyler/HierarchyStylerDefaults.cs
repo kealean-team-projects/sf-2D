@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿#if UNITY_EDITOR
+using UnityEngine;
 
 namespace _VFX_Lib._03._Scripts.Editor.HierarchyStyler {
     internal static class HierarchyStylerDefaults {
@@ -11,3 +12,4 @@ namespace _VFX_Lib._03._Scripts.Editor.HierarchyStyler {
         internal static readonly Color DividerTextColor = Color.white;
     }
 }
+#endif
