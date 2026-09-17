@@ -33,9 +33,7 @@ namespace _02._Script.Players {
         [SerializeField] private float jumpDuration = 0.2f;
         [SerializeField] private float jumpDashImpulse = 3f;
 
-        [Header("Push Settings")]
-        [SerializeField] private float pushSpeed;
-        
+        private float pushSpeed;
         private float jumpDir;
 
         private bool _canSJ = true;
