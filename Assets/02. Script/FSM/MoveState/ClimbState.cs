@@ -4,10 +4,6 @@ using _02._Script.Players;
 namespace _02._Script.FSM.MoveState {
     [Serializable]
     public class ClimbState : PlayerMoveState {
-        public float climbSpeed;
-        public float climbUpSpeed = 10f;
-        public float climbDownSpeed = 20f;
-
         public ClimbState(Player owner, MoveStateMachine stateMachine) : base(owner, stateMachine) { }
 
         public override void Enter() { }
@@ -18,11 +14,7 @@ namespace _02._Script.FSM.MoveState {
             if (TryTransition<WalkState>(!_player.IsClimb))
                 return;
 
-            climbSpeed = _player.ClimbInput > 0f
-                ? climbUpSpeed
-                : climbDownSpeed;
-
-            _player.ApplyClimb(_player.ClimbInput * climbSpeed);
+            _player.Mover.ApplyClimb(_player.ClimbInput * _player.ClimbSpeed);
         }
 
         public override void HandleJumpInput() {

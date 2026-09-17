@@ -6,7 +6,7 @@ namespace _02._Script.Interaction
 {
     public abstract class InteractBase : MonoBehaviour, IInteractable
     {
-        [SerializeField] private SpriteRenderer targetRenderer;
+        [SerializeField] protected SpriteRenderer targetRenderer;
         [SerializeField] private Material outlineMaterial;
 
         private Material _originalMaterial;

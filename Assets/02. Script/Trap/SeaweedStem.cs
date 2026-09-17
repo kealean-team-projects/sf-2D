@@ -31,7 +31,7 @@ namespace _02._Script.Trap {
             if (_player != null) return;
 
             _player = player;
-            _originalSpeed = player.WalkSpeed;
+            player.ChangeSpeed(_originalSpeed);
             _timer = 1f;
 
             player.CanSJ = false;
