@@ -1,4 +1,5 @@
 ﻿using _02._Script.Players.Components;
+using UnityEngine;
 
 namespace _02._Script.Players.Interface {
     public interface IMover {
@@ -16,7 +17,7 @@ namespace _02._Script.Players.Interface {
         void ApplyManualMove(float moveSpeed);
         void ApplyClimb(float climbSpeed);
         void ApplyWallDash(float impulse);
-        void ApplyWallJump(float xSpeed, float ySpeed);
+        void ApplyWallJump(Vector2 jumpSpeed);
 
         void EndWallDash();
     }

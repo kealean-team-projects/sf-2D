@@ -18,6 +18,25 @@ namespace _02._Script.Players {
         [SerializeField] private StaminaHUD staminaHUD;
         [SerializeField] private Image fade;
         
+        [Header("Walk Settings")]
+        [SerializeField] private float moveSpeed = 10f;
+        [SerializeField] private float moveSpeedMultiplier;
+        
+        [Header("Climb Settings")]
+        [SerializeField] private float climbUpSpeed = 10f;
+        [SerializeField] private float climbDownSpeed = 20f;
+        [SerializeField] private float crouchSpeedMultiplier = 2f;
+        
+        [Header("Jump Settings")]
+        [SerializeField] private float jumpXSpeed = 8f;
+        [SerializeField] private float jumpYSpeed = 12f;
+        [SerializeField] private float jumpDuration = 0.2f;
+        [SerializeField] private float jumpDashImpulse = 3f;
+
+        [Header("Push Settings")]
+        [SerializeField] private float pushSpeed;
+        
+        private float jumpDir;
 
         private bool _canSJ = true;
 
@@ -31,6 +50,10 @@ namespace _02._Script.Players {
             }
         }
 
+        // Components Settings
+
+        #region Components
+
         private ICheckClimbWall _checkClimbWall;
 
         private IFacingController _facingController;
@@ -40,34 +63,51 @@ namespace _02._Script.Players {
 
         private MoveStateMachine _moveStateMachine;
 
-        private IMover _mover;
+        public IMover Mover { get; private set; }
+        
         private IStats _stats;
 
         private DamageModule _damage;
-
+        
         public ICrouchController CrouchControl { get; private set; }
         public SprintController SprintControl { get; private set; }
-        public bool IsMoving => _inputReader.MoveInput != 0;
-        public bool IsGrounded => _mover.IsGround;
 
+        #endregion
+
+        #region Property FSM Settings
+
+        public float MoveInput => _inputReader.MoveInput * moveSpeed;
+        public float ClimbInput => _inputReader.ClimbInput;
+        
+        public float ClimbSpeed { get; private set; }
+        public Vector2 JumpSpeed  => new(jumpXSpeed * jumpDir, jumpYSpeed);
+        public float JumpDuration => jumpDuration;
+        public float Impulse => jumpDashImpulse;
+        public float PushSpeed => pushSpeed;
+        
+        public float SpeedMultiplier => SprintControl.IsSprinting ? moveSpeedMultiplier : 1f;
+        public float CrouchSpeedMultiplier => crouchSpeedMultiplier;
+
+        #endregion
+
+        #region State Settings
+
+        public bool IsMoving => _inputReader.MoveInput != 0;
+        public bool IsGrounded => Mover.IsGround;
         public bool IsClimb => _checkClimbWall.IsClimbed
-                               && _mover.CanClimb
+                               && Mover.CanClimb
                                && _stats.Stamina > 0f;
 
         public bool IsWallJump => _moveStateMachine.CurrentState is WallJumpState;
         public bool IsWallDash => _moveStateMachine.CurrentState is WallDashState;
 
-        public float MoveInput => _inputReader.MoveInput;
-
-        public float ClimbInput => _inputReader.ClimbInput;
-
-        private float pushSpeed;
+        #endregion
 
         private void Update() {
             if (!IsClimb) _facingController.UpdateFacing(MoveInput);
 
-            _mover.Climb(_checkClimbWall);
-            _mover.CalculateAirTime(_checkClimbWall);
+            Mover.Climb(_checkClimbWall);
+            Mover.CalculateAirTime(_checkClimbWall);
 
             _stats.StaminaUpdate(IsGrounded, IsMoving, IsClimb);
             SprintControl.Tick(IsMoving);
@@ -75,7 +115,10 @@ namespace _02._Script.Players {
             if (IsClimb && ClimbInput != 0f)
                 _stats.UseStamina(useStaminaInWall, false);
 
-            if (_stats.Stamina <= 0f) _mover.CancelClimb();
+            if (_stats.Stamina <= 0f) Mover.CancelClimb();
+            
+            ClimbSpeed = ClimbInput > 0f ? climbUpSpeed : climbDownSpeed;
+            jumpDir = _facingController.IsFacingLeft ? 1f : -1f;
         }
 
         private void FixedUpdate() {
@@ -114,13 +157,9 @@ namespace _02._Script.Players {
             UnsubscribeInputEvents();
         }
 
-        public float WalkSpeed => _moveStateMachine != null && _moveStateMachine.TryGetState<WalkState>(out var walkState)
-            ? walkState.walkSpeed
-            : 10f;
-
         public void ChangeSpeed(float speed) {
             if (_moveStateMachine != null && _moveStateMachine.TryGetState<WalkState>(out var walkState)) {
-                walkState.walkSpeed = speed;
+                moveSpeed = speed;
             }
         }
 
@@ -148,7 +187,7 @@ namespace _02._Script.Players {
 
         private void GetModules() {
             _inputReader = GetModule<IInputReader>();
-            _mover = GetModule<IMover>();
+            Mover = GetModule<IMover>();
             _interactor = GetModule<IInteractor>();
             _stats = GetModule<IStats>();
             _checkClimbWall = GetModule<ICheckClimbWall>();
@@ -161,7 +200,7 @@ namespace _02._Script.Players {
         public bool TryWallJump() {
             if (!CanStartWallAction(useStaminaInWallJump)) return false;
 
-            _mover.WallJump(_facingController.IsFacingLeft ? 1f : -1f);
+            Mover.WallJump(_facingController.IsFacingLeft ? 1f : -1f);
             _stats.UseStamina(useStaminaInWallJump, true);
             return true;
         }
@@ -169,16 +208,15 @@ namespace _02._Script.Players {
         public bool TryWallDash() {
             if (!CanStartWallAction(useStaminaInWallDash)) return false;
 
-            _mover.WallDash();
+            Mover.WallDash();
             _stats.UseStamina(useStaminaInWallDash, true);
             return true;
         }
 
         private bool CanStartWallAction(float staminaCost) {
-            return IsClimb
-                   && !IsWallJump
-                   && !IsWallDash
-                   && _stats.Stamina >= staminaCost;
+            return IsClimb && !IsWallJump
+                           && !IsWallDash
+                           && _stats.Stamina >= staminaCost;
         }
 
         #region Handle
@@ -234,35 +272,19 @@ namespace _02._Script.Players {
         #endregion
 
         #region ApplyMover
-
-        public void ApplyManualMove(float input) {
-            _mover.ApplyManualMove(input * SprintControl.MoveSpeedMultiplier
-                                         * CrouchControl.MoveSpeedMultiplier + pushSpeed);
-        }
-
-        public void ApplyClimb(float climbSpeed) {
-            _mover.ApplyClimb(climbSpeed);
-        }
-
-        public void ApplyWallJump(float xSpeed, float ySpeed) {
-            _mover.ApplyWallJump(xSpeed, ySpeed);
-        }
-
-        public void ApplyWallDash(float impulse) {
-            _mover.ApplyWallDash(impulse);
-        }
+        
 
         public void EndWallDash() {
-            _mover.EndWallDash();
+            Mover.EndWallDash();
         }
 
         public void Jump() {
             if (!CanSJ) return;
-            _mover.Jump();
+            Mover.Jump();
         }
 
         public void CancelClimb() {
-            _mover.CancelClimb();
+            Mover.CancelClimb();
         }
 
         public void SetPushSpeed(float speed)
