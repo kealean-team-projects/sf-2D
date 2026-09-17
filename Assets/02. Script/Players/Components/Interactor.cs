@@ -72,19 +72,15 @@ namespace _02._Script.Players.Components {
             if (ReferenceEquals(_currentTarget, next)) return;
 
             // 이전 대상의 테두리를 끕니다.
-            if (_currentTarget is InteractBase previous && previous != null)
-            {
+            if (_currentTarget is InteractBase previous)
                 previous.SetHighlight(false);
-            }
 
             // 새 대상을 저장합니다.
             _currentTarget = next;
 
             // 새 대상의 테두리를 켭니다.
-            if (_currentTarget is InteractBase current && current != null)
-            {
+            if (_currentTarget is InteractBase current)
                 current.SetHighlight(true);
-            }
         }
         
         private void OnDisable()
