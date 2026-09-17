@@ -200,7 +200,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!58 &3873253294229672112
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -252,5 +252,4 @@ MonoBehaviour:
   rb: {fileID: 8970382061892208849}
   moveSpeed: 2
   wallCheckDistance: 0.6
-  startPos: {fileID: 0}
-  endPos: {fileID: 0}
+  moveDistance: 10.62
