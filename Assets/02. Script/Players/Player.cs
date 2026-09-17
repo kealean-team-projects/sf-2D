@@ -27,7 +27,7 @@ namespace _02._Script.Players {
         [SerializeField] private float climbDownSpeed = 20f;
         [SerializeField] private float crouchSpeedMultiplier = 2f;
         
-        [Header("Jump Settings")]
+        [Header("WallJump Settings")]
         [SerializeField] private float jumpXSpeed = 8f;
         [SerializeField] private float jumpYSpeed = 12f;
         [SerializeField] private float jumpDuration = 0.2f;
@@ -77,11 +77,13 @@ namespace _02._Script.Players {
         public float MoveInput => _inputReader.MoveInput * moveSpeed;
         public float ClimbInput => _inputReader.ClimbInput;
         
+        
         public float ClimbSpeed { get; private set; }
         public Vector2 JumpSpeed  => new(jumpXSpeed * jumpDir, jumpYSpeed);
         public float JumpDuration => jumpDuration;
         public float Impulse => jumpDashImpulse;
         public float PushSpeed => pushSpeed;
+        
         
         public float SpeedMultiplier => SprintControl.IsSprinting ? moveSpeedMultiplier : 1f;
         public float CrouchSpeedMultiplier => crouchSpeedMultiplier;
