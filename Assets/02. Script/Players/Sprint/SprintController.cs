@@ -12,7 +12,6 @@ namespace _02._Script.Players.Sprint {
 
         public bool IsSprinting { get; private set; }
 
-        public float MoveSpeedMultiplier => IsSprinting ? 2f : 1f;
 
         public void StartSprint() {
             IsSprinting = true;

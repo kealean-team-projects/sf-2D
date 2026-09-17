@@ -129,10 +129,10 @@ namespace _02._Script.Players.Components {
             CanClimb = true;
         }
 
-        public void ApplyWallJump(float xSpeed, float ySpeed) {
+        public void ApplyWallJump(Vector2 walljumpDir) {
             _timeInAir = 0f;
             rb.gravityScale = _originGravityScale;
-            rb.linearVelocity = new Vector2(_wallJumpDir * xSpeed, ySpeed);
+            rb.linearVelocity = walljumpDir;
         }
 
         #region Climb Settings

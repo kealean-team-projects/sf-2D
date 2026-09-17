@@ -14,7 +14,7 @@ namespace _02._Script.FSM.MoveState {
 
         public override void Enter() {
             _elapsedTime = 0f;
-            _player.ApplyWallDash(dashImpulse);
+            _player.Mover.ApplyWallDash(_player.Impulse);
         }
 
         public override void Tick() {
