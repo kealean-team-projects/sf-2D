@@ -4,36 +4,28 @@ using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace _02._Script.Players.Components {
-    public enum MotionType {
-        ManualMove,
-        Dash,
-        Fall,
-        Climb,
-        WallJump,
-        WallDash
-    }
-
     public class Mover : MonoBehaviour, IAgentModule, IMover {
         [SerializeField] private Rigidbody2D rb;
-        [SerializeField] private float speed;
         [SerializeField] private float jumpForce;
 
         [SerializeField] private Vector3 checker;
         [SerializeField] private Vector2 checkerSize;
         [SerializeField] private LayerMask whatIsGround;
 
-        [Header("ExtraGravity Settings")] [SerializeField]
-        private float extraGravity = 15f;
-
+        [Header("ExtraGravity Settings")] 
+        [SerializeField] private float extraGravity = 15f;
         [SerializeField] private float gravityDelay = 0.15f;
 
-        [Header("CheckWall Settings")] private float _originGravityScale;
+        private float _originGravityScale;
 
         private float _timeInAir;
-        private UniTask _wallJump;
-        private float _wallJumpDir;
-
-
+        
+        private bool _isClimbCancelPending;
+        
+        private bool _isWallDashing;
+        
+        public bool CanClimb => !_isWallDashing && !_isClimbCancelPending;
+        
         private void Awake() {
             _originGravityScale = rb.gravityScale;
         }
@@ -59,9 +51,7 @@ namespace _02._Script.Players.Components {
         public Type Type => typeof(IMover);
 
         public void Initialize(Agent owner) { }
-        public MotionType MotionT { get; private set; } = MotionType.ManualMove;
 
-        public bool CanClimb { get; private set; } = true;
 
         public void ApplyManualMove(float moveSpeed) {
             rb.gravityScale = _originGravityScale;
@@ -79,46 +69,25 @@ namespace _02._Script.Players.Components {
             rb.AddForceY(jumpForce * multiplier, ForceMode2D.Impulse);
         }
 
-        public void WallJump(float xDirection) {
-            _wallJumpDir = xDirection;
-        }
-
         public void WallDash() {
-            CanClimb = false;
+            _isWallDashing = true;
         }
 
         public void CancelClimb() {
-            CanClimb = false;
-            ChangeMotion(MotionType.ManualMove);
+            if (_isClimbCancelPending) return;
+            
+            _isClimbCancelPending = true;
             CancelClimbUniTask().Forget();
         }
 
-        public void SpeedControl(float newSpeed) {
-            speed = newSpeed;
-        }
-
-        public void CalculateAirTime(ICheckClimbWall checkClimbWall) {
-            if (checkClimbWall.IsClimbed) return;
+        public void CalculateAirTime(bool isClimbing) {
+            if (isClimbing) return;
             if (!IsGround) {
                 _timeInAir += Time.deltaTime;
             }
             else {
                 _timeInAir = 0;
-                ChangeMotion(MotionType.ManualMove);
             }
-        }
-
-        public void Climb(ICheckClimbWall check) {
-            if (!CanClimb) return;
-            if (MotionT == MotionType.WallJump)
-                return;
-
-            if (!check.IsClimbed) {
-                ChangeMotion(MotionType.ManualMove);
-                return;
-            }
-
-            ChangeMotion(MotionType.Climb);
         }
 
         public void ApplyWallDash(float impulse) {
@@ -126,7 +95,7 @@ namespace _02._Script.Players.Components {
         }
 
         public void EndWallDash() {
-            CanClimb = true;
+            _isWallDashing = false;
         }
 
         public void ApplyWallJump(Vector2 walljumpDir) {
@@ -148,17 +117,10 @@ namespace _02._Script.Players.Components {
             rb.AddForce(pushDir * power, forceMode);
         }
 
-        private async UniTaskVoid WallDashUniTask(float impulse, float duration) {
-            rb.AddForceY(impulse, ForceMode2D.Impulse);
-            await UniTask.Delay(TimeSpan.FromSeconds(duration));
-
-            CanClimb = true;
-            ChangeMotion(MotionType.Climb);
-        }
-
         private async UniTaskVoid CancelClimbUniTask() {
             await UniTask.Delay(TimeSpan.FromSeconds(2f));
-            CanClimb = true;
+
+            _isClimbCancelPending = false;
         }
 
 
@@ -178,10 +140,6 @@ namespace _02._Script.Players.Components {
                 rb.linearVelocityX = 0;
             if (isYStop)
                 rb.linearVelocityY = 0;
-        }
-
-        private void ChangeMotion(MotionType motion) {
-            MotionT = motion;
         }
     }
 }

@@ -4,7 +4,6 @@ using System.Collections.Generic;
 namespace _02._Script.FSM {
     public class MoveStateMachine {
         private readonly Dictionary<Type, PlayerMoveState> _states = new();
-        public IEnumerable<PlayerMoveState> States => _states.Values;
         public PlayerMoveState CurrentState { get; private set; }
 
         public void Tick() {

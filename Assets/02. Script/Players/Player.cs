@@ -10,7 +10,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 namespace _02._Script.Players {
-    public class Player : Agent {
+    public class Player : Agent, IPlayerMoveContext {
         [SerializeField] private float useStaminaInRun;
         [SerializeField] private float useStaminaInWall;
         [SerializeField] private float useStaminaInWallDash;
@@ -25,13 +25,15 @@ namespace _02._Script.Players {
         [Header("Climb Settings")]
         [SerializeField] private float climbUpSpeed = 10f;
         [SerializeField] private float climbDownSpeed = 20f;
-        [SerializeField] private float crouchSpeedMultiplier = 2f;
         
         [Header("WallJump Settings")]
         [SerializeField] private float jumpXSpeed = 8f;
         [SerializeField] private float jumpYSpeed = 12f;
         [SerializeField] private float jumpDuration = 0.2f;
         [SerializeField] private float jumpDashImpulse = 3f;
+        
+        [Header("Crouch Settings")]
+        [SerializeField] private float crouchSpeedMultiplier = 0.5f;
 
         private float pushSpeed;
         private float jumpDir;
@@ -86,7 +88,7 @@ namespace _02._Script.Players {
         
         
         public float SpeedMultiplier => SprintControl.IsSprinting ? moveSpeedMultiplier : 1f;
-        public float CrouchSpeedMultiplier => crouchSpeedMultiplier;
+        public float CrouchSpeedMultiplier => CrouchControl.MoveSpeedMultiplier;
 
         #endregion
 
@@ -94,7 +96,8 @@ namespace _02._Script.Players {
 
         public bool IsMoving => _inputReader.MoveInput != 0;
         public bool IsGrounded => Mover.IsGround;
-        public bool IsClimb => _checkClimbWall.IsClimbed
+        public bool IsClimb => !IsGrounded
+                               && _checkClimbWall.IsClimbed
                                && Mover.CanClimb
                                && _stats.Stamina > 0f;
 
@@ -106,8 +109,7 @@ namespace _02._Script.Players {
         private void Update() {
             if (!IsClimb) _facingController.UpdateFacing(MoveInput);
 
-            Mover.Climb(_checkClimbWall);
-            Mover.CalculateAirTime(_checkClimbWall);
+            Mover.CalculateAirTime(IsClimb);
 
             _stats.StaminaUpdate(IsGrounded, IsMoving, IsClimb);
             SprintControl.Tick(IsMoving);
@@ -136,6 +138,7 @@ namespace _02._Script.Players {
             base.AfterInitialize();
 
             GetModules();
+            CrouchControl.SetCrouchSpeedMultiplier(crouchSpeedMultiplier);
             SubscribeInputEvents();
 
             _damage = GetComponent<DamageModule>();
@@ -200,7 +203,6 @@ namespace _02._Script.Players {
         public bool TryWallJump() {
             if (!CanStartWallAction(useStaminaInWallJump)) return false;
 
-            Mover.WallJump(_facingController.IsFacingLeft ? 1f : -1f);
             _stats.UseStamina(useStaminaInWallJump, true);
             return true;
         }
@@ -208,7 +210,6 @@ namespace _02._Script.Players {
         public bool TryWallDash() {
             if (!CanStartWallAction(useStaminaInWallDash)) return false;
 
-            Mover.WallDash();
             _stats.UseStamina(useStaminaInWallDash, true);
             return true;
         }

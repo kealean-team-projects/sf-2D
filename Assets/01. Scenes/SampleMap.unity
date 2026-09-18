@@ -199,7 +199,7 @@ MonoBehaviour:
     version: 2
     RefIds:
     - rid: -2
-      type: {class: '', ns: '', asm: ''}
+      type: {class: , ns: , asm: }
     - rid: 3226911989810593828
       type: {class: Light2DProviderSources, ns: UnityEngine.Rendering.Universal, asm: Unity.RenderPipelines.Universal.2D.Runtime}
       data:
@@ -15348,10 +15348,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_01.Script.Player.Components.Mover
   rb: {fileID: 1858437624}
-  speed: 8
   jumpForce: 15
   checker: {x: 0, y: 0, z: 0}
-  checkerSize: {x: 1, y: 0.3}
+  checkerSize: {x: 0.8, y: 0.3}
   whatIsGround:
     serializedVersion: 2
     m_Bits: 64
@@ -15373,7 +15372,6 @@ MonoBehaviour:
   targetCollider: {fileID: 1858437625}
   crouchingSize: {x: 1, y: 1}
   crouchingOffset: {x: 0, y: -0.5}
-  crouchingSpeedMultiplier: 0.5
 --- !u!1 &1845603965
 GameObject:
   m_ObjectHideFlags: 0
@@ -15573,6 +15571,15 @@ MonoBehaviour:
   useStaminaInWallJump: 20
   staminaHUD: {fileID: 399250622}
   fade: {fileID: 2027668110}
+  moveSpeed: 10
+  moveSpeedMultiplier: 0
+  climbUpSpeed: 10
+  climbDownSpeed: 20
+  jumpXSpeed: 8
+  jumpYSpeed: 12
+  jumpDuration: 0.2
+  jumpDashImpulse: 3
+  crouchSpeedMultiplier: 0.5
 --- !u!114 &1858437628
 MonoBehaviour:
   m_ObjectHideFlags: 0

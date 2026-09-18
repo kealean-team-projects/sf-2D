@@ -1,5 +1,6 @@
 ﻿using System;
 using _02._Script.Players;
+using _02._Script.Players.Interface;
 using UnityEngine;
 
 namespace _02._Script.FSM.MoveState {
@@ -7,11 +8,11 @@ namespace _02._Script.FSM.MoveState {
     public class WallJumpState : PlayerMoveState {
         private float _elapsedTime;
 
-        public WallJumpState(Player owner, MoveStateMachine stateMachine) : base(owner, stateMachine) { }
+        public WallJumpState(IPlayerMoveContext context, MoveStateMachine stateMachine) : base(context, stateMachine) { }
 
         public override void Enter() {
             _elapsedTime = 0f;
-            _player.Mover.ApplyWallJump(_player.JumpSpeed);
+            _context.Mover.ApplyWallJump(_context.JumpSpeed);
         }
 
         public override void Exit() { }
@@ -19,7 +20,7 @@ namespace _02._Script.FSM.MoveState {
         public override void Tick() {
             _elapsedTime += Time.fixedDeltaTime;
 
-            if (_elapsedTime < _player.JumpDuration)
+            if (_elapsedTime < _context.JumpDuration)
                 return;
 
             ReturnToMovement();
