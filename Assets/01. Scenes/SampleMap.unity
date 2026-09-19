@@ -2947,13 +2947,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 695474440}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59169ac76f134b8590a70db67ef65f9d, type: 3}
+  m_Script: {fileID: 11500000, guid: 152545c8eb9b05345a9e815cab42e036, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::_01.Script.Player.Components.Stats
-  staminaHealSlow: 5
-  staminaHealBoost: 10
+  m_EditorClassIdentifier: Assembly-CSharp::_02._Script._01_Players.Components.Stamina.Stats
+  staminaHealSlow: 20
+  staminaHealBoost: 20
   maxStamina: 100
-  staminaHealWaitTime: 3.19
+  staminaHealWaitTime: 5
 --- !u!1 &712836217
 GameObject:
   m_ObjectHideFlags: 0
@@ -15227,6 +15227,52 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1764622415
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1764622417}
+  - component: {fileID: 1764622416}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1764622416
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1764622415}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19c9ce1cb5784fc591631ad877bec728, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_02._Script._00_Scripts._07_Managers.GameManager
+  player: {fileID: 1858437626}
+  respawnDelay: 1
+--- !u!4 &1764622417
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1764622415}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2.52663, y: -2.79276, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1811091320
 GameObject:
   m_ObjectHideFlags: 0
@@ -15349,6 +15395,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::_01.Script.Player.Components.Mover
   rb: {fileID: 1858437624}
   jumpForce: 15
+  <IsGround>k__BackingField: 0
   checker: {x: 0, y: 0, z: 0}
   checkerSize: {x: 0.8, y: 0.3}
   whatIsGround:
@@ -15356,7 +15403,6 @@ MonoBehaviour:
     m_Bits: 64
   extraGravity: 15
   gravityDelay: 0.3
-  <IsGround>k__BackingField: 0
 --- !u!114 &1811515461
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15372,6 +15418,52 @@ MonoBehaviour:
   targetCollider: {fileID: 1858437625}
   crouchingSize: {x: 1, y: 1}
   crouchingOffset: {x: 0, y: -0.5}
+--- !u!1 &1845451167
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1845451169}
+  - component: {fileID: 1845451168}
+  m_Layer: 0
+  m_Name: EffectManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1845451168
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1845451167}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3452580cdd5245b4801617b05b3fbb28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_02._Script.EffectManager
+  fade: {fileID: 2027668110}
+  duration: 2
+--- !u!4 &1845451169
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1845451167}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2.52663, y: -2.79276, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1845603965
 GameObject:
   m_ObjectHideFlags: 0
@@ -15460,6 +15552,7 @@ GameObject:
   - component: {fileID: 1858437624}
   - component: {fileID: 1858437627}
   - component: {fileID: 1858437628}
+  - component: {fileID: 1858437629}
   m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
@@ -15565,14 +15658,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 038d06262ebbea544995a5acb3d140fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_01.Script.Player.Player
-  useStaminaInRun: 20
-  useStaminaInWall: 20
-  useStaminaInWallDash: 20
-  useStaminaInWallJump: 20
+  staminaCosts:
+    runPerSecond: 20
+    climbPerSecond: 20
+    wallDash: 20
+    wallJump: 20
   staminaHUD: {fileID: 399250622}
   fade: {fileID: 2027668110}
   moveSpeed: 10
-  moveSpeedMultiplier: 0
+  moveSpeedMultiplier: 2
   climbUpSpeed: 10
   climbDownSpeed: 20
   jumpXSpeed: 8
@@ -15580,6 +15674,7 @@ MonoBehaviour:
   jumpDuration: 0.2
   jumpDashImpulse: 3
   crouchSpeedMultiplier: 0.5
+  progress: {fileID: 1858437629}
 --- !u!114 &1858437628
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15592,6 +15687,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd6a43895824438498b7fa97c44b1ed4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_02._Script.Component.DamageModule
+--- !u!114 &1858437629
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1858437623}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ecfbfed027494128abfaf64f0b8149a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_02._Script.Players.PlayerProgress
+  currentStage: 1
 --- !u!1 &1918708741
 GameObject:
   m_ObjectHideFlags: 0
@@ -16317,3 +16425,5 @@ SceneRoots:
   - {fileID: 52743074}
   - {fileID: 996900475}
   - {fileID: 1604736242}
+  - {fileID: 1764622417}
+  - {fileID: 1845451169}
