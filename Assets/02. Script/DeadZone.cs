@@ -9,6 +9,8 @@ namespace _02._Script {
             if (player == null) return;
 
             DamageModule damage;
+            
+            Debug.Log("감지");
 
             if (player.TryGetComponent<DamageModule>(out damage))
                 damage.TakeDamage();

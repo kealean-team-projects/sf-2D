@@ -16128,8 +16128,8 @@ MonoBehaviour:
   staminaCosts:
     runPerSecond: 20
     climbPerSecond: 20
-    wallDash: 20
-    wallJump: 20
+    wallDash: 10
+    wallJump: 0
   staminaHUD: {fileID: 399250622}
   fade: {fileID: 2027668110}
   moveSpeed: 10
