@@ -8,14 +8,12 @@ using UnityEngine.UI;
 
 namespace _02._Script.UI {
     public class BtnTween : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler {
-        private Button _btn;
         private RectTransform _rt;
         private Tween _tween;
         private Tween _sizeTween;
         private TMP_Text _txt;
 
         private void Awake() {
-            _btn = GetComponent<Button>();
             _rt = GetComponent<RectTransform>();
             _txt = GetComponentInChildren<TMP_Text>();
         }
