@@ -180,7 +180,7 @@ Camera:
     height: 1
   near clip plane: 0.1
   far clip plane: 5000
-  field of view: 13
+  field of view: 40
   orthographic: 0
   orthographic size: 10
   m_Depth: -1
@@ -207,7 +207,7 @@ Transform:
   m_GameObject: {fileID: 641677860}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1280.4, y: 108.6, z: -128}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -505,7 +505,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1264725920
 Transform:
   m_ObjectHideFlags: 0
@@ -534,9 +534,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_00._Member.LHS.Script.ChapterLoader
   chapterSceneLists:
-  - {fileID: 102900000, guid: 4d0cd780f0afb3247bf5e2f615f7c0d6, type: 3}
-  - {fileID: 102900000, guid: db2b0fdce239f12468b2c5e0aa4ff464, type: 3}
-  - {fileID: 102900000, guid: 37096f1d15fcdad42abf4e0955f547a8, type: 3}
+  - {fileID: 102900000, guid: 5bba83634b0483a43b4f8a070c168886, type: 3}
+  - {fileID: 102900000, guid: 8332b4ba73cb2b2418555ca352ca0b9d, type: 3}
+  - {fileID: 102900000, guid: 6c48e77e564fd3f498035c5a956e523a, type: 3}
 --- !u!1 &1410783995
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using Cysharp.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -24,7 +25,7 @@ namespace _00._Member.LHS.Script {
         }
 
         private void Start() {
-            StartCoroutine(SwitchScene("MainMenu"));
+            SwitchScene("MainMenu").Forget();
         }
 
 
@@ -45,23 +46,23 @@ namespace _00._Member.LHS.Script {
         }
 #endif
 
-        private IEnumerator SwitchScene(string sceneName) {
-            if (isLoading) yield break;
+        private async UniTask SwitchScene(string sceneName) {
+            if (isLoading) return;
             isLoading = true;
 
             if (CurrentScene.IsValid())
-                yield return SceneManager.UnloadSceneAsync(CurrentScene);
+                await SceneManager.UnloadSceneAsync(CurrentScene);
 
-            yield return SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
+            await SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
             SceneManager.SetActiveScene(SceneManager.GetSceneByName(sceneName));
             CurrentScene = SceneManager.GetSceneByName(sceneName);
 
             isLoading = false;
         }
 
-        public IEnumerator LoadChapter(int chapterNumber) {
-            if (chapterNumber <= 0 || chapterNumber > chapterSceneNames.Length) yield break;
-            yield return SwitchScene(chapterSceneNames[chapterNumber - 1]);
+        public async UniTaskVoid LoadChapter(int chapterNumber) {
+            if (chapterNumber <= 0 || chapterNumber > chapterSceneNames.Length) return;
+            await SwitchScene(chapterSceneNames[chapterNumber - 1]);
         }
     }
 }

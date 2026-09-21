@@ -8,7 +8,7 @@ namespace _00._Member.LHS.Script {
                 return;
             }
 
-            ChapterLoader.Instance.StartCoroutine(ChapterLoader.Instance.LoadChapter(1));
+            ChapterLoader.Instance.LoadChapter(1).Forget();
         }
 
         public void OnClickForC2() {
@@ -17,7 +17,7 @@ namespace _00._Member.LHS.Script {
                 return;
             }
 
-            ChapterLoader.Instance.StartCoroutine(ChapterLoader.Instance.LoadChapter(2));
+            ChapterLoader.Instance.LoadChapter(2).Forget();
         }
     }
 }
