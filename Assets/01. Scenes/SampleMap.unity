@@ -552,8 +552,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24
-  m_fontSizeBase: 24
+  m_fontSize: 30
+  m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -754,6 +754,7 @@ GameObject:
   - component: {fileID: 143028107}
   - component: {fileID: 143028106}
   - component: {fileID: 143028105}
+  - component: {fileID: 143028108}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -776,9 +777,9 @@ RectTransform:
   - {fileID: 740568289}
   m_Father: {fileID: 297581471}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 50, y: -130}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 250, y: 70}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &143028105
@@ -863,6 +864,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 143028103}
   m_CullTransparentMesh: 1
+--- !u!114 &143028108
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 143028103}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d171d89933a4dacaa87a59ab9ed943d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_02._Script.UI.BtnTween
 --- !u!1 &146180278
 GameObject:
   m_ObjectHideFlags: 0
@@ -1996,7 +2009,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -456, y: 0}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &399250622
@@ -2326,6 +2339,7 @@ GameObject:
   - component: {fileID: 477288416}
   - component: {fileID: 477288415}
   - component: {fileID: 477288414}
+  - component: {fileID: 477288417}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -2348,9 +2362,9 @@ RectTransform:
   - {fileID: 1115671106}
   m_Father: {fileID: 297581471}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 50, y: -35}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 250, y: 70}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &477288414
@@ -2435,6 +2449,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 477288412}
   m_CullTransparentMesh: 1
+--- !u!114 &477288417
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 477288412}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d171d89933a4dacaa87a59ab9ed943d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_02._Script.UI.BtnTween
 --- !u!1 &487271482
 GameObject:
   m_ObjectHideFlags: 0
@@ -3153,7 +3179,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &712836218
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3296,8 +3322,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24
-  m_fontSizeBase: 24
+  m_fontSize: 30
+  m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -4457,6 +4483,7 @@ GameObject:
   - component: {fileID: 1097070088}
   - component: {fileID: 1097070087}
   - component: {fileID: 1097070086}
+  - component: {fileID: 1097070089}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -4479,9 +4506,9 @@ RectTransform:
   - {fileID: 113876802}
   m_Father: {fileID: 297581471}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 50, y: -225}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 250, y: 70}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1097070086
@@ -4566,6 +4593,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1097070084}
   m_CullTransparentMesh: 1
+--- !u!114 &1097070089
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1097070084}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d171d89933a4dacaa87a59ab9ed943d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_02._Script.UI.BtnTween
 --- !u!1 &1111306956
 GameObject:
   m_ObjectHideFlags: 0
@@ -4686,8 +4725,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24
-  m_fontSizeBase: 24
+  m_fontSize: 30
+  m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -13681,11 +13720,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5005760993575268181, guid: beb1a57fc0e960e4f95c20e880c2c4b4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 4.37
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5005760993575268181, guid: beb1a57fc0e960e4f95c20e880c2c4b4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.92
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5005760993575268181, guid: beb1a57fc0e960e4f95c20e880c2c4b4, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5005760993575268181, guid: beb1a57fc0e960e4f95c20e880c2c4b4, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5005760993575268181, guid: beb1a57fc0e960e4f95c20e880c2c4b4, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7276013286960127725, guid: beb1a57fc0e960e4f95c20e880c2c4b4, type: 3}
       propertyPath: moveDistance
