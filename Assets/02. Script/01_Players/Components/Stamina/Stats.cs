@@ -1,5 +1,7 @@
 ﻿using System;
+using _02._Script._01_Players.Components.DamageCompo;
 using _02._Script._01_Players.Interface;
+using _02._Script._05_Managers;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
@@ -9,12 +11,29 @@ namespace _02._Script._01_Players.Components.Stamina {
         [SerializeField] private float staminaHealBoost;
         [SerializeField] private float maxStamina;
         [SerializeField] private float staminaHealWaitTime;
-
+        [SerializeField] private float heatStroke;
+        
         private bool _canCharge = true;
         private bool _uniTaskIsRunning;
 
         public void Initialize(Agent owner) {
             Stamina = maxStamina;
+            heatStroke = 0;
+        }
+
+        public void HeatStrokeUpdate(int value, DamageModule damage) {
+            heatStroke = Mathf.Clamp(heatStroke += value * Time.deltaTime, 0, 100);
+            switch (heatStroke) {
+                case >= 100:
+                    damage.TakeDamage();
+                    break;
+                case > 50:
+                    EffectManager.Instance.setFilter(true);
+                    break;
+                default:
+                    EffectManager.Instance.setFilter(false);
+                    break;
+            }
         }
 
         public Type Type => typeof(IStats);

@@ -1,3 +1,4 @@
+using System;
 using _02._Script._01_Players.Components.ControllerCompo;
 using _02._Script._01_Players.Components.DamageCompo;
 using _02._Script._01_Players.FSM;
@@ -122,6 +123,12 @@ namespace _02._Script._01_Players {
 
             ClimbSpeed = ClimbInput > 0f ? climbUpSpeed : climbDownSpeed;
             jumpDir = _facingController.IsFacingLeft ? 1f : -1f;
+            if(_isHeat)
+                _stats.HeatStrokeUpdate(10, _damage);
+            if(_isHighHeat)
+                _stats.HeatStrokeUpdate(20, _damage);
+            if(!_isHeat && !_isHighHeat)
+                _stats.HeatStrokeUpdate(-20, _damage);
         }
 
         private void FixedUpdate() {
@@ -132,7 +139,22 @@ namespace _02._Script._01_Players {
         private void LateUpdate() {
             staminaHUD?.UpdateStamina(_stats.Stamina);
         }
-        
+
+        private void OnTriggerEnter2D(Collider2D other) {
+            if (other.CompareTag("Heat")) {
+                _isHeat = true;
+            }
+
+            if (other.CompareTag("HighHeat")) {
+                _isHighHeat = true;
+            }
+        }
+
+        private void OnTriggerExit2D(Collider2D other) {
+            _isHeat = false;
+            _isHighHeat = false;
+        }
+
         protected override void AfterInitialize() {
             CanSJ = true;
             base.AfterInitialize();
@@ -184,7 +206,9 @@ namespace _02._Script._01_Players {
         #region DeadHandler
 
         private bool _isDead;
-        
+        private bool _isHeat;
+        private bool _isHighHeat;
+
         private void OnDead() {
             if (_isDead) return;
 
