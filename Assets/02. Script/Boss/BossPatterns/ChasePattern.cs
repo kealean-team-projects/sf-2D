@@ -10,18 +10,27 @@ namespace _02._Script.Boss
         [SerializeField] private BossRoom room;
         [SerializeField] private float searchDuration = 3f;
         [SerializeField] private float descendDuration = 1f;
+        [SerializeField, Min(0f)] private float spawnXOffset = 3f;
 
         public override async UniTask Execute(Boss owner, CancellationToken token)
         {
             owner.SetTarget(null);
             owner.SetReturnPosition(owner.RbCompo.position);
+            if (player == null) return;
             
             var zone = room.GetZone(player.position);
             if (zone == null) return;
-            owner.SetReturnPosition(zone.spawnPoint.position);
-            owner.RbCompo.position = zone.spawnPoint.position;
+            float offset = Mathf.Max(0f, spawnXOffset);
+            Bounds bounds = zone.area.bounds;
+            float x = Random.Range(
+                Mathf.Max(bounds.min.x, player.position.x - offset),
+                Mathf.Min(bounds.max.x, player.position.x + offset));
+            Vector2 spawnPosition = new Vector2(x, zone.spawnPoint.position.y);
+            Vector2 scanPosition = new Vector2(x, zone.scanPoint.position.y);
+            owner.SetReturnPosition(spawnPosition);
+            owner.RbCompo.position = spawnPosition;
             
-            await Descend(owner, zone.scanPoint.position, token);
+            await Descend(owner, scanPosition, token);
             owner.ShowVision(true);
             
             try
@@ -30,6 +39,7 @@ namespace _02._Script.Boss
 
                 while (elapsed < searchDuration)
                 {
+                    if (player == null) break;
                     if (owner.CanSee(player))
                     {
                         owner.SetTarget(player);
@@ -40,7 +50,8 @@ namespace _02._Script.Boss
                     elapsed += Time.deltaTime;
                 }
             
-                owner.SetTarget(room.GetClosestLight(owner.RbCompo.position)?.transform);
+                var closestLight = room.GetClosestLight(owner.RbCompo.position);
+                owner.SetTarget(closestLight != null ? closestLight.transform : null);
             }
             finally
             {

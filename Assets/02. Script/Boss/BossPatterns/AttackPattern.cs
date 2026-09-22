@@ -38,7 +38,7 @@ namespace _02._Script.Boss
             {
                 await UniTask.Yield(PlayerLoopTiming.FixedUpdate, token);
                 token.ThrowIfCancellationRequested();
-                if (!IsAttacking) break;
+                if (!IsAttacking || owner.Target == null) break;
                 elapsed += Time.fixedDeltaTime;
 
                 Vector2 nextPosition = Vector2.MoveTowards(
