@@ -31,6 +31,7 @@ namespace _02._Script._04_Interaction
 
         public void TurnOn() => SetLightActive(true);
         public void TurnOff() => SetLightActive(false);
+        public void Break() => SetLightActive(false); // 나중에 파괴 처리
 
         private void SetLightActive(bool active)
         {
