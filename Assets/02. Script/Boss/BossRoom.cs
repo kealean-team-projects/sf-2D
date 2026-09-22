@@ -28,7 +28,8 @@ namespace _02._Script.Boss
             lights = light.GetComponentsInChildren<InteractLight>();
             
             foreach (InteractLight roomLight in lights)
-                roomLight.TurnOff();
+                if (roomLight != null)
+                    roomLight.TurnOff();
         }
         
         private void OnEnable()
@@ -62,7 +63,8 @@ namespace _02._Script.Boss
             try
             {
                 foreach (InteractLight roomLight in lights)
-                    roomLight.TurnOn();
+                    if (roomLight != null)
+                        roomLight.TurnOn();
                 SetLightBrightness(1f);
 
                 if (timeLine != null)
@@ -92,7 +94,8 @@ namespace _02._Script.Boss
         public void SetLightBrightness(float ratio)
         {
             foreach (InteractLight roomLight in lights)
-                roomLight.SetBrightness(ratio);
+                if (roomLight != null)
+                    roomLight.SetBrightness(ratio);
         }
         
         public InteractLight GetClosestLight(Vector2 position)
@@ -102,7 +105,7 @@ namespace _02._Script.Boss
 
             foreach (InteractLight roomLight in lights)
             {
-                if (!roomLight.IsActive) continue;
+                if (roomLight == null || !roomLight.IsActive) continue;
 
                 float distance = ((Vector2)roomLight.transform.position - position).sqrMagnitude;
 
