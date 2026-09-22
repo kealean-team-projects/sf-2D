@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 3
   tags:
   - Heat
+  - HighHeat
   layers:
   - Default
   - TransparentFX
