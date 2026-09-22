@@ -122,6 +122,8 @@ namespace _02._Script.Boss
         {
             foreach (BossZone zone in zones)
             {
+                if (zone == null || zone.area == null ||
+                    zone.spawnPoint == null || zone.scanPoint == null) continue;
                 if (zone.area.OverlapPoint(position))
                     return zone;
             }

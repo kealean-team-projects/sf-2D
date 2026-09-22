@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using Cysharp.Threading.Tasks;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace _02._Script.Boss
@@ -11,6 +12,9 @@ namespace _02._Script.Boss
         [SerializeField] private float searchDuration = 3f;
         [SerializeField] private float descendDuration = 1f;
         [SerializeField, Min(0f)] private float spawnXOffset = 3f;
+        [SerializeField] private LayerMask groundMask = 1 << 6;
+        [SerializeField, Min(0f)] private float groundClearance = 0.2f;
+        private readonly List<RaycastHit2D> groundHits = new List<RaycastHit2D>();
 
         public override async UniTask Execute(Boss owner, CancellationToken token)
         {
@@ -63,16 +67,39 @@ namespace _02._Script.Boss
         {
             Vector2 start = owner.RbCompo.position;
             float elapsed = 0f;
+            var filter = new ContactFilter2D();
+            filter.SetLayerMask(groundMask);
+            filter.useTriggers = false;
 
-            while (elapsed < descendDuration)
+            while (true)
             {
                 await UniTask.Yield(PlayerLoopTiming.FixedUpdate, token);
+                token.ThrowIfCancellationRequested();
                 elapsed += Time.fixedDeltaTime;
 
-                owner.RbCompo.MovePosition(Vector2.Lerp(start, target, elapsed / descendDuration));
-            }
+                float progress = descendDuration > 0f ? elapsed / descendDuration : 1f;
+                Vector2 next = Vector2.Lerp(start, target, progress);
+                Vector2 movement = next - owner.RbCompo.position;
+                float distance = movement.magnitude;
 
-            owner.RbCompo.MovePosition(target);
+                if (movement.y < 0f)
+                {
+                    float clearance = Mathf.Max(0f, groundClearance);
+                    int count = owner.RbCompo.Cast(
+                        movement.normalized, filter, groundHits, distance + clearance);
+                    if (count > 0)
+                    {
+                        foreach (RaycastHit2D hit in groundHits)
+                            distance = Mathf.Min(distance, Mathf.Max(0f, hit.distance - clearance));
+
+                        owner.RbCompo.MovePosition(owner.RbCompo.position + movement.normalized * distance);
+                        return;
+                    }
+                }
+
+                owner.RbCompo.MovePosition(next);
+                if (progress >= 1f) return;
+            }
         }
     }
 }
