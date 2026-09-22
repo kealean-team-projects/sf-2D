@@ -12,7 +12,7 @@ namespace _02._Script._01_Players.Components.Stamina {
         [SerializeField] private float maxStamina;
         [SerializeField] private float staminaHealWaitTime;
         [SerializeField] private float heatStroke;
-        
+
         private bool _canCharge = true;
         private bool _uniTaskIsRunning;
 
@@ -20,6 +20,8 @@ namespace _02._Script._01_Players.Components.Stamina {
             Stamina = maxStamina;
             heatStroke = 0;
         }
+
+        public Type Type => typeof(IStats);
 
         public void HeatStrokeUpdate(int value, DamageModule damage) {
             heatStroke = Mathf.Clamp(heatStroke += value * Time.deltaTime, 0, 100);
@@ -35,8 +37,6 @@ namespace _02._Script._01_Players.Components.Stamina {
                     break;
             }
         }
-
-        public Type Type => typeof(IStats);
 
         public float Stamina { get; private set; }
 
@@ -59,8 +59,10 @@ namespace _02._Script._01_Players.Components.Stamina {
                 ? Mathf.Clamp(Stamina - usedStamina * Time.deltaTime, 0, maxStamina)
                 : Mathf.Clamp(Stamina - usedStamina, 0, maxStamina);
         }
-        
-        public void RestoreStamina(float savedStamina) => Stamina = Mathf.Clamp(savedStamina, 0f, maxStamina);
+
+        public void RestoreStamina(float savedStamina) {
+            Stamina = Mathf.Clamp(savedStamina, 0f, maxStamina);
+        }
 
         private async UniTask WaitCharge() {
             _uniTaskIsRunning = true;

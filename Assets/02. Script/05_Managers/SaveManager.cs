@@ -3,8 +3,7 @@ using _02._Script._02_Core;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace _02._Script._05_Managers
-{
+namespace _02._Script._05_Managers {
     [Serializable]
     public class UserData {
         public int stage;
@@ -29,9 +28,9 @@ namespace _02._Script._05_Managers
         }
 
         private void Update() {
-            if(Keyboard.current.iKey.wasPressedThisFrame)
+            if (Keyboard.current.iKey.wasPressedThisFrame)
                 OnCaptureRequested?.Invoke();
-            if(Keyboard.current.oKey.wasPressedThisFrame)
+            if (Keyboard.current.oKey.wasPressedThisFrame)
                 RestoreProgress();
         }
 
@@ -39,7 +38,7 @@ namespace _02._Script._05_Managers
         public static event Action<UserData> OnRestoreRequested;
 
         public void SaveProgress(Transform trm, float stamina, int stage) {
-            UserData data = new UserData();
+            var data = new UserData();
 
             data.stage = stage;
             data.positionX = trm.position.x;
@@ -52,11 +51,11 @@ namespace _02._Script._05_Managers
         // 플레이 중 사망/체크포인트 복구용 런타임 이벤트 방식
         public void RestoreProgress() {
             var data = SaveSystem.Load<UserData>("Save.sf2d");
-            if (data == null)
-            {
+            if (data == null) {
                 Debug.LogWarning("Save.sf2d not found");
                 return;
             }
+
             OnRestoreRequested?.Invoke(data);
         }
     }

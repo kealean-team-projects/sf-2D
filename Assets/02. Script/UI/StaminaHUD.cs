@@ -1,5 +1,4 @@
-﻿using System;
-using PrimeTween;
+﻿using PrimeTween;
 using TMPro;
 using UnityEngine;
 
@@ -8,7 +7,7 @@ namespace _02._Script.UI {
         [SerializeField] private TextMeshProUGUI stamina;
 
         private RectTransform rectTransform;
-        
+
         private void OnEnable() {
             rectTransform = GetComponent<RectTransform>();
             Tween.UIAnchoredPosition(rectTransform, new Vector3(0, 0), 1f, Ease.OutQuart);

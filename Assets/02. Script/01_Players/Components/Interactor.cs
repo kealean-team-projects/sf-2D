@@ -15,11 +15,14 @@ namespace _02._Script._01_Players.Components {
 
         private Vector2 Offset => offset + (Vector2)transform.position;
 
-        
-        private void Update()
-        {
+
+        private void Update() {
             if (_results == null) return;
             FindTarget();
+        }
+
+        private void OnDisable() {
+            SelectOutline(null);
         }
 
         private void OnDrawGizmos() {
@@ -35,20 +38,17 @@ namespace _02._Script._01_Players.Components {
         public Type Type => typeof(IInteractor);
 
         public void Interact(Player owner) {
-            
             _currentTarget?.Interact(owner);
         }
-        
-        private void FindTarget()
-        {
+
+        private void FindTarget() {
             var count = Physics2D.OverlapCircle(Offset, radius, target, _results);
-            
-            if (count <= 0)
-            {
+
+            if (count <= 0) {
                 SelectOutline(null);
                 return;
             }
-            
+
             var distance = float.MaxValue;
             IInteractable currentInteractable = null;
             for (var i = 0; i < count; i++) {
@@ -66,8 +66,7 @@ namespace _02._Script._01_Players.Components {
             SelectOutline(currentInteractable);
         }
 
-        private void SelectOutline(IInteractable next)
-        {
+        private void SelectOutline(IInteractable next) {
             // 같은 대상이면 바꿀 필요가 없습니다.
             if (ReferenceEquals(_currentTarget, next)) return;
 
@@ -81,11 +80,6 @@ namespace _02._Script._01_Players.Components {
             // 새 대상의 테두리를 켭니다.
             if (_currentTarget is InteractBase current)
                 current.SetHighlight(true);
-        }
-        
-        private void OnDisable()
-        {
-            SelectOutline(null);
         }
     }
 }

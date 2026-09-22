@@ -1,8 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace _02._Script._05_Managers
-{
+namespace _02._Script._05_Managers {
     public sealed class CheckPointManager : MonoBehaviour {
         [SerializeField] private Transform savePos;
         [SerializeField] private Transform[] checkPoints = Array.Empty<Transform>();

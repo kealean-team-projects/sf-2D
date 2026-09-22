@@ -5,14 +5,14 @@ using UnityEngine;
 namespace _02._Script {
     public class DeadZone : MonoBehaviour {
         private void OnTriggerEnter2D(Collider2D other) {
-            Player player = other.GetComponentInParent<Player>();
+            var player = other.GetComponentInParent<Player>();
             if (player == null) return;
 
             DamageModule damage;
-            
+
             Debug.Log("감지");
 
-            if (player.TryGetComponent<DamageModule>(out damage))
+            if (player.TryGetComponent(out damage))
                 damage.TakeDamage();
         }
     }

@@ -1,10 +1,6 @@
 ﻿using UnityEngine.UIElements;
 
-namespace csiimnida.CSILib.SoundManager.Editor
-{
+namespace csiimnida.CSILib.SoundManager.Editor {
     [UxmlElement]
-    public partial class SplitView : TwoPaneSplitView
-    {
-        
-    }
+    public partial class SplitView : TwoPaneSplitView { }
 }

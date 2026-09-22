@@ -4,11 +4,11 @@ using UnityEngine;
 
 namespace _02._Script._01_Players.FSM.MoveState {
     [Serializable]
-    public class ClimbState : PlayerMoveState
-    {
+    public class ClimbState : PlayerMoveState {
         private readonly IStats _stats;
 
-        public ClimbState(IPlayerMoveContext _context, MoveStateMachine stateMachine, IStats stats) : base(_context, stateMachine) {
+        public ClimbState(IPlayerMoveContext _context, MoveStateMachine stateMachine, IStats stats) : base(_context,
+            stateMachine) {
             _stats = stats;
         }
 
@@ -20,13 +20,11 @@ namespace _02._Script._01_Players.FSM.MoveState {
             if (TryTransition<WalkState>(!_context.IsClimb))
                 return;
 
-            if (_context.ClimbInput != 0f)
-            {
-                float amount = _context.ClimbStaminaCostPerSecond * Time.fixedDeltaTime;
+            if (_context.ClimbInput != 0f) {
+                var amount = _context.ClimbStaminaCostPerSecond * Time.fixedDeltaTime;
                 _stats.UseStamina(amount, true);
 
-                if (_stats.Stamina <= 0f)
-                {
+                if (_stats.Stamina <= 0f) {
                     _context.CancelClimb();
                     _stateMachine.ChangeState<WalkState>();
                     return;

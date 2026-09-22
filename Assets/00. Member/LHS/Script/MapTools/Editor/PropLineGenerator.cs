@@ -7,10 +7,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Random = System.Random;
 
-namespace _00._Member.LHS.Script.MapTools.Editor
-{
-    internal readonly struct PropLineRequest
-    {
+namespace _00._Member.LHS.Script.MapTools.Editor {
+    internal readonly struct PropLineRequest {
         public readonly MapPropLineProfile Profile;
         public readonly Transform Parent;
 
@@ -49,8 +47,7 @@ namespace _00._Member.LHS.Script.MapTools.Editor
             int seed,
             bool overrideSortingLayer,
             int sortingLayerId,
-            int baseSortingOrder)
-        {
+            int baseSortingOrder) {
             Profile = profile;
             Parent = parent;
 
@@ -75,30 +72,28 @@ namespace _00._Member.LHS.Script.MapTools.Editor
         }
     }
 
-    internal static class PropLineGenerator
-    {
+    internal static class PropLineGenerator {
         private const int MinSortingOrder = -32768;
         private const int MaxSortingOrder = 32767;
 
         public static GameObject Generate(
-            in PropLineRequest request)
-        {
+            in PropLineRequest request) {
             Validate(request);
 
             Undo.IncrementCurrentGroup();
 
-            int undoGroup =
+            var undoGroup =
                 Undo.GetCurrentGroup();
 
             Undo.SetCurrentGroupName(
                 "Generate Prop Line");
 
-            Scene scene =
+            var scene =
                 request.Parent != null
                     ? request.Parent.gameObject.scene
                     : SceneManager.GetActiveScene();
 
-            GameObject container =
+            var container =
                 new GameObject(
                     $"{request.Profile.name}_Generated");
 
@@ -111,14 +106,12 @@ namespace _00._Member.LHS.Script.MapTools.Editor
                 "Create Prop Line Container");
 
             if (request.Parent != null)
-            {
                 Undo.SetTransformParent(
                     container.transform,
                     request.Parent,
                     "Parent Prop Line Container");
-            }
 
-            List<Vector3> positions =
+            var positions =
                 PropPathSampler.BuildPositions(
                     request.PlacementMode,
                     request.Start,
@@ -129,51 +122,48 @@ namespace _00._Member.LHS.Script.MapTools.Editor
                     request.MinimumDistance);
 
             if (positions.Count < request.Count)
-            {
                 Debug.LogWarning(
                     $"Requested {request.Count} props, but only {positions.Count} fit within the minimum distance.");
-            }
 
-            Random random =
+            var random =
                 new Random(request.Seed);
 
-            List<Sprite>[] variantPools =
+            var variantPools =
                 BuildVariantPools(request.Profile);
 
-            PropVariantSelector[] selectors =
+            var selectors =
                 CreateSelectors(
                     request.Profile.SpriteVariantSets.Count);
 
-            List<GameObject> instances =
+            var instances =
                 new List<GameObject>(positions.Count);
 
-            float minZ =
+            var minZ =
                 Mathf.Min(
                     request.ZOffsetRange.x,
                     request.ZOffsetRange.y);
 
-            float maxZ =
+            var maxZ =
                 Mathf.Max(
                     request.ZOffsetRange.x,
                     request.ZOffsetRange.y);
 
-            float minScale =
+            var minScale =
                 Mathf.Max(
                     0.01f,
                     Mathf.Min(
                         request.ScaleRange.x,
                         request.ScaleRange.y));
 
-            float maxScale =
+            var maxScale =
                 Mathf.Max(
                     minScale,
                     Mathf.Max(
                         request.ScaleRange.x,
                         request.ScaleRange.y));
 
-            foreach (Vector3 basePosition in positions)
-            {
-                Vector3 position =
+            foreach (var basePosition in positions) {
+                var position =
                     basePosition;
 
                 position.z += Mathf.Lerp(
@@ -181,7 +171,7 @@ namespace _00._Member.LHS.Script.MapTools.Editor
                     maxZ,
                     (float)random.NextDouble());
 
-                GameObject instance =
+                var instance =
                     PrefabUtility.InstantiatePrefab(
                         request.Profile.Prefab,
                         scene) as GameObject;
@@ -227,12 +217,10 @@ namespace _00._Member.LHS.Script.MapTools.Editor
             }
 
             if (request.OverrideSortingLayer)
-            {
                 ApplyDepthSorting(
                     instances,
                     request.SortingLayerId,
                     request.BaseSortingOrder);
-            }
 
             Undo.CollapseUndoOperations(
                 undoGroup);
@@ -248,23 +236,20 @@ namespace _00._Member.LHS.Script.MapTools.Editor
             Random random,
             float minScale,
             float maxScale,
-            bool randomFlipX)
-        {
-            float scale =
+            bool randomFlipX) {
+            var scale =
                 Mathf.Lerp(
                     minScale,
                     maxScale,
                     (float)random.NextDouble());
 
-            Vector3 localScale =
+            var localScale =
                 target.localScale * scale;
 
             if (
                 randomFlipX &&
                 random.NextDouble() < 0.5)
-            {
                 localScale.x *= -1f;
-            }
 
             target.localScale =
                 localScale;
@@ -273,36 +258,32 @@ namespace _00._Member.LHS.Script.MapTools.Editor
         private static void ApplyDepthSorting(
             List<GameObject> instances,
             int sortingLayerId,
-            int baseSortingOrder)
-        {
-            instances.Sort(
-                (a, b) =>
-                    a.transform.position.z.CompareTo(
-                        b.transform.position.z));
+            int baseSortingOrder) {
+            instances.Sort((a, b) =>
+                a.transform.position.z.CompareTo(
+                    b.transform.position.z));
 
-            int currentOrder =
+            var currentOrder =
                 Mathf.Clamp(
                     baseSortingOrder,
                     MinSortingOrder,
                     MaxSortingOrder);
 
-            foreach (GameObject instance in instances)
-            {
-                SpriteRenderer[] renderers =
+            foreach (var instance in instances) {
+                var renderers =
                     instance.GetComponentsInChildren<SpriteRenderer>(
                         true);
 
                 if (renderers.Length == 0)
                     continue;
 
-                int minOrder =
+                var minOrder =
                     int.MaxValue;
 
-                int maxOrder =
+                var maxOrder =
                     int.MinValue;
 
-                foreach (SpriteRenderer renderer in renderers)
-                {
+                foreach (var renderer in renderers) {
                     minOrder =
                         Mathf.Min(
                             minOrder,
@@ -314,13 +295,12 @@ namespace _00._Member.LHS.Script.MapTools.Editor
                             renderer.sortingOrder);
                 }
 
-                foreach (SpriteRenderer renderer in renderers)
-                {
-                    int relativeOrder =
+                foreach (var renderer in renderers) {
+                    var relativeOrder =
                         renderer.sortingOrder -
                         maxOrder;
 
-                    int sortingOrder =
+                    var sortingOrder =
                         Mathf.Clamp(
                             currentOrder + relativeOrder,
                             MinSortingOrder,
@@ -341,7 +321,7 @@ namespace _00._Member.LHS.Script.MapTools.Editor
                             renderer);
                 }
 
-                int orderRange =
+                var orderRange =
                     maxOrder -
                     minOrder +
                     1;
@@ -354,76 +334,59 @@ namespace _00._Member.LHS.Script.MapTools.Editor
         }
 
         private static void Validate(
-            in PropLineRequest request)
-        {
+            in PropLineRequest request) {
             if (request.Profile == null)
-            {
                 throw new InvalidOperationException(
                     "Profile is required.");
-            }
 
             if (request.Profile.Prefab == null)
-            {
                 throw new InvalidOperationException(
                     "Profile prefab is required.");
-            }
 
             if (!PrefabUtility.IsPartOfPrefabAsset(
                     request.Profile.Prefab))
-            {
                 throw new InvalidOperationException(
                     "Profile prefab must be a Prefab Asset.");
-            }
 
             if (request.Count < 1)
-            {
                 throw new InvalidOperationException(
                     "Count must be at least 1.");
-            }
 
             if (request.MinimumDistance < 0f)
-            {
                 throw new InvalidOperationException(
                     "Minimum distance cannot be negative.");
-            }
 
             if (request.Parent == null)
                 return;
 
-            Scene scene =
+            var scene =
                 request.Parent.gameObject.scene;
 
             if (
                 !scene.IsValid() ||
                 !scene.isLoaded)
-            {
                 throw new InvalidOperationException(
                     "Parent must belong to a loaded Scene.");
-            }
         }
 
         private static List<Sprite>[] BuildVariantPools(
-            MapPropLineProfile profile)
-        {
-            IReadOnlyList<SpriteVariantSet> sets =
+            MapPropLineProfile profile) {
+            var sets =
                 profile.SpriteVariantSets;
 
-            List<Sprite>[] pools =
+            var pools =
                 new List<Sprite>[sets.Count];
 
-            for (int i = 0; i < sets.Count; i++)
-            {
-                IReadOnlyList<Sprite> source =
+            for (var i = 0; i < sets.Count; i++) {
+                var source =
                     sets[i].Variants;
 
-                List<Sprite> pool =
+                var pool =
                     new List<Sprite>(source.Count);
 
-                for (int j = 0; j < source.Count; j++)
-                {
+                for (var j = 0; j < source.Count; j++)
                     if (source[j] != null)
                         pool.Add(source[j]);
-                }
 
                 pools[i] =
                     pool;
@@ -433,16 +396,13 @@ namespace _00._Member.LHS.Script.MapTools.Editor
         }
 
         private static PropVariantSelector[] CreateSelectors(
-            int count)
-        {
-            PropVariantSelector[] selectors =
+            int count) {
+            var selectors =
                 new PropVariantSelector[count];
 
-            for (int i = 0; i < count; i++)
-            {
+            for (var i = 0; i < count; i++)
                 selectors[i] =
                     new PropVariantSelector();
-            }
 
             return selectors;
         }
@@ -452,23 +412,21 @@ namespace _00._Member.LHS.Script.MapTools.Editor
             MapPropLineProfile profile,
             IReadOnlyList<List<Sprite>> pools,
             IReadOnlyList<PropVariantSelector> selectors,
-            Random random)
-        {
-            IReadOnlyList<SpriteVariantSet> sets =
+            Random random) {
+            var sets =
                 profile.SpriteVariantSets;
 
-            for (int i = 0; i < sets.Count; i++)
-            {
-                List<Sprite> pool =
+            for (var i = 0; i < sets.Count; i++) {
+                var pool =
                     pools[i];
 
                 if (pool.Count == 0)
                     continue;
 
-                SpriteVariantSet set =
+                var set =
                     sets[i];
 
-                Transform target =
+                var target =
                     FindTarget(
                         instance.transform,
                         set.RendererPath);
@@ -476,8 +434,7 @@ namespace _00._Member.LHS.Script.MapTools.Editor
                 if (
                     target == null ||
                     !target.TryGetComponent(
-                        out SpriteRenderer renderer))
-                {
+                        out SpriteRenderer renderer)) {
                     Debug.LogWarning(
                         $"SpriteRenderer not found. Prefab: {instance.name}, Path: '{set.RendererPath}'",
                         instance);
@@ -485,7 +442,7 @@ namespace _00._Member.LHS.Script.MapTools.Editor
                     continue;
                 }
 
-                int index =
+                var index =
                     selectors[i].Next(
                         random,
                         pool.Count,
@@ -506,8 +463,7 @@ namespace _00._Member.LHS.Script.MapTools.Editor
 
         private static Transform FindTarget(
             Transform root,
-            string path)
-        {
+            string path) {
             return string.IsNullOrWhiteSpace(path)
                 ? root
                 : root.Find(path);
