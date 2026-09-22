@@ -1,24 +1,19 @@
 ﻿using _02._Script._01_Players;
 using UnityEngine;
 
-namespace _02._Script._03_TrapAndEnemy.Enemies
-{
-    public class WhaleEye : EnemyBase
-    {
+namespace _02._Script._03_TrapAndEnemy.Enemies {
+    public class WhaleEye : EnemyBase {
         [SerializeField] private float eyeOpenTime = 2f, eyeOpeningTime = 3f, eyeClosedTime = 1f;
-        private enum EyeState { Closed, Opening, Open}
-        
-        private EyeState _state = EyeState.Closed;
         private Player _player;
-        
+
+        private EyeState _state = EyeState.Closed;
+
         private float _timer;
 
-        private void Update()
-        {
+        private void Update() {
             _timer += Time.deltaTime;
 
-            switch (_state)
-            {
+            switch (_state) {
                 case EyeState.Closed:
                     if (_timer >= eyeClosedTime)
                         ChangeState(EyeState.Opening);
@@ -36,22 +31,18 @@ namespace _02._Script._03_TrapAndEnemy.Enemies
             }
         }
 
-        protected override void OnPlayerEnter(Player player)
-        {
+        protected override void OnPlayerEnter(Player player) {
             _player = player;
             HandleState(player);
         }
 
-        protected override void OnPlayerStay(Player player)
-        {
+        protected override void OnPlayerStay(Player player) {
             _player = player;
             HandleState(player);
         }
-        
-        private void HandleState(Player player)
-        {
-            switch (_state)
-            {
+
+        private void HandleState(Player player) {
+            switch (_state) {
                 case EyeState.Closed:
                     break;
                 case EyeState.Opening:
@@ -63,19 +54,23 @@ namespace _02._Script._03_TrapAndEnemy.Enemies
             }
         }
 
-        protected override void OnPlayerExit(Player player)
-        {
+        protected override void OnPlayerExit(Player player) {
             if (_player == player)
                 _player = null;
         }
-        
-        private void ChangeState(EyeState nextState)
-        {
+
+        private void ChangeState(EyeState nextState) {
             if (_state == nextState) return;
 
             _state = nextState;
             _timer = 0f;
             Debug.Log($"State가 {_state}로 바뀌었습니다.");
+        }
+
+        private enum EyeState {
+            Closed,
+            Opening,
+            Open
         }
     }
 }

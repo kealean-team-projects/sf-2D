@@ -1,10 +1,7 @@
-﻿
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace _02._Script._01_Players.Interface
-{
-    public interface IPlayerMoveContext
-    {
+namespace _02._Script._01_Players.Interface {
+    public interface IPlayerMoveContext {
         IMover Mover { get; }
 
         bool CanSJ { get; }

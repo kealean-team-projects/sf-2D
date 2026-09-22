@@ -10,8 +10,7 @@ namespace _02._Script._03_TrapAndEnemy.Traps {
 
         private bool _isWorked;
 
-        protected override void OnPlayerEnter(Player player)
-        {
+        protected override void OnPlayerEnter(Player player) {
             if (_isWorked) return;
             _isWorked = true;
             Sequence.Create()

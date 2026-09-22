@@ -1,18 +1,16 @@
 ﻿using _02._Script._01_Players;
 using UnityEngine;
 
-namespace _02._Script._03_TrapAndEnemy.Enemies
-{
-    public class ElectronicEnemy : EnemyBase
-    {
+namespace _02._Script._03_TrapAndEnemy.Enemies {
+    public class ElectronicEnemy : EnemyBase {
         [SerializeField] private Rigidbody2D rb;
         [SerializeField] private float moveSpeed = 2f;
         [SerializeField] private float moveDistance;
-        
-        private Vector2 _targetPosition;
-        private Vector2 _startPos;
         private Vector2 _endPos;
-        
+        private Vector2 _startPos;
+
+        private Vector2 _targetPosition;
+
         private int dir = 1;
 
         private void Awake() {
@@ -20,17 +18,15 @@ namespace _02._Script._03_TrapAndEnemy.Enemies
             _endPos = _startPos + new Vector2(moveDistance, 0);
         }
 
-        protected override void Move()
-        {
-            Vector2 target = dir == 1 ? _endPos : _startPos;
-            Vector2 offset = target - rb.position;
+        protected override void Move() {
+            var target = dir == 1 ? _endPos : _startPos;
+            var offset = target - rb.position;
 
             rb.linearVelocity = Vector2.ClampMagnitude(offset / Time.fixedDeltaTime, moveSpeed);
             if (offset.sqrMagnitude < 0.0001f) dir *= -1;
         }
 
-        protected override void OnPlayerEnter(Player player)
-        {
+        protected override void OnPlayerEnter(Player player) {
             DealDamage(player);
         }
     }

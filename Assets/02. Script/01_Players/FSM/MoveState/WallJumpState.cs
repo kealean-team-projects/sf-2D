@@ -7,7 +7,8 @@ namespace _02._Script._01_Players.FSM.MoveState {
     public class WallJumpState : PlayerMoveState {
         private float _elapsedTime;
 
-        public WallJumpState(IPlayerMoveContext context, MoveStateMachine stateMachine) : base(context, stateMachine) { }
+        public WallJumpState(IPlayerMoveContext context, MoveStateMachine stateMachine) :
+            base(context, stateMachine) { }
 
         public override void Enter() {
             _elapsedTime = 0f;

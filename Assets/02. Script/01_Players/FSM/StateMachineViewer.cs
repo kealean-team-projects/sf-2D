@@ -6,12 +6,12 @@ namespace _02._Script._01_Players.FSM {
 
         private MoveStateMachine _machine;
 
-        public void Initialize(MoveStateMachine machine) {
-            _machine = machine;
-        }
-
         private void LateUpdate() {
             currentState = _machine?.CurrentState?.GetType().Name;
+        }
+
+        public void Initialize(MoveStateMachine machine) {
+            _machine = machine;
         }
     }
 }

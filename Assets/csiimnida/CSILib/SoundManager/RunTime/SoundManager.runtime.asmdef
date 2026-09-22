@@ -1,14 +1,16 @@
 {
-	"name": "SoundManager.runtime",
-	"rootNamespace": "",
-	"references": ["DependencyAssembly"],
-	"includePlatforms": [],
-	"excludePlatforms": [],
-	"allowUnsafeCode": false,
-	"overrideReferences": false,
-	"precompiledReferences": [],
-	"autoReferenced": true,
-	"defineConstraints": [],
-	"versionDefines": [],
-	"noEngineReferences": false
+  "name": "SoundManager.runtime",
+  "rootNamespace": "",
+  "references": [
+    "DependencyAssembly"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
 }

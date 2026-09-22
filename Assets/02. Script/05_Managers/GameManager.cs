@@ -9,11 +9,11 @@ namespace _02._Script._05_Managers {
 
         public Transform player;
 
+        [SerializeField] private float respawnDelay = 0.2f;
+
         private float _defaultFixedDeltaTime;
 
         public bool IsRestarting { get; private set; }
-        
-        [SerializeField] private float respawnDelay = 0.2f;
 
         private void Awake() {
             if (Instance != null && Instance != this) {
@@ -26,9 +26,7 @@ namespace _02._Script._05_Managers {
         }
 
         private void OnDestroy() {
-            if (Instance == this) {
-                Instance = null;
-            }
+            if (Instance == this) Instance = null;
         }
 
         public void SlowMotion(float slowTime) {
@@ -52,7 +50,7 @@ namespace _02._Script._05_Managers {
             Time.timeScale = 0f;
 
             try {
-                EffectManager effect = EffectManager.Instance;
+                var effect = EffectManager.Instance;
 
                 await effect.ShowDeathEffect();
                 target?.RestoreAfterDeath();
@@ -60,7 +58,7 @@ namespace _02._Script._05_Managers {
                 // 화면을 걷기 전에 게임 시간을 재개
                 NormalTime();
                 // 위치 복원 후 잠깐 대기
-                await UniTask.Delay(TimeSpan.FromSeconds(respawnDelay), ignoreTimeScale: true);
+                await UniTask.Delay(TimeSpan.FromSeconds(respawnDelay), true);
                 await effect.HideDeathEffect();
             }
             finally {

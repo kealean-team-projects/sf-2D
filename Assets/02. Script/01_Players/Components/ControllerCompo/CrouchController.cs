@@ -10,12 +10,12 @@ namespace _02._Script._01_Players.Components.ControllerCompo {
 
         [SerializeField] private Vector2 crouchingOffset = new(0f, -0.5f);
 
-        private float crouchingSpeedMultiplier = 0.5f;
-
         private bool _isCrouching;
         private Vector2 _standingOffset;
 
         private Vector2 _standingSize;
+
+        private float crouchingSpeedMultiplier = 0.5f;
 
         private void Reset() {
             targetCollider = transform.root.GetComponent<CapsuleCollider2D>();
@@ -33,7 +33,7 @@ namespace _02._Script._01_Players.Components.ControllerCompo {
 
         public float MoveSpeedMultiplier =>
             _isCrouching ? crouchingSpeedMultiplier : 1f;
-        
+
         public void SetCrouchSpeedMultiplier(float multiplier) {
             crouchingSpeedMultiplier = multiplier;
         }

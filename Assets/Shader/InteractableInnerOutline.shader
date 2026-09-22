@@ -11,7 +11,10 @@ Shader "Interaction/Sprite Inner Outline"
     }
     SubShader
     {
-        Tags { "Queue"="Transparent" "RenderType"="Transparent" "RenderPipeline"="UniversalPipeline" "CanUseSpriteAtlas"="True" }
+        Tags
+        {
+            "Queue"="Transparent" "RenderType"="Transparent" "RenderPipeline"="UniversalPipeline" "CanUseSpriteAtlas"="True"
+        }
         Blend SrcAlpha OneMinusSrcAlpha, One OneMinusSrcAlpha
         Cull Off
         ZWrite Off
@@ -23,17 +26,20 @@ Shader "Interaction/Sprite Inner Outline"
             #pragma multi_compile_instancing
             #pragma multi_compile _ SKINNED_SPRITE
             #include "Packages/com.unity.render-pipelines.universal/Shaders/2D/Include/Core2D.hlsl"
+
             struct Attributes
             {
                 COMMON_2D_INPUTS
                 half4 color : COLOR;
                 UNITY_SKINNED_VERTEX_INPUTS
             };
+
             struct Varyings
             {
                 COMMON_2D_OUTPUTS
                 half4 color : COLOR;
             };
+
             #include "Packages/com.unity.render-pipelines.universal/Shaders/2D/Include/2DCommon.hlsl"
             float4 _MainTex_TexelSize;
             CBUFFER_START(UnityPerMaterial)
@@ -42,6 +48,7 @@ Shader "Interaction/Sprite Inner Outline"
                 float4 _SpriteUVRect;
                 float _OutlineWidth;
             CBUFFER_END
+
             Varyings OutlineVertex(Attributes input)
             {
                 UNITY_SETUP_INSTANCE_ID(input);
@@ -52,6 +59,7 @@ Shader "Interaction/Sprite Inner Outline"
                 output.color = input.color * _Color * unity_SpriteColor;
                 return output;
             }
+
             half AlphaAt(float2 uv)
             {
                 float2 inside = step(_SpriteUVRect.xy, uv) * step(uv, _SpriteUVRect.zw);
@@ -59,6 +67,7 @@ Shader "Interaction/Sprite Inner Outline"
                 float2 safeUV = clamp(uv, _SpriteUVRect.xy + halfTexel, _SpriteUVRect.zw - halfTexel);
                 return SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, safeUV).a * inside.x * inside.y;
             }
+
             half4 OutlineFragment(Varyings input) : SV_Target
             {
                 UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);

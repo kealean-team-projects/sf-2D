@@ -1,10 +1,8 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace _00._Member.LHS.Script.MapTools.Editor
-{
-    internal static class PropPathSampler
-    {
+namespace _00._Member.LHS.Script.MapTools.Editor {
+    internal static class PropPathSampler {
         private const int MinSampleCount = 128;
         private const int SamplesPerProp = 16;
 
@@ -15,20 +13,19 @@ namespace _00._Member.LHS.Script.MapTools.Editor
             Vector3 startControlPoint,
             Vector3 endControlPoint,
             int desiredCount,
-            float minimumDistance)
-        {
+            float minimumDistance) {
             if (desiredCount <= 0)
                 return new List<Vector3>();
 
             if (desiredCount == 1)
                 return new List<Vector3> { start };
 
-            int sampleCount = Mathf.Max(
+            var sampleCount = Mathf.Max(
                 MinSampleCount,
                 desiredCount * SamplesPerProp);
 
-            Vector3[] samples = new Vector3[sampleCount + 1];
-            float[] cumulativeDistances = new float[sampleCount + 1];
+            var samples = new Vector3[sampleCount + 1];
+            var cumulativeDistances = new float[sampleCount + 1];
 
             samples[0] = Evaluate(
                 mode,
@@ -38,9 +35,8 @@ namespace _00._Member.LHS.Script.MapTools.Editor
                 endControlPoint,
                 0f);
 
-            for (int i = 1; i <= sampleCount; i++)
-            {
-                float t = i / (float)sampleCount;
+            for (var i = 1; i <= sampleCount; i++) {
+                var t = i / (float)sampleCount;
 
                 samples[i] = Evaluate(
                     mode,
@@ -55,16 +51,15 @@ namespace _00._Member.LHS.Script.MapTools.Editor
                     Vector3.Distance(samples[i - 1], samples[i]);
             }
 
-            float totalLength = cumulativeDistances[sampleCount];
+            var totalLength = cumulativeDistances[sampleCount];
 
             if (totalLength <= Mathf.Epsilon)
                 return new List<Vector3> { start };
 
-            int actualCount = desiredCount;
+            var actualCount = desiredCount;
 
-            if (minimumDistance > 0f)
-            {
-                int maximumCount =
+            if (minimumDistance > 0f) {
+                var maximumCount =
                     Mathf.FloorToInt(totalLength / minimumDistance) + 1;
 
                 actualCount = Mathf.Clamp(
@@ -76,36 +71,33 @@ namespace _00._Member.LHS.Script.MapTools.Editor
             if (actualCount == 1)
                 return new List<Vector3> { samples[0] };
 
-            List<Vector3> positions =
+            var positions =
                 new List<Vector3>(actualCount);
 
-            int segmentIndex = 1;
+            var segmentIndex = 1;
 
-            for (int i = 0; i < actualCount; i++)
-            {
-                float targetDistance =
+            for (var i = 0; i < actualCount; i++) {
+                var targetDistance =
                     totalLength * i / (actualCount - 1f);
 
                 while (
                     segmentIndex < cumulativeDistances.Length - 1 &&
                     cumulativeDistances[segmentIndex] < targetDistance)
-                {
                     segmentIndex++;
-                }
 
-                int previousIndex =
+                var previousIndex =
                     Mathf.Max(0, segmentIndex - 1);
 
-                float segmentStart =
+                var segmentStart =
                     cumulativeDistances[previousIndex];
 
-                float segmentEnd =
+                var segmentEnd =
                     cumulativeDistances[segmentIndex];
 
-                float segmentLength =
+                var segmentLength =
                     segmentEnd - segmentStart;
 
-                float segmentT =
+                var segmentT =
                     segmentLength <= Mathf.Epsilon
                         ? 0f
                         : (targetDistance - segmentStart) / segmentLength;
@@ -126,8 +118,7 @@ namespace _00._Member.LHS.Script.MapTools.Editor
             Vector3 end,
             Vector3 startControlPoint,
             Vector3 endControlPoint,
-            float t)
-        {
+            float t) {
             return mode == PropPlacementMode.Bezier
                 ? EvaluateBezier(
                     start,
@@ -143,11 +134,10 @@ namespace _00._Member.LHS.Script.MapTools.Editor
             Vector3 startControlPoint,
             Vector3 endControlPoint,
             Vector3 end,
-            float t)
-        {
-            float u = 1f - t;
-            float uu = u * u;
-            float tt = t * t;
+            float t) {
+            var u = 1f - t;
+            var uu = u * u;
+            var tt = t * t;
 
             return
                 uu * u * start +

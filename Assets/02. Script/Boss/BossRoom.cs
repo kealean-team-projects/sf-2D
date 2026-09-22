@@ -1,53 +1,47 @@
-﻿using _02._Script._04_Interaction;
-using _02._Script.Boss.BossZones;
-using UnityEngine;
-using System;
+﻿using System;
 using System.Threading;
+using _02._Script._04_Interaction;
+using _02._Script.Boss.BossPatterns;
+using _02._Script.Boss.BossZones;
 using Cysharp.Threading.Tasks;
+using UnityEngine;
 
-namespace _02._Script.Boss
-{
-    public class BossRoom : MonoBehaviour
-    {
+namespace _02._Script.Boss {
+    public class BossRoom : MonoBehaviour {
         [SerializeField] private BossTrigger trigger;
         [SerializeField] private BossTimeLine timeLine;
         [SerializeField] private Boss boss;
         [SerializeField] private RoomLightCycle lightCycle;
         [SerializeField] private BossZone[] zones;
-        
+
         [SerializeField] private Transform light;
-        
-        
+
+
         private InteractLight[] lights;
         private CancellationTokenSource roomCts;
 
         public bool IsStarted { get; private set; }
 
-        private void Awake()
-        {
+        private void Awake() {
             lights = light.GetComponentsInChildren<InteractLight>();
-            
-            foreach (InteractLight roomLight in lights)
+
+            foreach (var roomLight in lights)
                 if (roomLight != null)
                     roomLight.TurnOff();
         }
-        
-        private void OnEnable()
-        {
+
+        private void OnEnable() {
             trigger.OnEnter += Begin;
         }
 
-        private void OnDisable()
-        {
+        private void OnDisable() {
             trigger.OnEnter -= Begin;
             Stop();
         }
 
-        public void Begin()
-        {
+        public void Begin() {
             if (IsStarted || !isActiveAndEnabled) return;
-            if (boss == null || lightCycle == null)
-            {
+            if (boss == null || lightCycle == null) {
                 Debug.LogError("BossRoom의 Boss와 Light Cycle을 연결하세요.", this);
                 return;
             }
@@ -58,11 +52,9 @@ namespace _02._Script.Boss
             Run(roomCts.Token).Forget();
         }
 
-        private async UniTask Run(CancellationToken token)
-        {
-            try
-            {
-                foreach (InteractLight roomLight in lights)
+        private async UniTask Run(CancellationToken token) {
+            try {
+                foreach (var roomLight in lights)
                     if (roomLight != null)
                         roomLight.TurnOn();
                 SetLightBrightness(1f);
@@ -70,44 +62,41 @@ namespace _02._Script.Boss
                 if (timeLine != null)
                     await timeLine.Play(token);
 
-                while (true)
-                {
+                while (true) {
                     token.ThrowIfCancellationRequested();
                     SetLightBrightness(1f);
                     await lightCycle.Dim(this, token);
                     await boss.RunPatterns(token);
                     SetLightBrightness(1f);
-                    await UniTask.NextFrame(cancellationToken: token);
+                    await UniTask.NextFrame(token);
                 }
             }
             catch (OperationCanceledException) { }
-            finally
-            {
+            finally {
                 roomCts.Dispose();
                 roomCts = null;
                 SetLightBrightness(1f);
             }
         }
 
-        public void Stop() => roomCts?.Cancel();
+        public void Stop() {
+            roomCts?.Cancel();
+        }
 
-        public void SetLightBrightness(float ratio)
-        {
-            foreach (InteractLight roomLight in lights)
+        public void SetLightBrightness(float ratio) {
+            foreach (var roomLight in lights)
                 if (roomLight != null)
                     roomLight.SetBrightness(ratio);
         }
-        
-        public InteractLight GetClosestLight(Vector2 position)
-        {
-            InteractLight closest = null;
-            float closestDistance = float.MaxValue;
 
-            foreach (InteractLight roomLight in lights)
-            {
+        public InteractLight GetClosestLight(Vector2 position) {
+            InteractLight closest = null;
+            var closestDistance = float.MaxValue;
+
+            foreach (var roomLight in lights) {
                 if (roomLight == null || !roomLight.IsActive) continue;
 
-                float distance = ((Vector2)roomLight.transform.position - position).sqrMagnitude;
+                var distance = ((Vector2)roomLight.transform.position - position).sqrMagnitude;
 
                 if (distance >= closestDistance) continue;
 
@@ -117,14 +106,11 @@ namespace _02._Script.Boss
 
             return closest;
         }
-        
-        public BossZone GetZone(Vector2 position)
-        {
-            foreach (BossZone zone in zones)
-            {
+
+        public BossZone GetZone(Vector2 position) {
+            foreach (var zone in zones)
                 if (zone.area.OverlapPoint(position))
                     return zone;
-            }
 
             return null;
         }

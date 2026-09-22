@@ -4,10 +4,18 @@ using UnityEngine;
 namespace _02._Script._01_Players {
     public class PlayerProgress : MonoBehaviour {
         [SerializeField] private int currentStage = 1;
+        private bool _initialized;
 
         private Player _player;
         private UserData _respawnData;
-        private bool _initialized;
+
+        private void OnEnable() {
+            if (_initialized) Subscribe();
+        }
+
+        private void OnDisable() {
+            Unsubscribe();
+        }
 
         public void Initialize(Player player) {
             if (_initialized) return;
@@ -16,19 +24,7 @@ namespace _02._Script._01_Players {
             _respawnData = CreateSaveData();
             _initialized = true;
 
-            if (isActiveAndEnabled) {
-                Subscribe();
-            }
-        }
-
-        private void OnEnable() {
-            if (_initialized) {
-                Subscribe();
-            }
-        }
-
-        private void OnDisable() {
-            Unsubscribe();
+            if (isActiveAndEnabled) Subscribe();
         }
 
         public void Shutdown() {
@@ -47,7 +43,7 @@ namespace _02._Script._01_Players {
         }
 
         private UserData CreateSaveData() {
-            UserData data = new UserData();
+            var data = new UserData();
 
             data.stage = currentStage;
             data.positionX = _player.transform.position.x;
@@ -57,8 +53,7 @@ namespace _02._Script._01_Players {
             return data;
         }
 
-        private void CaptureProgress()
-        {
+        private void CaptureProgress() {
             if (_player.IsDead) return;
 
             _respawnData = CreateSaveData();
@@ -83,7 +78,7 @@ namespace _02._Script._01_Players {
         }
 
         private void ApplyProgress(UserData data) {
-            Vector2 position =
+            var position =
                 new Vector2(data.positionX, data.positionY);
 
             _player.RestoreState(position, data.stamina);
