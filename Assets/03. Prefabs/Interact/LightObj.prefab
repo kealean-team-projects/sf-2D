@@ -156,6 +156,7 @@ MonoBehaviour:
   targetRenderer: {fileID: 6847495720519391558}
   outlineMaterial: {fileID: 2100000, guid: e5fb48046826b6b48b229823b75f5cc0, type: 2}
   lightPrefab: {fileID: 5147490086728815671}
+  normalIntensity: 3
 --- !u!1 &5147490086728815671
 GameObject:
   m_ObjectHideFlags: 0
@@ -172,7 +173,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4131727282730225357
 Transform:
   m_ObjectHideFlags: 0

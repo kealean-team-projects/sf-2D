@@ -32,5 +32,11 @@ namespace _02._Script.Boss
             
             boss.Begin();
         }
+        
+        public void SetLightBrightness(float ratio)
+        {
+            foreach (InteractLight roomLight in lights)
+                roomLight.SetBrightness(ratio);
+        }
     }
 }
