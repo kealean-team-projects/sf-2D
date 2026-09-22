@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using PrimeTween;
+using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
 namespace _02._Script.Boss
@@ -9,6 +10,7 @@ namespace _02._Script.Boss
         [SerializeField, Range(0f, 360f)] private float viewAngle = 90f;
         [SerializeField] private Light2D scanLight;
 
+        private Tween _angleTween;
         
         private void Awake() => Show(false);
 
@@ -28,6 +30,11 @@ namespace _02._Script.Boss
         public void Show(bool visible)
         {
             scanLight.enabled = visible;
+            if(visible)
+                _angleTween = Tween.Custom( 0f, 90f, 1.5f,  value =>scanLight.pointLightInnerAngle = value, Ease.InExpo);
+            else {
+                _angleTween = Tween.Custom( 90f, 0f, 0.75f,  value =>scanLight.pointLightInnerAngle = value, Ease.InExpo);
+            }
         }
         
         #if UNITY_EDITOR
