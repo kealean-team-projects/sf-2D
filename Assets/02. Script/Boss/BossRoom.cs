@@ -106,11 +106,16 @@ namespace _02._Script.Boss {
 
             return closest;
         }
-
-        public BossZone GetZone(Vector2 position) {
-            foreach (var zone in zones)
+        
+        public BossZone GetZone(Vector2 position)
+        {
+            foreach (BossZone zone in zones)
+            {
+                if (zone == null || zone.area == null ||
+                    zone.spawnPoint == null || zone.scanPoint == null) continue;
                 if (zone.area.OverlapPoint(position))
                     return zone;
+            }
 
             return null;
         }
