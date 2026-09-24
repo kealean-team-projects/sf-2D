@@ -20,5 +20,10 @@ namespace _02._Script
         {
             shadowCaster.enabled = active;
         }
+
+        private void OnDisable()
+        {
+            if (shadowCaster != null) shadowCaster.enabled = false;
+        }
     }
 }

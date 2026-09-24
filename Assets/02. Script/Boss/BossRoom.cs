@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Threading;
 using _02._Script._04_Interaction;
+using _02._Script._05_Managers;
 using _02._Script.Boss.BossPatterns;
 using _02._Script.Boss.BossZones;
 using Cysharp.Threading.Tasks;
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
@@ -11,11 +13,15 @@ namespace _02._Script.Boss {
     public class BossRoom : MonoBehaviour
     {
         [SerializeField] private float startDelay = 1f;
+        [SerializeField] private float orthographSize = 24f;
+        [SerializeField] private CinemachineCamera bossCamera;
         [SerializeField] private BossTrigger trigger;
         [SerializeField] private BossTimeLine timeLine;
         [SerializeField] private Boss boss;
         [SerializeField] private RoomLightCycle lightCycle;
         [SerializeField] private BossZone zones;
+        [SerializeField] private LayerMask navigationObstacles = (1 << 6) | (1 << 9);
+        [SerializeField] private BossNavigation navigation;
 
         [SerializeField] private Transform light;
 
@@ -24,12 +30,17 @@ namespace _02._Script.Boss {
         
         [SerializeField] private Light2D globalLight;
         private float _normalGlobalIntensity;
+        private Vector3 initialBossPosition;
+        private Quaternion initialBossRotation;
+        private float entryLensSize;
 
         public InteractLight[] Lights => lights;
 
         public bool IsStarted { get; private set; }
 
         private void Awake() {
+            initialBossPosition = boss.transform.position;
+            initialBossRotation = boss.transform.rotation;
             lights = light.GetComponentsInChildren<InteractLight>();
 
             foreach (var roomLight in lights)
@@ -41,10 +52,12 @@ namespace _02._Script.Boss {
 
         private void OnEnable() {
             trigger.OnEnter += Begin;
+            GameManager.OnRespawnReset += ResetRoom;
         }
 
         private void OnDisable() {
             trigger.OnEnter -= Begin;
+            GameManager.OnRespawnReset -= ResetRoom;
             Stop();
         }
 
@@ -54,8 +67,17 @@ namespace _02._Script.Boss {
                 Debug.LogError("BossRoom의 Boss와 Light Cycle을 연결하세요.", this);
                 return;
             }
+            if (navigation == null || !navigation.IsReady) {
+                Debug.LogError("보스방 NavMesh를 먼저 Bake하세요: Tools > Boss > Bake SecondMap Navigation", this);
+                return;
+            }
 
             IsStarted = true;
+            boss.Navigation = navigation;
+            if (bossCamera != null) {
+                entryLensSize = bossCamera.Lens.OrthographicSize;
+                bossCamera.Lens.OrthographicSize = orthographSize;
+            }
             boss.gameObject.SetActive(true);
             roomCts = new CancellationTokenSource();
             Run(roomCts.Token).Forget();
@@ -102,6 +124,25 @@ namespace _02._Script.Boss {
 
         public void Stop() {
             roomCts?.Cancel();
+        }
+
+        private async UniTask ResetRoom()
+        {
+            if (!IsStarted) return;
+            Stop();
+            boss.Stop();
+            // Wait until the old pattern's finally blocks have finished before restoring state.
+            await UniTask.WaitUntil(() => roomCts == null);
+
+            boss.ResetForRetry(initialBossPosition, initialBossRotation);
+
+            foreach (var roomLight in lights) {
+                if (roomLight == null) continue;
+                roomLight.ResetForRetry();
+            }
+            if (globalLight != null) globalLight.intensity = _normalGlobalIntensity;
+            if (bossCamera != null) bossCamera.Lens.OrthographicSize = entryLensSize;
+            IsStarted = false;
         }
 
         public void SetLightBrightness(float ratio) {
