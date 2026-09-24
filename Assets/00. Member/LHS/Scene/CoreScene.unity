@@ -939,6 +939,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 502587297}
   m_CullTransparentMesh: 1
+<<<<<<< HEAD
 --- !u!1 &511439368
 GameObject:
   m_ObjectHideFlags: 0
@@ -986,6 +987,8 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+=======
+>>>>>>> master
 --- !u!1 &512733737
 GameObject:
   m_ObjectHideFlags: 0
@@ -1517,7 +1520,11 @@ Transform:
   m_GameObject: {fileID: 641677860}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+<<<<<<< HEAD
   m_LocalPosition: {x: 825.4, y: -46.8, z: -127}
+=======
+  m_LocalPosition: {x: 1917.75, y: -490.5, z: -200.8}
+>>>>>>> master
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5072,10 +5079,13 @@ CanvasRenderer:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 641677863}
   - {fileID: 1264725920}
-  - {fileID: 511439370}
   - {fileID: 876238749}
   - {fileID: 536844079}
   - {fileID: 1410783999}
   - {fileID: 565668212}
+<<<<<<< HEAD
+=======
+  - {fileID: 264399692}
+  - {fileID: 641677863}
+>>>>>>> master
