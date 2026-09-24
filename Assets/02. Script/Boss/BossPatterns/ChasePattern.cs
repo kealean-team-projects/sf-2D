@@ -84,7 +84,12 @@ namespace _02._Script.Boss.BossPatterns
             }
             finally
             {
-                await owner.CloseVision(token);
+                await owner.CloseVision(token, () =>
+                {
+                    if (player == null || owner.Target == player || !owner.CanSee(player)) return;
+                    owner.SetTarget(player);
+                    owner.ShowDetection(true);
+                });
             }
         }
 
