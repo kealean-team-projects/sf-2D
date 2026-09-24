@@ -111,10 +111,12 @@ namespace _02._Script.Boss {
             RaycastHit2D hit = Physics2D.Raycast(
                 origin, direction.normalized, distance, whatIsBlock);
 
+            bool visible = hit.collider == null || hit.transform == target ||
+                           hit.transform.IsChildOf(target);
             Vector2 end = hit.collider != null ? hit.point : (Vector2)target.position;
-            Debug.DrawLine(origin, end, hit.collider != null ? Color.red : Color.green);
+            Debug.DrawLine(origin, end, visible ? Color.green : Color.red);
 
-            return hit.collider == null;
+            return visible;
         }
 
 
