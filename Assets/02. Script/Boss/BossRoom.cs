@@ -8,7 +8,9 @@ using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
 namespace _02._Script.Boss {
-    public class BossRoom : MonoBehaviour {
+    public class BossRoom : MonoBehaviour
+    {
+        [SerializeField] private float startDelay = 1f;
         [SerializeField] private BossTrigger trigger;
         [SerializeField] private BossTimeLine timeLine;
         [SerializeField] private Boss boss;
@@ -61,22 +63,20 @@ namespace _02._Script.Boss {
 
         private async UniTask Run(CancellationToken token) {
             try {
+                await UniTask.Delay(TimeSpan.FromSeconds(startDelay), cancellationToken: token);
                 foreach (var roomLight in lights)
-                    if (roomLight != null)
-                        roomLight.TurnOn();
+                    roomLight?.TurnOn();
+                
                 SetLightBrightness(1f);
 
                 var firstCycle = true;
                 while (true) {
                     token.ThrowIfCancellationRequested();
                     SetLightBrightness(1f);
-
-                    if (firstCycle && timeLine != null)
-                        await UniTask.WhenAll(lightCycle.Wait(token), timeLine.PlayWarning(token));
-                    else
-                        await lightCycle.Wait(token);
-
+                    
+                    await lightCycle.Wait(token); // 추가
                     await lightCycle.Dim(this, token);
+                    
                     var darkUntil = Time.time + lightCycle.DarkHoldDuration;
 
                     if (firstCycle && timeLine != null)

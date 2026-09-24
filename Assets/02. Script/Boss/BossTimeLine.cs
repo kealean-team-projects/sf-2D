@@ -8,33 +8,16 @@ namespace _02._Script.Boss {
         [SerializeField] private BossRoom room;
         [SerializeField] private Boss boss;
 
-        [SerializeField] private int flickerCount = 3;
-        [SerializeField] private float flickerBrightness = 0.2f;
-        [SerializeField] private float flickerInterval = 0.15f;
-
         [SerializeField] private Transform descendPoint;
         [SerializeField] private float descendDuration = 2f;
 
         public async UniTask PlayWarning(CancellationToken token) {
             token.ThrowIfCancellationRequested();
+            
             room.SetLightBrightness(1f);
 
             await UniTask.Delay(TimeSpan.FromSeconds(1f),
                 cancellationToken: token);
-
-            for (var i = 0; i < flickerCount; i++) {
-                room.SetLightBrightness(flickerBrightness);
-
-                await UniTask.Delay(
-                    TimeSpan.FromSeconds(flickerInterval),
-                    cancellationToken: token);
-
-                room.SetLightBrightness(1f);
-
-                await UniTask.Delay(
-                    TimeSpan.FromSeconds(flickerInterval),
-                    cancellationToken: token);
-            }
         }
 
         public async UniTask Descend(CancellationToken token) {

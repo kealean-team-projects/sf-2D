@@ -10442,7 +10442,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3cc6adff9722459ea1e16f9f5e23cd2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_02._Script.Boss.RoomLightCycle
-  waitTime: 5
+  waitTime: 7
   dimDuration: 3
   dimRatio: 0.25
   darkHoldDuration: 10
@@ -63196,7 +63196,7 @@ Transform:
   m_GameObject: {fileID: 766278337}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 13.2, y: 18, z: 0}
+  m_LocalPosition: {x: 51.45, y: 14.5, z: 0}
   m_LocalScale: {x: 3, y: 3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -63812,6 +63812,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6478c41dfaa4f47848374b8b0fa0b1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_02._Script.Boss.ChasePattern
+  descendSpeed: 15
   player: {fileID: 513424631}
   room: {fileID: 1380114168}
   searchDuration: 3
@@ -68367,10 +68368,10 @@ MonoBehaviour:
   m_LocalBounds:
     m_Center: {x: 0, y: -0.00000011920929, z: 0}
     m_Extent: {x: 0.9985302, y: 0.99853027, z: 0}
-  m_PointLightInnerAngle: 70
-  m_PointLightOuterAngle: 70
-  m_PointLightInnerRadius: 30
-  m_PointLightOuterRadius: 30
+  m_PointLightInnerAngle: 50
+  m_PointLightOuterAngle: 55
+  m_PointLightInnerRadius: 50
+  m_PointLightOuterRadius: 50
   m_ShapeLightParametricSides: 5
   m_ShapeLightParametricAngleOffset: 0
   m_ShapeLightParametricRadius: 1
@@ -80337,8 +80338,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d06c897793a4130bcdda3c75fea27db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_02._Script.Boss.BossFOV
-  viewDistance: 30
-  viewAngle: 70
+  viewDistance: 50
+  viewAngle: 50
   whatIsBlock:
     serializedVersion: 2
     m_Bits: 320
@@ -80536,9 +80537,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::_02._Script.Boss.BossTimeLine
   room: {fileID: 1380114168}
   boss: {fileID: 766278339}
-  flickerCount: 3
-  flickerBrightness: 0.2
-  flickerInterval: 0.15
   descendPoint: {fileID: 180678245}
   descendDuration: 2
 --- !u!4 &987798178
@@ -93181,7 +93179,7 @@ MonoBehaviour:
     LookAtTarget: {fileID: 0}
     CustomLookAtTarget: 0
   Lens:
-    FieldOfView: 13
+    FieldOfView: 20
     OrthographicSize: 9
     NearClipPlane: 0.1
     FarClipPlane: 5000
@@ -93209,7 +93207,7 @@ Transform:
   m_GameObject: {fileID: 1246242314}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1971.5, y: -516.6, z: -127}
+  m_LocalPosition: {x: 1971.5, y: -516.6, z: -200.8}
   m_LocalScale: {x: 0.39836904, y: 0.39836904, z: 0.39836904}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -93227,7 +93225,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 886251e9a18ece04ea8e61686c173e1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachinePositionComposer
-  CameraDistance: 127
+  CameraDistance: 200.8
   DeadZoneDepth: 0
   Composition:
     ScreenPosition: {x: 0, y: 0}
@@ -103549,6 +103547,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1300ac1f8eff4b99abd7332879065f51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_02._Script.Boss.BossRoom
+  startDelay: 2
   trigger: {fileID: 1304829975}
   timeLine: {fileID: 987798177}
   boss: {fileID: 766278339}
