@@ -18,8 +18,8 @@ namespace _02._Script.Boss {
         [SerializeField] private Light2D scanLight;
         private bool _isScanning;
 
-        private BossRoom boss;
-        private InteractLight[] _lights;
+        [SerializeField] private Transform shadowRoot;
+        private ShadowCasterController[] _shadows;
 
         private void Awake() {
             scanLight.enabled = false;
@@ -29,8 +29,8 @@ namespace _02._Script.Boss {
 
         private void Start()
         {
-            if (_lights == null)
-                _lights = transform.root.GetComponent<BossRoom>().Lights;
+            var root = shadowRoot != null ? shadowRoot : transform.root;
+            _shadows = root.GetComponentsInChildren<ShadowCasterController>(true);
         }
 
 
@@ -40,13 +40,13 @@ namespace _02._Script.Boss {
         
         
         private void LateUpdate() {
-            if (_lights == null || scanLight == null) return;
+            if (_shadows == null || scanLight == null) return;
 
-            foreach (var light in _lights) {
-                if (light == null) continue;
+            foreach (var shadow in _shadows) {
+                if (shadow == null || !shadow.isActiveAndEnabled) continue;
 
                 Vector2 direction =
-                    light.transform.position - scanLight.transform.position;
+                    shadow.transform.position - scanLight.transform.position;
 
                 bool detected = scanLight.enabled
                                 && _currentViewAngle > 0f
@@ -54,7 +54,7 @@ namespace _02._Script.Boss {
                                 && Vector2.Angle(scanLight.transform.up, direction)
                                 <= _currentViewAngle * 0.5f;
 
-                light.SetShadowActive(detected);
+                shadow.SetShadowActive(detected);
             }
         }
         
@@ -66,11 +66,11 @@ namespace _02._Script.Boss {
             if (scanLight != null)
                 scanLight.enabled = false;
 
-            if (_lights == null) return;
+            if (_shadows == null) return;
 
-            foreach (var light in _lights) {
-                if (light != null)
-                    light.SetShadowActive(false);
+            foreach (var shadow in _shadows) {
+                if (shadow != null && shadow.isActiveAndEnabled)
+                    shadow.SetShadowActive(false);
             }
         }
         

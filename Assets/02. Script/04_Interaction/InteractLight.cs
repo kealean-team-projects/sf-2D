@@ -8,7 +8,6 @@ namespace _02._Script._04_Interaction {
         [SerializeField] private GameObject lightPrefab;
         [SerializeField] [Min(0f)] private float normalIntensity = 1f;
         
-        private ShadowCaster2D shadowCaster;
         
         private Light2D targetLight;
         public bool IsActive { get; private set; }
@@ -17,8 +16,6 @@ namespace _02._Script._04_Interaction {
             targetLight = lightPrefab.GetComponentInChildren<Light2D>(true);
             normalIntensity = targetLight.intensity;
             
-            shadowCaster = GetComponent<ShadowCaster2D>();
-            shadowCaster.enabled = false;
         }
 
         public void SetBrightness(float ratio) {
@@ -48,9 +45,5 @@ namespace _02._Script._04_Interaction {
             lightPrefab.SetActive(active);
         }
         
-        public void SetShadowActive(bool detected) 
-        {
-            shadowCaster.enabled = detected;
-        }
     }
 }
