@@ -11,6 +11,10 @@ namespace _02._Script.Boss {
     public class Boss : MonoBehaviour {
         [SerializeField] private BossPattern[] patterns;
         [SerializeField] private BossFOV fov;
+        [SerializeField] private SpriteRenderer playerRenderer;
+        [SerializeField] private Material detectedMaterial;
+
+        private Material originalMaterial;
 
         private CancellationTokenSource patternCts;
 
@@ -22,10 +26,16 @@ namespace _02._Script.Boss {
 
         private void Awake() {
             RbCompo = GetComponent<Rigidbody2D>();
+            
+            if (playerRenderer != null)
+                originalMaterial = playerRenderer.sharedMaterial;
+            
+            ShowDetection(false);
         }
 
         private void OnDisable() {
             Stop();
+            ShowDetection(false);
         }
 
         private void OnTriggerEnter2D(Collider2D other) {
@@ -82,10 +92,25 @@ namespace _02._Script.Boss {
         public void ShowVision(bool visible) {
             fov.Show(visible);
         }
+        
+
+        public void ShowDetection(bool detected)
+        {
+            if (playerRenderer == null) return;
+            if (detected && detectedMaterial == null) return;
+
+            playerRenderer.sharedMaterial =
+                detected ? detectedMaterial : originalMaterial;
+        }
 
 
         public void Stop() {
             patternCts?.Cancel();
+        }
+        
+        public UniTask CloseVision(CancellationToken token)
+        {
+            return fov.Close(token);
         }
     }
 }

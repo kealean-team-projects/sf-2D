@@ -5,6 +5,7 @@ using _02._Script.Boss.BossPatterns;
 using _02._Script.Boss.BossZones;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 namespace _02._Script.Boss {
     public class BossRoom : MonoBehaviour {
@@ -12,13 +13,17 @@ namespace _02._Script.Boss {
         [SerializeField] private BossTimeLine timeLine;
         [SerializeField] private Boss boss;
         [SerializeField] private RoomLightCycle lightCycle;
-        [SerializeField] private BossZone[] zones;
+        [SerializeField] private BossZone zones;
 
         [SerializeField] private Transform light;
 
-
         private InteractLight[] lights;
         private CancellationTokenSource roomCts;
+        
+        [SerializeField] private Light2D globalLight;
+        private float _normalGlobalIntensity;
+
+        public InteractLight[] Lights => lights;
 
         public bool IsStarted { get; private set; }
 
@@ -28,6 +33,8 @@ namespace _02._Script.Boss {
             foreach (var roomLight in lights)
                 if (roomLight != null)
                     roomLight.TurnOff();
+            
+            _normalGlobalIntensity = globalLight.intensity;
         }
 
         private void OnEnable() {
@@ -59,14 +66,28 @@ namespace _02._Script.Boss {
                         roomLight.TurnOn();
                 SetLightBrightness(1f);
 
-                if (timeLine != null)
-                    await timeLine.Play(token);
-
+                var firstCycle = true;
                 while (true) {
                     token.ThrowIfCancellationRequested();
                     SetLightBrightness(1f);
+
+                    if (firstCycle && timeLine != null)
+                        await UniTask.WhenAll(lightCycle.Wait(token), timeLine.PlayWarning(token));
+                    else
+                        await lightCycle.Wait(token);
+
                     await lightCycle.Dim(this, token);
+                    var darkUntil = Time.time + lightCycle.DarkHoldDuration;
+
+                    if (firstCycle && timeLine != null)
+                        await timeLine.Descend(token);
+
+                    firstCycle = false;
                     await boss.RunPatterns(token);
+
+                    while (Time.time < darkUntil)
+                        await UniTask.NextFrame(token);
+
                     SetLightBrightness(1f);
                     await UniTask.NextFrame(token);
                 }
@@ -84,9 +105,15 @@ namespace _02._Script.Boss {
         }
 
         public void SetLightBrightness(float ratio) {
-            foreach (var roomLight in lights)
+            ratio = Mathf.Clamp01(ratio);
+
+            if (globalLight != null)
+                globalLight.intensity = _normalGlobalIntensity * ratio;
+
+            foreach (var roomLight in lights) {
                 if (roomLight != null)
                     roomLight.SetBrightness(ratio);
+            }
         }
 
         public InteractLight GetClosestLight(Vector2 position) {
@@ -107,17 +134,6 @@ namespace _02._Script.Boss {
             return closest;
         }
         
-        public BossZone GetZone(Vector2 position)
-        {
-            foreach (BossZone zone in zones)
-            {
-                if (zone == null || zone.area == null ||
-                    zone.spawnPoint == null || zone.scanPoint == null) continue;
-                if (zone.area.OverlapPoint(position))
-                    return zone;
-            }
-
-            return null;
-        }
+        public BossZone GetZone(Vector2 position) => zones;
     }
 }

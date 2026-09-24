@@ -1,4 +1,5 @@
-﻿using _02._Script._01_Players;
+﻿using System.Collections.Generic;
+using _02._Script._01_Players;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
@@ -6,13 +7,18 @@ namespace _02._Script._04_Interaction {
     public class InteractLight : InteractBase {
         [SerializeField] private GameObject lightPrefab;
         [SerializeField] [Min(0f)] private float normalIntensity = 1f;
-
+        
+        private ShadowCaster2D shadowCaster;
+        
         private Light2D targetLight;
         public bool IsActive { get; private set; }
 
         private void Awake() {
             targetLight = lightPrefab.GetComponentInChildren<Light2D>(true);
             normalIntensity = targetLight.intensity;
+            
+            shadowCaster = GetComponent<ShadowCaster2D>();
+            shadowCaster.enabled = false;
         }
 
         public void SetBrightness(float ratio) {
@@ -40,6 +46,11 @@ namespace _02._Script._04_Interaction {
             IsActive = active;
             targetRenderer.color = active ? Color.white : Color.gray;
             lightPrefab.SetActive(active);
+        }
+        
+        public void SetShadowActive(bool detected) 
+        {
+            shadowCaster.enabled = detected;
         }
     }
 }

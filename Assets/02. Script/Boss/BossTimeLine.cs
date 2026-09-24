@@ -15,7 +15,7 @@ namespace _02._Script.Boss {
         [SerializeField] private Transform descendPoint;
         [SerializeField] private float descendDuration = 2f;
 
-        public async UniTask Play(CancellationToken token) {
+        public async UniTask PlayWarning(CancellationToken token) {
             token.ThrowIfCancellationRequested();
             room.SetLightBrightness(1f);
 
@@ -35,12 +35,9 @@ namespace _02._Script.Boss {
                     TimeSpan.FromSeconds(flickerInterval),
                     cancellationToken: token);
             }
-
-
-            await Descend(token);
         }
 
-        private async UniTask Descend(CancellationToken token) {
+        public async UniTask Descend(CancellationToken token) {
             var start = boss.RbCompo.position;
             Vector2 end = descendPoint.position;
             var elapsed = 0f;

@@ -27,15 +27,13 @@ namespace _02._Script._05_Managers {
             }
         }
 
-        private void Update() {
-            if (Keyboard.current.iKey.wasPressedThisFrame)
-                OnCaptureRequested?.Invoke();
-            if (Keyboard.current.oKey.wasPressedThisFrame)
-                RestoreProgress();
-        }
-
         public static event Action OnCaptureRequested;
         public static event Action<UserData> OnRestoreRequested;
+
+        public void RequestCapture()
+        {
+            OnCaptureRequested?.Invoke();
+        }
 
         public void SaveProgress(Transform trm, float stamina, int stage) {
             var data = new UserData();

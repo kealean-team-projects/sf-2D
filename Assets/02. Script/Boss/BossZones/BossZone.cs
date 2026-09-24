@@ -6,6 +6,5 @@ namespace _02._Script.Boss.BossZones {
     public class BossZone {
         public BoxCollider2D area;
         public Transform spawnPoint;
-        public Transform scanPoint;
     }
 }
