@@ -14,6 +14,8 @@ namespace _02._Script.Boss {
         [SerializeField] [Min(0f)] private float viewDistance = 10f;
         [SerializeField] [Range(0f, 360f)] private float viewAngle = 90f;
         [SerializeField] private LayerMask whatIsBlock;
+        [SerializeField, Range(0f, 90f)] private float sweepAngle = 45f;
+        [SerializeField, Min(0.1f)] private float sweepDuration = 3f;
         
 
         private float _currentViewAngle;
@@ -21,12 +23,16 @@ namespace _02._Script.Boss {
         
         [SerializeField] private Light2D scanLight;
         private bool _isScanning;
+        private bool _canSweep;
+        private Quaternion _scanRotation;
+        private float _sweepTime;
 
         [SerializeField] private Transform shadowRoot;
         private ShadowCasterController[] _shadows;
         private Collider2D[] _shadowColliders;
 
         private void Awake() {
+            _scanRotation = scanLight.transform.localRotation;
             scanLight.enabled = false;
             scanLight.pointLightOuterRadius = viewDistance;
             SetViewAngle(0f);
@@ -44,6 +50,17 @@ namespace _02._Script.Boss {
 
         private void OnDestroy() {
             _angleTween.Stop();
+        }
+
+        private void Update()
+        {
+            if (!_isScanning || !_canSweep || scanLight == null) return;
+
+            _sweepTime += Time.deltaTime;
+            float angle = Mathf.Sin(_sweepTime * Mathf.PI * 2f /
+                                   Mathf.Max(0.1f, sweepDuration)) * sweepAngle;
+            scanLight.transform.localRotation =
+                _scanRotation * Quaternion.Euler(0f, 0f, angle);
         }
         
         
@@ -91,8 +108,10 @@ namespace _02._Script.Boss {
             _isScanning = false;
             SetViewAngle(0f);
 
-            if (scanLight != null)
+            if (scanLight != null) {
                 scanLight.enabled = false;
+                scanLight.transform.localRotation = _scanRotation;
+            }
 
             if (_shadows == null) return;
 
@@ -161,6 +180,9 @@ namespace _02._Script.Boss {
 
             if (scanLight == null) return;
             if (visible) {
+                _canSweep = false;
+                _sweepTime = 0f;
+                scanLight.transform.localRotation = _scanRotation;
                 _isScanning = true;
                 scanLight.enabled = true;
             }
@@ -169,6 +191,7 @@ namespace _02._Script.Boss {
                         viewAngle : 0f, visible 
                         ? 1.5f : 0.75f, SetViewAngle, Ease.InExpo).OnComplete(() => 
                         {
+                            if (visible) _canSweep = true;
                             if (!visible) {
                                 _isScanning = false;
                                 if (scanLight != null) scanLight.enabled = false;
@@ -176,6 +199,12 @@ namespace _02._Script.Boss {
                         });
         }
         
+        public async UniTask Open(CancellationToken token)
+        {
+            Show(true);
+            await UniTask.WaitUntil(() => !_angleTween.isAlive, cancellationToken: token);
+        }
+
         public async UniTask Close(CancellationToken token, Action scan = null)
         {
             Show(false);

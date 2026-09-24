@@ -26,7 +26,7 @@ namespace _02._Script.Boss {
             var elapsed = 0f;
 
             while (elapsed < descendDuration) {
-                await UniTask.Yield(PlayerLoopTiming.FixedUpdate, token);
+                await UniTask.Yield(PlayerLoopTiming.FixedUpdate, token, cancelImmediately: true);
 
                 elapsed += Time.fixedDeltaTime;
                 boss.RbCompo.MovePosition(

@@ -19,6 +19,7 @@ namespace _02._Script.Boss {
         private CancellationTokenSource patternCts;
 
         public Rigidbody2D RbCompo { get; private set; }
+        public BossNavigation Navigation { get; set; }
         public Transform Target { get; private set; }
         public Vector2 ReturnPosition { get; private set; }
 
@@ -26,6 +27,8 @@ namespace _02._Script.Boss {
 
         private void Awake() {
             RbCompo = GetComponent<Rigidbody2D>();
+            // Rigidbody2D owns movement; NavMesh is used only to calculate routes.
+            if (TryGetComponent<UnityEngine.AI.NavMeshAgent>(out var agent)) agent.enabled = false;
             
             if (playerRenderer != null)
                 originalMaterial = playerRenderer.sharedMaterial;
@@ -54,9 +57,11 @@ namespace _02._Script.Boss {
             if (other.isTrigger) return;
             var damage = other.GetComponentInParent<DamageModule>();
 
-            damage?.TakeDamage();
-
-            attack.Finish();
+            if (damage != null && Target != null &&
+                damage.transform.root == Target.root) {
+                damage.TakeDamage();
+                attack.Finish();
+            }
         }
 
         public async UniTask RunPatterns(CancellationToken token) {
@@ -99,6 +104,8 @@ namespace _02._Script.Boss {
         public void ShowVision(bool visible) {
             fov.Show(visible);
         }
+
+        public UniTask OpenVision(CancellationToken token) => fov.Open(token);
         
 
         public void ShowDetection(bool detected)
@@ -114,6 +121,20 @@ namespace _02._Script.Boss {
 
         public void Stop() {
             patternCts?.Cancel();
+        }
+
+        public void ResetForRetry(Vector3 position, Quaternion rotation)
+        {
+            SetTarget(null);
+            ShowDetection(false);
+            gameObject.SetActive(false);
+            transform.SetPositionAndRotation(position, rotation);
+            RbCompo.position = position;
+            RbCompo.rotation = rotation.eulerAngles.z;
+            RbCompo.linearVelocity = Vector2.zero;
+            RbCompo.angularVelocity = 0f;
+            SetReturnPosition(position);
+            Navigation.ResetPath();
         }
         
         public UniTask CloseVision(CancellationToken token, Action scan = null)

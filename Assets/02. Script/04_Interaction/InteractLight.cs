@@ -35,8 +35,15 @@ namespace _02._Script._04_Interaction {
         }
 
         public void Break() {
-            Destroy(gameObject);
-            // 나중에 파괴 처리
+            TurnOff();
+            gameObject.SetActive(false);
+        }
+
+        public void ResetForRetry()
+        {
+            gameObject.SetActive(true);
+            TurnOff();
+            SetBrightness(1f);
         }
 
         private void SetLightActive(bool active) {

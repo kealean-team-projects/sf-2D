@@ -1,6 +1,8 @@
 ﻿using System.Threading;
 using Cysharp.Threading.Tasks;
 using _02._Script._04_Interaction;
+using _02._Script._01_Players;
+using _02._Script._01_Players.Components.DamageCompo;
 using UnityEngine;
 
 namespace _02._Script.Boss.BossPatterns {
@@ -25,26 +27,35 @@ namespace _02._Script.Boss.BossPatterns {
         private async UniTask Dash(Boss owner, CancellationToken token)
         {
             IsAttacking = true;
+            owner.Navigation.ResetPath();
+            var targetPlayer = owner.Target.GetComponentInParent<Player>();
+            var targetDamage = owner.Target.GetComponentInChildren<DamageModule>();
+            var targetLight = owner.Target.GetComponent<InteractLight>();
+            var targetColliders = owner.Target.GetComponentsInChildren<Collider2D>();
+            var bodyCollider = owner.GetComponent<Collider2D>();
 
             while (IsAttacking)
             {
-                await UniTask.Yield(PlayerLoopTiming.FixedUpdate, token);
+                await UniTask.Yield(PlayerLoopTiming.FixedUpdate, token, cancelImmediately: true);
                 token.ThrowIfCancellationRequested();
 
                 if (!IsAttacking || owner.Target == null) break;
+                if (targetPlayer != null && targetPlayer.IsDead) break;
 
-                if (Vector2.Distance(owner.RbCompo.position, owner.Target.position) <= 0.1f &&
-                    owner.Target.TryGetComponent<InteractLight>(out var light))
-                {
-                    light.Break();
+                bool touching = false;
+                foreach (var collider in targetColliders) {
+                    if (collider == null || !collider.enabled || collider.isTrigger) continue;
+                    var contact = bodyCollider.Distance(collider);
+                    if (contact.isValid && contact.distance <= 0.02f) { touching = true; break; }
+                }
+                if (touching || Vector2.Distance(owner.RbCompo.position, owner.Target.position) <= 0.1f) {
+                    if (targetLight != null) targetLight.Break();
+                    if (targetDamage != null) targetDamage.TakeDamage();
                     Finish();
                     break;
                 }
 
-                owner.RbCompo.MovePosition(Vector2.MoveTowards(
-                    owner.RbCompo.position,
-                    owner.Target.position,
-                    dashSpeed * Time.fixedDeltaTime));
+                owner.Navigation.MoveTowards(owner.RbCompo, owner.Target.position, dashSpeed);
             }
         }
 
@@ -53,15 +64,14 @@ namespace _02._Script.Boss.BossPatterns {
             Vector2 target = new Vector2(
                 owner.RbCompo.position.x,
                 owner.ReturnPosition.y);
+            owner.Navigation.ResetPath();
 
             while (Vector2.Distance(owner.RbCompo.position, target) > 0.01f)
             {
-                await UniTask.Yield(PlayerLoopTiming.FixedUpdate, token);
+                await UniTask.Yield(PlayerLoopTiming.FixedUpdate, token, cancelImmediately: true);
                 token.ThrowIfCancellationRequested();
 
-                owner.RbCompo.MovePosition(Vector2.MoveTowards(
-                    owner.RbCompo.position, target,
-                    Mathf.Max(0.1f, returnSpeed) * Time.fixedDeltaTime));
+                owner.Navigation.MoveTowards(owner.RbCompo, target, Mathf.Max(0.1f, returnSpeed));
             }
         }
 

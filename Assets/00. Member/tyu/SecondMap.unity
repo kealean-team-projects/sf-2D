@@ -6220,6 +6220,90 @@ Transform:
   - {fileID: 816592830}
   m_Father: {fileID: 1226603208}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &155082060
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 155082063}
+  - component: {fileID: 155082062}
+  - component: {fileID: 155082061}
+  m_Layer: 0
+  m_Name: BossNavigation
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &155082061
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 155082060}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2831aa1dbeb54f7383179823b22ba695, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_02._Script.Boss.BossNavigation
+  agentType: -1372625422
+  radius: 1.6500005
+  obstacleLayers:
+    serializedVersion: 2
+    m_Bits: 576
+  flightBounds:
+    m_Center: {x: 2917.188, y: -454.86075, z: 0}
+    m_Extent: {x: 783.9155, y: 277.91006, z: 0}
+--- !u!114 &155082062
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 155082060}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e04976799df50f54ba128eff723155a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: NavMeshPlus::NavMeshPlus.Components.NavMeshSurface
+  m_AgentTypeID: -1372625422
+  m_CollectObjects: 1
+  m_Size: {x: 1567.831, y: 10, z: 555.8201}
+  m_Center: {x: 0, y: 0, z: 0}
+  m_LayerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  m_UseGeometry: 0
+  m_DefaultArea: 0
+  m_IgnoreNavMeshAgent: 1
+  m_IgnoreNavMeshObstacle: 1
+  m_OverrideTileSize: 0
+  m_TileSize: 256
+  m_OverrideVoxelSize: 1
+  m_VoxelSize: 0.55000013
+  m_BuildHeightMesh: 0
+  m_MinRegionArea: 0
+  m_HideEditorLogs: 1
+  m_NavMeshData: {fileID: 23800000, guid: ade4e24b6e37b2b49a582a8d7f9501aa, type: 2}
+--- !u!4 &155082063
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 155082060}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 2917.188, y: -454.86075, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &157831008
 GameObject:
   m_ObjectHideFlags: 0
@@ -28550,11 +28634,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8931466274003963571, guid: 432c73efd45be8b47a624d69f87ce69e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1929.75
+      value: 1917.75
       objectReference: {fileID: 0}
     - target: {fileID: 8931466274003963571, guid: 432c73efd45be8b47a624d69f87ce69e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -510.59998
+      value: -490.5
       objectReference: {fileID: 0}
     - target: {fileID: 8931466274003963571, guid: 432c73efd45be8b47a624d69f87ce69e, type: 3}
       propertyPath: m_LocalPosition.z
@@ -39819,6 +39903,8 @@ MonoBehaviour:
   room: {fileID: 1380114168}
   searchDuration: 3
   spawnXOffset: 4.95
+  patrolRange: 3
+  patrolSpeed: 2
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -48895,6 +48981,8 @@ MonoBehaviour:
   whatIsBlock:
     serializedVersion: 2
     m_Bits: 320
+  sweepAngle: 45
+  sweepDuration: 3
   scanLight: {fileID: 880000003}
   shadowRoot: {fileID: 1129206540}
 --- !u!1001 &981595310
@@ -60520,7 +60608,7 @@ MonoBehaviour:
     LookAtTarget: {fileID: 0}
     CustomLookAtTarget: 0
   Lens:
-    FieldOfView: 20
+    FieldOfView: 15
     OrthographicSize: 9
     NearClipPlane: 0.1
     FarClipPlane: 5000
@@ -60548,7 +60636,7 @@ Transform:
   m_GameObject: {fileID: 1246242314}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1929.75, y: -510.59998, z: -200.8}
+  m_LocalPosition: {x: 1917.75, y: -490.5, z: -200.8}
   m_LocalScale: {x: 0.39836904, y: 0.39836904, z: 0.39836904}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -64771,6 +64859,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_02._Script.Boss.BossRoom
   startDelay: 2
+  orthographSize: 24
+  bossCamera: {fileID: 1246242315}
   trigger: {fileID: 1304829975}
   timeLine: {fileID: 987798177}
   boss: {fileID: 766278339}
@@ -64778,6 +64868,10 @@ MonoBehaviour:
   zones:
     area: {fileID: 1710798720}
     spawnPoint: {fileID: 494457677}
+  navigationObstacles:
+    serializedVersion: 2
+    m_Bits: 576
+  navigation: {fileID: 155082061}
   light: {fileID: 1895152077}
   globalLight: {fileID: 923481430}
 --- !u!4 &1380114169
@@ -124391,3 +124485,4 @@ SceneRoots:
   - {fileID: 987798178}
   - {fileID: 1380114169}
   - {fileID: 1614906586}
+  - {fileID: 155082063}

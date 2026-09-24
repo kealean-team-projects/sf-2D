@@ -14,6 +14,7 @@ namespace _02._Script._05_Managers {
         private float _defaultFixedDeltaTime;
 
         public bool IsRestarting { get; private set; }
+        public static event Func<UniTask> OnRespawnReset;
 
         private void Awake() {
             if (Instance != null && Instance != this) {
@@ -53,6 +54,9 @@ namespace _02._Script._05_Managers {
                 var effect = EffectManager.Instance;
 
                 await effect.ShowDeathEffect();
+                if (OnRespawnReset != null)
+                    foreach (Func<UniTask> reset in OnRespawnReset.GetInvocationList())
+                        await reset();
                 target?.RestoreAfterDeath();
 
                 // 화면을 걷기 전에 게임 시간을 재개

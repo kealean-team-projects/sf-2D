@@ -14,6 +14,8 @@ namespace _02._Script.Boss.BossPatterns
         [SerializeField] private BossRoom room;
         [SerializeField] private float searchDuration = 3f;
         [SerializeField, Min(0f)] private float spawnXOffset = 3f;
+        [SerializeField, Min(0f)] private float patrolRange = 3f;
+        [SerializeField, Min(0f)] private float patrolSpeed = 2f;
 
         [SerializeField] private LayerMask groundLayer;
         [SerializeField, Min(0.1f)] private float scanHeight = 5f;
@@ -21,6 +23,7 @@ namespace _02._Script.Boss.BossPatterns
 
         private Vector2 returnPosition;
         private Vector2 searchPosition;
+        private readonly RaycastHit2D[] patrolHits = new RaycastHit2D[1];
 
         public override async UniTask Execute(Boss owner, CancellationToken token)
         {
@@ -50,7 +53,7 @@ namespace _02._Script.Boss.BossPatterns
 
             while (Vector2.Distance(owner.RbCompo.position, searchPosition) > 0.01f)
             {
-                await UniTask.Yield(PlayerLoopTiming.FixedUpdate, token);
+                await UniTask.Yield(PlayerLoopTiming.FixedUpdate, token, cancelImmediately: true);
                 token.ThrowIfCancellationRequested();
 
                 owner.RbCompo.MovePosition(Vector2.MoveTowards(
@@ -59,14 +62,21 @@ namespace _02._Script.Boss.BossPatterns
                     descendSpeed * Time.fixedDeltaTime));
             }
 
-            owner.ShowVision(true);
-
             try
             {
+                await owner.OpenVision(token);
                 var elapsed = 0f;
+                float patrolDirection = 1f;
+                float patrolMinX = Mathf.Max(bounds.min.x, searchPosition.x - patrolRange);
+                float patrolMaxX = Mathf.Min(bounds.max.x, searchPosition.x + patrolRange);
+                var patrolFilter = new ContactFilter2D();
+                patrolFilter.SetLayerMask(groundLayer);
+                patrolFilter.useTriggers = false;
 
                 while (elapsed < searchDuration)
                 {
+                    await UniTask.Yield(PlayerLoopTiming.FixedUpdate, token, cancelImmediately: true);
+                    token.ThrowIfCancellationRequested();
                     if (player == null) break;
                     if (owner.CanSee(player))
                     {
@@ -75,8 +85,8 @@ namespace _02._Script.Boss.BossPatterns
                         return;
                     }
 
-                    await UniTask.NextFrame(token);
-                    elapsed += Time.deltaTime;
+                    Patrol(owner.RbCompo, patrolMinX, patrolMaxX, patrolFilter, ref patrolDirection);
+                    elapsed += Time.fixedDeltaTime;
                 }
 
                 var closestLight = room.GetClosestLight(owner.RbCompo.position);
@@ -91,6 +101,25 @@ namespace _02._Script.Boss.BossPatterns
                     owner.ShowDetection(true);
                 });
             }
+        }
+
+        private void Patrol(Rigidbody2D body, float minX, float maxX,
+            ContactFilter2D filter, ref float direction)
+        {
+            if (patrolSpeed <= 0f || maxX <= minX) return;
+
+            float targetX = direction > 0f ? maxX : minX;
+            float nextX = Mathf.MoveTowards(body.position.x, targetX,
+                patrolSpeed * Time.fixedDeltaTime);
+            float distance = Mathf.Abs(nextX - body.position.x);
+            if (distance <= 0.001f ||
+                body.Cast(Vector2.right * direction, filter, patrolHits, distance + 0.1f) > 0)
+            {
+                direction = -direction;
+                return;
+            }
+
+            body.MovePosition(new Vector2(nextX, body.position.y));
         }
 
         private void OnDrawGizmos()
