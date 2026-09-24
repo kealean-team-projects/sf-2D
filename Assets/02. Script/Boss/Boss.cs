@@ -39,15 +39,22 @@ namespace _02._Script.Boss {
         }
 
         private void OnTriggerEnter2D(Collider2D other) {
-            if (other.isTrigger) return;
             if (CurrentPattern is not AttackPattern attack) return;
             if (!attack.IsAttacking) return;
 
-            var damage = other.GetComponentInParent<DamageModule>();
             var light = other.GetComponentInParent<InteractLight>();
+            if (light != null) {
+                if (light.transform == Target) {
+                    light.Break();
+                    attack.Finish();
+                }
+                return;
+            }
+
+            if (other.isTrigger) return;
+            var damage = other.GetComponentInParent<DamageModule>();
 
             damage?.TakeDamage();
-            light?.Break();
 
             attack.Finish();
         }
@@ -96,6 +103,7 @@ namespace _02._Script.Boss {
 
         public void ShowDetection(bool detected)
         {
+            fov.SetDetected(detected);
             if (playerRenderer == null) return;
             if (detected && detectedMaterial == null) return;
 
@@ -108,9 +116,9 @@ namespace _02._Script.Boss {
             patternCts?.Cancel();
         }
         
-        public UniTask CloseVision(CancellationToken token)
+        public UniTask CloseVision(CancellationToken token, Action scan = null)
         {
-            return fov.Close(token);
+            return fov.Close(token, scan);
         }
     }
 }

@@ -5,10 +5,20 @@ namespace _02._Script._05_Managers {
     public sealed class CheckPointManager : MonoBehaviour {
         [SerializeField] private Transform savePos;
         [SerializeField] private Transform[] checkPoints = Array.Empty<Transform>();
+        private int saveNum = -1;
+        
         public static CheckPointManager Instance { get; private set; }
 
         // 아직 체크포인트를 저장하지 않은 상태
-        public int SaveNum { get; private set; } = -1;
+        public int SaveNum
+        {
+            get => saveNum;
+            private set
+            {
+                if (value <= saveNum || value > MaxSaveNum) return;
+                saveNum = value;
+            }
+        }
 
         public int CheckPointCount => checkPoints.Length;
         public int MaxSaveNum => checkPoints.Length - 1;
@@ -27,12 +37,15 @@ namespace _02._Script._05_Managers {
             if (Instance == this) Instance = null;
         }
 
-        public bool SaveCheckpoint(int index) {
-            var checkPoint = checkPoints[index];
-
+        public bool SaveCheckpoint(int index)
+        {
+            int previous = SaveNum;
             SaveNum = index;
-            savePos.position = checkPoint.position;
 
+            if (SaveNum == previous) return false;
+
+            savePos.position = checkPoints[SaveNum].position;
+            SaveManager.Instance.RequestCapture();
             return true;
         }
 

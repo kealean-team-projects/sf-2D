@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using Cysharp.Threading.Tasks;
+using _02._Script._04_Interaction;
 using UnityEngine;
 
 namespace _02._Script.Boss.BossPatterns {
@@ -31,6 +32,14 @@ namespace _02._Script.Boss.BossPatterns {
                 token.ThrowIfCancellationRequested();
 
                 if (!IsAttacking || owner.Target == null) break;
+
+                if (Vector2.Distance(owner.RbCompo.position, owner.Target.position) <= 0.1f &&
+                    owner.Target.TryGetComponent<InteractLight>(out var light))
+                {
+                    light.Break();
+                    Finish();
+                    break;
+                }
 
                 owner.RbCompo.MovePosition(Vector2.MoveTowards(
                     owner.RbCompo.position,

@@ -122,6 +122,7 @@ namespace _02._Script.Boss {
 
             foreach (var roomLight in lights) {
                 if (roomLight == null || !roomLight.IsActive) continue;
+                if (!roomLight.isActiveAndEnabled || !boss.CanSee(roomLight.transform)) continue;
 
                 var distance = ((Vector2)roomLight.transform.position - position).sqrMagnitude;
 

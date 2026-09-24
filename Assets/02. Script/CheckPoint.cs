@@ -8,9 +8,13 @@ namespace _02._Script
     [RequireComponent(typeof(BoxCollider2D))]
     public class CheckPoint : MonoBehaviour
     {
+        [SerializeField, Min(0)] private int index;
+
         private void OnTriggerEnter2D(Collider2D other)
         {
-            SaveManager.Instance.RequestCapture();
+            if (!other.CompareTag("Player")) return;
+
+            CheckPointManager.Instance.SaveCheckpoint(index);
         }
     }
 }
