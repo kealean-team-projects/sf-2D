@@ -6970,7 +6970,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 155082060}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e04976799df50f54ba128eff723155a7, type: 3}
   m_Name: 
@@ -41179,7 +41179,7 @@ Transform:
   m_GameObject: {fileID: 766278337}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 52.949997, y: 20.5, z: 0}
+  m_LocalPosition: {x: 54.199997, y: 18, z: 0}
   m_LocalScale: {x: 3, y: 3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -64986,7 +64986,7 @@ MonoBehaviour:
   normalColor: {r: 1, g: 1, b: 1, a: 1}
   detectedColor: {r: 1, g: 0, b: 0, a: 1}
   viewDistance: 300
-  viewAngle: 80
+  viewAngle: 81.5
   whatIsBlock:
     serializedVersion: 2
     m_Bits: 320
