@@ -25,7 +25,7 @@ namespace _02._Script.Boss
         private bool reportedMissingPath;
         [SerializeField] private Bounds flightBounds;
 
-        public bool IsReady => ready;
+        public bool IsReady => ready && NavMeshSurfaceOwner != null && NavMeshSurfaceOwner.isActiveAndEnabled;
 
         protected override void Awake()
         {
@@ -159,7 +159,15 @@ namespace _02._Script.Boss
 
         public void MoveTowards(Rigidbody2D body, Vector2 destination, float speed)
         {
-            if (!ready) return;
+            if (!IsReady) return;
+
+            // A clear straight path needs no NavMesh projection. This also lets the
+            // boss leave a scan point just outside the baked surface.
+            if (CanMove(body, destination - body.position, out _)) {
+                Step(body, destination, speed);
+                return;
+            }
+
             path ??= new NavMeshPath();
             if (Time.time >= nextRepath)
             {

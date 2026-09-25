@@ -72,6 +72,7 @@ public static class BossNavigationBaker
         var room = scene.GetRootGameObjects().SelectMany(x => x.GetComponentsInChildren<BossRoom>(true)).Single();
         foreach (var navigation in navigations) {
             if (navigation.name != NavigationName(false) && navigation.name != NavigationName(true)) continue;
+            if (navigation == selected) navigation.GetComponent<NavMeshSurface>().enabled = true;
             navigation.gameObject.SetActive(navigation == selected);
         }
         var fields = new SerializedObject(room);
@@ -107,6 +108,7 @@ public static class BossNavigationBaker
             }
 
             navigation.gameObject.SetActive(true);
+            navigation.GetComponent<NavMeshSurface>().enabled = true;
             var body = boss.GetComponents<CircleCollider2D>().Where(x => x.enabled)
                 .OrderByDescending(x => x.radius).First();
             var data = navigation.Bake(area, body, layers, wholeMap);
