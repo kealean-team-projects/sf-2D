@@ -45,7 +45,7 @@ namespace _02._Script.Boss
         }
 
 #if UNITY_EDITOR
-        public NavMeshData Bake(BoxCollider2D area, Collider2D body, LayerMask layers)
+        public NavMeshData Bake(BoxCollider2D area, Collider2D body, LayerMask layers, bool wholeMap = false)
         {
             Physics2D.SyncTransforms();
             // The boss is inactive before room entry, so Collider.bounds can be empty here.
@@ -80,11 +80,14 @@ namespace _02._Script.Boss
                 if (collider == null || !collider.enabled || collider.isTrigger || collider == body ||
                     (obstacleLayers.value & (1 << collider.gameObject.layer)) == 0) continue;
                 var b = collider.bounds;
-                if (b.max.x < bounds.min.x || b.min.x > bounds.max.x || b.min.y > bounds.max.y) continue;
+                if (!wholeMap &&
+                    (b.max.x < bounds.min.x || b.min.x > bounds.max.x || b.min.y > bounds.max.y)) continue;
                 terrain.Add(collider);
-                bounds.SetMinMax(new Vector3(bounds.min.x, Mathf.Min(bounds.min.y, b.min.y - radius), 0f),
+                if (wholeMap) bounds.Encapsulate(b);
+                else bounds.SetMinMax(new Vector3(bounds.min.x, Mathf.Min(bounds.min.y, b.min.y - radius), 0f),
                     new Vector3(bounds.max.x, bounds.max.y, 0f));
             }
+            if (wholeMap) bounds.Expand(new Vector3(radius * 2f, radius * 2f, 0f));
             flightBounds = bounds;
             transform.SetPositionAndRotation(new Vector3(bounds.center.x, bounds.center.y, 0f),
                 Quaternion.Euler(-90f, 0f, 0f));

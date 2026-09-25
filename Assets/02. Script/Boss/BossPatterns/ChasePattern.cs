@@ -34,19 +34,30 @@ namespace _02._Script.Boss.BossPatterns
             var zone = room.GetZone(player.position);
 
             if (zone == null) return;
-            var offset = Mathf.Max(0f, spawnXOffset);
             var bounds = zone.area.bounds;
+            float bodyRadius = 0f;
+            foreach (var collider in owner.GetComponents<CircleCollider2D>())
+                if (collider.enabled && !collider.isTrigger)
+                    bodyRadius = Mathf.Max(bodyRadius, collider.bounds.extents.x);
 
-            var x = Random.Range(
-                Mathf.Max(bounds.min.x, player.position.x - offset),
-                Mathf.Min(bounds.max.x, player.position.x + offset));
+            float minX = bounds.min.x + bodyRadius;
+            float maxX = bounds.max.x - bodyRadius;
+            float minY = bounds.min.y + bodyRadius;
+            float maxY = bounds.max.y - bodyRadius;
+            if (minX > maxX || minY > maxY) return;
 
-            returnPosition = new Vector2(x, zone.spawnPoint.position.y);
+            float playerX = Mathf.Clamp(player.position.x, minX, maxX);
+            float offset = Mathf.Max(0f, spawnXOffset);
+
+            float x = Mathf.Clamp(playerX + Random.Range(-offset, offset), minX, maxX);
+
+            returnPosition = new Vector2(x, Mathf.Clamp(zone.spawnPoint.position.y, minY, maxY));
 
             var hit = Physics2D.Raycast(returnPosition, Vector2.down, groundCheckDistance, groundLayer);
 
             if (hit.collider == null) return;
-            searchPosition = hit.point + Vector2.up * scanHeight;
+            searchPosition = new Vector2(x,
+                Mathf.Clamp(hit.point.y + scanHeight, minY, returnPosition.y));
 
             owner.SetReturnPosition(returnPosition);
             owner.RbCompo.position = returnPosition;
@@ -64,11 +75,12 @@ namespace _02._Script.Boss.BossPatterns
 
             try
             {
+                owner.SetScanDirection(owner.RbCompo.position.x < player.position.x);   
                 await owner.OpenVision(token);
                 var elapsed = 0f;
                 float patrolDirection = 1f;
-                float patrolMinX = Mathf.Max(bounds.min.x, searchPosition.x - patrolRange);
-                float patrolMaxX = Mathf.Min(bounds.max.x, searchPosition.x + patrolRange);
+                float patrolMinX = Mathf.Max(minX, searchPosition.x - patrolRange);
+                float patrolMaxX = Mathf.Min(maxX, searchPosition.x + patrolRange);
                 var patrolFilter = new ContactFilter2D();
                 patrolFilter.SetLayerMask(groundLayer);
                 patrolFilter.useTriggers = false;

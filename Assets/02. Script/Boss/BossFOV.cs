@@ -14,8 +14,10 @@ namespace _02._Script.Boss {
         [SerializeField] [Min(0f)] private float viewDistance = 10f;
         [SerializeField] [Range(0f, 360f)] private float viewAngle = 90f;
         [SerializeField] private LayerMask whatIsBlock;
-        [SerializeField, Range(0f, 90f)] private float sweepAngle = 45f;
+        [SerializeField, Range(0f, 180f)] private float sweepAngle = 45f;
         [SerializeField, Min(0.1f)] private float sweepDuration = 3f;
+
+        private float scanDir = 1f;
         
 
         private float _currentViewAngle;
@@ -57,15 +59,18 @@ namespace _02._Script.Boss {
             if (!_isScanning || !_canSweep || scanLight == null) return;
 
             _sweepTime += Time.deltaTime;
-            float angle = Mathf.Sin(_sweepTime * Mathf.PI * 2f /
-                                   Mathf.Max(0.1f, sweepDuration)) * sweepAngle;
-            scanLight.transform.localRotation =
-                _scanRotation * Quaternion.Euler(0f, 0f, angle);
+
+            float progress = Mathf.PingPong(_sweepTime / sweepDuration, 1f);
+            float angle = Mathf.SmoothStep(0f, sweepAngle, progress);
+
+            scanLight.transform.rotation =
+                Quaternion.Euler(0f, 0f, 180f + angle * scanDir);
         }
         
         
         private void LateUpdate() {
             if (_shadows == null || scanLight == null) return;
+
 
             for (int i = 0; i < _shadows.Length; i++) {
                 var shadow = _shadows[i];
@@ -182,7 +187,7 @@ namespace _02._Script.Boss {
             if (visible) {
                 _canSweep = false;
                 _sweepTime = 0f;
-                scanLight.transform.localRotation = _scanRotation;
+                scanLight.transform.rotation = Quaternion.Euler(0f, 0f, 180f);
                 _isScanning = true;
                 scanLight.enabled = true;
             }
@@ -223,11 +228,16 @@ namespace _02._Script.Boss {
             }
         }
         
-        
 
         public void SetDetected(bool detected)
         {
             scanLight.color = detected ? detectedColor : normalColor;
         }
+
+        public void SetScanDir(bool spawnedLeft)
+        {
+            scanDir = spawnedLeft ? 1f : -1f;
+        }
+
     }
 }
