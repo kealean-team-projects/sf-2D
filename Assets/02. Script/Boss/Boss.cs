@@ -137,6 +137,10 @@ namespace _02._Script.Boss {
             Navigation.ResetPath();
         }
         
+        public void SetScanDirection(bool spawnedLeft)
+            => fov.SetScanDir(spawnedLeft);
+
+        
         public UniTask CloseVision(CancellationToken token, Action scan = null)
         {
             return fov.Close(token, scan);

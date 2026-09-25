@@ -13,6 +13,7 @@ public static class BossNavigationBaker
 {
     private const string ScenePath = "Assets/00. Member/tyu/SecondMap.unity";
     private const string AssetPath = "Assets/00. Member/tyu/SecondMapBossNavigation.asset";
+    private const string WholeMapAssetPath = "Assets/00. Member/tyu/SecondMapWholeNavigation.asset";
     private const string RequestPath = "Temp/BossNavigationBake.request";
     private const string ResultPath = "Temp/BossNavigationBake.result.txt";
 
@@ -35,28 +36,80 @@ public static class BossNavigationBaker
     }
 
     [MenuItem("Tools/Boss/Bake SecondMap Navigation")]
-    public static void Bake()
+    public static void Bake() => Bake(false);
+
+    [MenuItem("Tools/Navigation/전체/Bake SecondMap")]
+    public static void BakeWholeMap() => Bake(true);
+
+    [MenuItem("Tools/Navigation/사용 범위/보스방")]
+    public static void UseBossRoom() => SelectNavigation(false);
+
+    [MenuItem("Tools/Navigation/사용 범위/전체")]
+    public static void UseWholeMap() => SelectNavigation(true);
+
+    private static string NavigationName(bool wholeMap) => wholeMap ? "WholeMapNavigation" : "BossNavigation";
+
+    private static Scene OpenScene()
+    {
+        var scene = SceneManager.GetSceneByPath(ScenePath);
+        return scene.isLoaded ? scene : EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Additive);
+    }
+
+    private static void SelectNavigation(bool wholeMap)
+    {
+        if (EditorApplication.isPlayingOrWillChangePlaymode) {
+            Debug.LogError("플레이를 정지한 뒤 전환하세요.");
+            return;
+        }
+        var scene = OpenScene();
+        var navigations = scene.GetRootGameObjects()
+            .SelectMany(x => x.GetComponentsInChildren<BossNavigation>(true)).ToArray();
+        var selected = navigations.SingleOrDefault(x => x.name == NavigationName(wholeMap));
+        if (selected == null || selected.GetComponent<NavMeshSurface>().navMeshData == null) {
+            Debug.LogError("선택한 범위를 먼저 Bake하세요.");
+            return;
+        }
+        var room = scene.GetRootGameObjects().SelectMany(x => x.GetComponentsInChildren<BossRoom>(true)).Single();
+        foreach (var navigation in navigations) {
+            if (navigation.name != NavigationName(false) && navigation.name != NavigationName(true)) continue;
+            navigation.gameObject.SetActive(navigation == selected);
+        }
+        var fields = new SerializedObject(room);
+        fields.FindProperty("navigation").objectReferenceValue = selected;
+        fields.ApplyModifiedProperties();
+        EditorSceneManager.MarkSceneDirty(scene);
+        EditorSceneManager.SaveScene(scene);
+        Selection.activeGameObject = selected.gameObject;
+        Debug.Log($"Navigation 사용 범위: {(wholeMap ? "전체" : "보스방")}", selected);
+    }
+
+    private static void Bake(bool wholeMap)
     {
         if (EditorApplication.isPlayingOrWillChangePlaymode) {
             Debug.LogError("플레이를 정지한 뒤 Bake하세요.");
             return;
         }
         try {
-            var scene = SceneManager.GetSceneByPath(ScenePath);
-            if (!scene.isLoaded) scene = EditorSceneManager.OpenScene(ScenePath, OpenSceneMode.Additive);
+            var scene = OpenScene();
+            string assetPath = wholeMap ? WholeMapAssetPath : AssetPath;
             var room = scene.GetRootGameObjects().SelectMany(x => x.GetComponentsInChildren<BossRoom>(true)).Single();
             var roomFields = new SerializedObject(room);
             var area = (BoxCollider2D)roomFields.FindProperty("zones").FindPropertyRelative("area").objectReferenceValue;
             var boss = (Boss)roomFields.FindProperty("boss").objectReferenceValue;
             var layers = roomFields.FindProperty("navigationObstacles").intValue;
-            var navigation = (BossNavigation)roomFields.FindProperty("navigation").objectReferenceValue;
+            var navigation = scene.GetRootGameObjects()
+                .SelectMany(x => x.GetComponentsInChildren<BossNavigation>(true))
+                .SingleOrDefault(x => x.name == NavigationName(wholeMap));
             if (navigation == null) {
-                var go = new GameObject("BossNavigation", typeof(NavMeshSurface));
+                var go = new GameObject(NavigationName(wholeMap), typeof(NavMeshSurface));
                 SceneManager.MoveGameObjectToScene(go, scene);
                 navigation = go.AddComponent<BossNavigation>();
             }
 
-            var data = navigation.Bake(area, boss.GetComponent<Collider2D>(), layers);
+            navigation.gameObject.SetActive(true);
+            var body = boss.GetComponents<CircleCollider2D>().Where(x => x.enabled)
+                .OrderByDescending(x => x.radius).First();
+            var data = navigation.Bake(area, body, layers, wholeMap);
             var fields = new SerializedObject(navigation);
             int agentType = fields.FindProperty("agentType").intValue;
             var filter = new NavMeshQueryFilter { agentTypeID = agentType, areaMask = NavMesh.AllAreas };
@@ -73,14 +126,14 @@ public static class BossNavigationBaker
 
             var surface = navigation.GetComponent<NavMeshSurface>();
             surface.RemoveData();
-            var existing = AssetDatabase.LoadAssetAtPath<NavMeshData>(AssetPath);
+            var existing = AssetDatabase.LoadAssetAtPath<NavMeshData>(assetPath);
             if (existing != null) {
                 EditorUtility.CopySerialized(data, existing);
                 UnityEngine.Object.DestroyImmediate(data);
                 data = existing;
                 EditorUtility.SetDirty(data);
             }
-            else AssetDatabase.CreateAsset(data, AssetPath);
+            else AssetDatabase.CreateAsset(data, assetPath);
             surface.navMeshData = data;
             surface.AddData();
             roomFields.FindProperty("navigation").objectReferenceValue = navigation;
@@ -91,7 +144,8 @@ public static class BossNavigationBaker
             EditorSceneManager.MarkSceneDirty(scene);
             EditorSceneManager.SaveScene(scene);
             Selection.activeGameObject = navigation.gameObject;
-            string result = $"Bake saved: {AssetPath}; walkable samples={samples}/288; agent={agentType}; bounds={bounds.min}..{bounds.max}";
+            SelectNavigation(wholeMap);
+            string result = $"Bake saved: {assetPath}; walkable samples={samples}/288; agent={agentType}; bounds={bounds.min}..{bounds.max}";
             File.WriteAllText(ResultPath, result);
             Debug.Log(result, navigation);
         }
