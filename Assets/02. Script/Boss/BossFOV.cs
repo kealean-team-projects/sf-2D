@@ -79,7 +79,7 @@ namespace _02._Script.Boss {
                 var collider = _shadowColliders[i];
                 var bounds = collider != null && collider.enabled
                     ? collider.bounds
-                    : new Bounds(shadow.transform.position, Vector3.zero);
+                    : shadow.GetShadowBounds();
                 bool detected = scanLight.enabled
                                 && _currentViewAngle > 0f
                                 && OverlapsVision(bounds);

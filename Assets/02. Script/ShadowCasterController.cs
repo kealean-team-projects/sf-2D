@@ -9,6 +9,25 @@ namespace _02._Script
     public class ShadowCasterController : MonoBehaviour
     {
         private ShadowCaster2D shadowCaster;
+        private Bounds cachedBounds;
+        private Matrix4x4 boundsMatrix;
+        private bool hasBounds;
+
+        public Bounds GetShadowBounds()
+        {
+            if (shadowCaster == null) shadowCaster = GetComponent<ShadowCaster2D>();
+            var matrix = transform.localToWorldMatrix;
+            if (hasBounds && matrix == boundsMatrix) return cachedBounds;
+            var points = shadowCaster.shapePath;
+            var bounds = new Bounds(transform.position, Vector3.zero);
+            if (points == null || points.Length == 0) return bounds;
+            bounds = new Bounds(transform.TransformPoint(points[0]), Vector3.zero);
+            foreach (var point in points) bounds.Encapsulate(transform.TransformPoint(point));
+            cachedBounds = bounds;
+            boundsMatrix = matrix;
+            hasBounds = true;
+            return bounds;
+        }
 
         private void Awake()
         {
