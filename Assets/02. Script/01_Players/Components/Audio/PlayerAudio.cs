@@ -12,6 +12,8 @@ namespace _02._Script._01_Players.Components.Audio {
         [SerializeField, Min(0.01f)] private float minimumMoveSpeed = 0.1f;
         [Tooltip("걷기·달리기 소리 전용으로 발밑 감지 범위를 아래로 늘리는 거리(Unity 단위). 0이면 기존 접지 판정을 사용합니다.")]
         [SerializeField, Min(0f)] private float footstepDetectionDistance = 0.1f;
+        [Tooltip("좌우 전환 등으로 잠깐 멈춘 뒤 같은 발소리를 이어 재생할 수 있는 시간(초). 0이면 매번 처음부터 재생합니다.")]
+        [SerializeField, Min(0f)] private float footstepResumeWindow = 0.12f;
         [Header("Landing")]
         [Tooltip("착지음에 필요한 최소 연속 추락 시간(초). 상승·등반 시간은 제외하며, 0이면 모든 착지에서 재생합니다.")]
         [SerializeField, Min(0f)] private float minimumFallTime = 0.2f;
@@ -27,6 +29,9 @@ namespace _02._Script._01_Players.Components.Audio {
 
         private SoundManager _manager;
         private AudioSource _footsteps;
+        private AudioSource _landing;
+        private bool _footstepsPaused;
+        private float _footstepsPausedAt;
         private string _currentSound;
         private bool _sampled;
         private bool _wasGrounded;
@@ -50,7 +55,7 @@ namespace _02._Script._01_Players.Components.Audio {
 
         private void OnDisable() {
             if (mover != null) mover.GroundUpdated -= OnGroundUpdated;
-            StopFootsteps();
+            StopMovementSounds();
             _sampled = false;
             _fallTime = 0f;
             _landingPlayed = false;
@@ -58,7 +63,11 @@ namespace _02._Script._01_Players.Components.Audio {
 
         private void LateUpdate() {
             // Physics stops while paused; silence loops without waiting for another physics tick.
-            if (Time.timeScale == 0f || player == null || player.IsDead || !player.CanMove)
+            if (player == null || player.IsDead || !player.CanMove)
+                StopMovementSounds();
+            else if (Time.timeScale == 0f)
+                StopFootsteps();
+            else if (_footstepsPaused && Time.unscaledTime - _footstepsPausedAt >= footstepResumeWindow)
                 StopFootsteps();
         }
 
@@ -75,7 +84,7 @@ namespace _02._Script._01_Players.Components.Audio {
                 _lastPosition = position;
                 _fallTime = 0f;
                 _landingPlayed = false;
-                StopFootsteps();
+                StopMovementSounds();
                 return;
             }
 
@@ -106,7 +115,8 @@ namespace _02._Script._01_Players.Components.Audio {
                 if (landingSurface != null) {
                     var material = landingSurface.GetComponentInParent<FootstepSurface>();
                     var landingOnStone = material != null && material.Material == FootstepMaterial.Stone;
-                    _manager.PlaySound(landingOnStone ? stoneLandingSound : landingSound);
+                    StopMovementSounds();
+                    _landing = _manager.PlayTrackedSound(landingOnStone ? stoneLandingSound : landingSound);
                     _landingPlayed = true;
                 }
             }
@@ -116,16 +126,28 @@ namespace _02._Script._01_Players.Components.Audio {
             }
             _wasGrounded = grounded;
 
-            if (footstepGround == null || !player.CanMove || !player.IsMoving || player.IsClimb ||
-                speed < minimumMoveSpeed) {
+            // Landing and footsteps share one audible movement voice per player.
+            if ((_landing != null && (_landing.isPlaying || AudioListener.pause)) ||
+                footstepGround == null || !player.CanMove || player.IsClimb) {
                 StopFootsteps();
+                return;
+            }
+            if (!player.IsMoving || speed < minimumMoveSpeed) {
+                PauseFootsteps();
                 return;
             }
 
             var sound = player.SprintControl.IsSprinting
                 ? (stone ? stoneRunSound : runSound)
                 : (stone ? stoneWalkSound : walkSound);
-            if (_currentSound == sound && _footsteps != null) return;
+            if (_currentSound == sound && _footsteps != null) {
+                if (!_footstepsPaused) return;
+                if (Time.unscaledTime - _footstepsPausedAt < footstepResumeWindow) {
+                    _footsteps.UnPause();
+                    _footstepsPaused = false;
+                    return;
+                }
+            }
             StopFootsteps();
             if (_manager == null) return;
             _footsteps = _manager.PlayTrackedSound(sound);
@@ -136,6 +158,26 @@ namespace _02._Script._01_Players.Components.Audio {
             if (_manager != null && _footsteps != null) _manager.StopSound(_footsteps);
             _footsteps = null;
             _currentSound = null;
+            _footstepsPaused = false;
+        }
+
+        private void PauseFootsteps() {
+            if (_footsteps == null) return;
+            if (footstepResumeWindow <= 0f ||
+                (_footstepsPaused && Time.unscaledTime - _footstepsPausedAt >= footstepResumeWindow)) {
+                StopFootsteps();
+                return;
+            }
+            if (_footstepsPaused) return;
+            _footsteps.Pause();
+            _footstepsPaused = true;
+            _footstepsPausedAt = Time.unscaledTime;
+        }
+
+        private void StopMovementSounds() {
+            StopFootsteps();
+            if (_manager != null && _landing != null) _manager.StopSound(_landing);
+            _landing = null;
         }
     }
 }

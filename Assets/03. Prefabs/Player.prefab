@@ -534,6 +534,7 @@ MonoBehaviour:
   body: {fileID: 4037718769439411383}
   minimumMoveSpeed: 0.1
   footstepDetectionDistance: 3
+  footstepResumeWindow: 0.12
   minimumFallTime: 0.2
   landingDetectionDistance: 3.5
 --- !u!1 &7358476570333574337
