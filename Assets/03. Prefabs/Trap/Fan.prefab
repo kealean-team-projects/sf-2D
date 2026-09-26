@@ -152,4 +152,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1313e706624449f58bff36e15a19dc88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_02._Script.Trap.WaterCurrent
-  pushSpeed: -5
+  pushSpeed: {x: 0, y: 10}

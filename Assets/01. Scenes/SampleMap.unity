@@ -16755,7 +16755,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1790358382980474126, guid: 09682f6fca6db254abaec16e3ea8c239, type: 3}
       propertyPath: pushSpeed.y
-      value: 1
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 5331508277600175236, guid: 09682f6fca6db254abaec16e3ea8c239, type: 3}
       propertyPath: m_Name
