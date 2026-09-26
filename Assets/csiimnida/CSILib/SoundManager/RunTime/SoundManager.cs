@@ -37,7 +37,10 @@ namespace csiimnida.CSILib.SoundManager.RunTime {
 
         public bool PlayBgm(string soundName, Object owner) {
             if (owner == null || !TryGetSound(soundName, out var sound)) return false;
-            if (_bgmSource != null && _bgmOwner == owner && _bgmName == soundName) return true;
+            if (_bgmSource != null && _bgmOwner == owner && _bgmName == soundName) {
+                _bgmSource.UnPause();
+                return true;
+            }
 
             StopSound(_bgmSource);
             _bgmSource = CreateSource(soundName, sound, true);
@@ -49,6 +52,14 @@ namespace csiimnida.CSILib.SoundManager.RunTime {
         public void StopBgm(Object owner) {
             // Reference identity also works while a Unity owner is being destroyed.
             if (ReferenceEquals(_bgmOwner, owner)) StopSound(_bgmSource);
+        }
+
+        public bool IsBgmOwnedBy(Object owner) {
+            return _bgmSource != null && ReferenceEquals(_bgmOwner, owner);
+        }
+
+        public void PauseBgm(Object owner) {
+            if (IsBgmOwnedBy(owner)) _bgmSource.Pause();
         }
 
         private bool TryGetSound(string soundName, out SoundSo sound) {
