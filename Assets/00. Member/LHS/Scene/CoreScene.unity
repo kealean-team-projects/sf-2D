@@ -2931,11 +2931,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::_00._Member.LHS.Script.ChapterLoader
   chapterSceneLists:
   - {fileID: 102900000, guid: 5bba83634b0483a43b4f8a070c168886, type: 3}
-  - {fileID: 102900000, guid: 8332b4ba73cb2b2418555ca352ca0b9d, type: 3}
+  - {fileID: 102900000, guid: f2ae88a4c1532304cb696b55729fc798, type: 3}
   - {fileID: 102900000, guid: 6c48e77e564fd3f498035c5a956e523a, type: 3}
   chapterSceneNames:
   - FirstMap
-  - SecondMap
+  - SecondMap_remakeCollider
   - ThirdMap
 --- !u!1 &1402625536
 GameObject:

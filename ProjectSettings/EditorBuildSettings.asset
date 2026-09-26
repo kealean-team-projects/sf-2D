@@ -15,8 +15,8 @@ EditorBuildSettings:
     path: Assets/00. Member/tyu/FirstMap.unity
     guid: 5bba83634b0483a43b4f8a070c168886
   - enabled: 1
-    path: Assets/00. Member/tyu/SecondMap.unity
-    guid: 8332b4ba73cb2b2418555ca352ca0b9d
+    path: Assets/00. Member/tyu/SecondMap_remakeCollider.unity
+    guid: f2ae88a4c1532304cb696b55729fc798
   - enabled: 1
     path: Assets/00. Member/tyu/ThirdMap.unity
     guid: 6c48e77e564fd3f498035c5a956e523a

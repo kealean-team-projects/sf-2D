@@ -8168,10 +8168,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 870000000000000100, guid: 432c73efd45be8b47a624d69f87ce69e, type: 3}
-      propertyPath: minimumFallTime
-      value: 0.5
-      objectReference: {fileID: 0}
     - target: {fileID: 6066075572630771389, guid: 432c73efd45be8b47a624d69f87ce69e, type: 3}
       propertyPath: m_Name
       value: Player
@@ -29030,7 +29026,7 @@ Camera:
   far clip plane: 5000
   field of view: 12.9
   orthographic: 1
-  orthographic size: 26.5
+  orthographic size: 11.3
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
@@ -39035,7 +39031,7 @@ MonoBehaviour:
     CustomLookAtTarget: 0
   Lens:
     FieldOfView: 12.9
-    OrthographicSize: 26.5
+    OrthographicSize: 11.3
     NearClipPlane: 0.1
     FarClipPlane: 5000
     Dutch: 0
