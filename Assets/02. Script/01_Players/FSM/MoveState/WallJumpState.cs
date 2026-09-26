@@ -10,12 +10,14 @@ namespace _02._Script._01_Players.FSM.MoveState {
         public WallJumpState(IPlayerMoveContext context, MoveStateMachine stateMachine) :
             base(context, stateMachine) { }
 
+        public WallJumpState(IPlayerMoveContext context, MoveStateMachine stateMachine, string animBoolName) :
+            base(context, stateMachine, animBoolName) { }
+
         public override void Enter() {
+            base.Enter();
             _elapsedTime = 0f;
             _context.Mover.ApplyWallJump(_context.JumpSpeed);
         }
-
-        public override void Exit() { }
 
         public override void Tick() {
             _elapsedTime += Time.fixedDeltaTime;

@@ -13,13 +13,14 @@ namespace _02._Script._01_Players.Interface {
         float ClimbSpeed { get; }
         float SpeedMultiplier { get; }
         float CrouchSpeedMultiplier { get; }
-        float PushSpeed { get; }
+        Vector2 PushSpeed { get; }
 
         Vector2 JumpSpeed { get; }
         float JumpDuration { get; }
         float Impulse { get; }
         float ClimbStaminaCostPerSecond { get; }
 
+        void SetAnimationBool(int parameterHash, bool value);
         void Jump();
         bool TryWallJump();
         bool TryWallDash();

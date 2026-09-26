@@ -10,7 +10,11 @@ namespace _02._Script._01_Players.FSM.MoveState {
         public WallDashState(IPlayerMoveContext context, MoveStateMachine stateMachine) :
             base(context, stateMachine) { }
 
+        public WallDashState(IPlayerMoveContext context, MoveStateMachine stateMachine, string animBoolName) :
+            base(context, stateMachine, animBoolName) { }
+
         public override void Enter() {
+            base.Enter();
             _elapsedTime = 0f;
             _context.Mover.WallDash();
             _context.Mover.ApplyWallDash(_context.Impulse);
@@ -27,6 +31,7 @@ namespace _02._Script._01_Players.FSM.MoveState {
         }
 
         public override void Exit() {
+            base.Exit();
             _context.EndWallDash();
         }
     }
