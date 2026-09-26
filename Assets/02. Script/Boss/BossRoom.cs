@@ -43,7 +43,7 @@ namespace _02._Script.Boss {
         private CinemachinePositionComposer positionComposer;
         private float entryCameraDistance;
         private bool presentationActive;
-        private bool firstScanCompleted;
+        private bool waitingForScan;
         private SoundManager soundManager;
         private AudioSource entryAudio;
         private AudioSource lightAudio;
@@ -88,7 +88,7 @@ namespace _02._Script.Boss {
             }
 
             IsStarted = true;
-            firstScanCompleted = false;
+            waitingForScan = true;
             boss.Navigation = navigation;
             positionComposer = bossCamera != null
                 ? bossCamera.GetComponent<CinemachinePositionComposer>() : null;
@@ -130,6 +130,9 @@ namespace _02._Script.Boss {
                     SetLightBrightness(1f);
                     
                     await lightCycle.Wait(token);
+                    token.ThrowIfCancellationRequested();
+                    waitingForScan = true;
+                    if (stageAudio != null) stageAudio.PauseMusic(this);
                     await lightCycle.Dim(this, token);
                     
                     var darkUntil = Time.time + lightCycle.DarkHoldDuration;
@@ -172,8 +175,8 @@ namespace _02._Script.Boss {
         }
 
         public void OnScanCompleted() {
-            if (!IsStarted || !presentationActive || firstScanCompleted) return;
-            firstScanCompleted = true;
+            if (!IsStarted || !presentationActive || !waitingForScan) return;
+            waitingForScan = false;
             if (stageAudio != null) stageAudio.ResumeMusic(this);
             if (stageAudio != null && !string.IsNullOrWhiteSpace(bossBackgroundMusic))
                 stageAudio.OverrideMusic(bossBackgroundMusic, this);

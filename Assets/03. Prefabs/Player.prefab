@@ -372,7 +372,7 @@ GameObject:
   - component: {fileID: 870000000000000100}
   m_Layer: 7
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -536,7 +536,7 @@ MonoBehaviour:
   footstepDetectionDistance: 3
   footstepResumeWindow: 0.12
   minimumFallTime: 0.5
-  landingDetectionDistance: 0
+  landingDetectionDistance: 15
 --- !u!1 &7358476570333574337
 GameObject:
   m_ObjectHideFlags: 0
@@ -583,7 +583,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_01.Script.Player.Components.Mover
   rb: {fileID: 4037718769439411383}
-  jumpForce: 20
+  jumpForce: 25
   checker: {x: 0, y: 0, z: 0}
   checkerSize: {x: 0.87, y: 0.62}
   whatIsGround:
