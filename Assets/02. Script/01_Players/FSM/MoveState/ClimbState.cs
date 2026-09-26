@@ -18,8 +18,10 @@ namespace _02._Script._01_Players.FSM.MoveState {
         }
 
         public override void Tick() {
-            if (TryTransition<WalkState>(!_context.IsClimb))
+            if (!_context.IsClimb) {
+                ReturnToMovement();
                 return;
+            }
 
             if (_context.ClimbInput != 0f) {
                 var amount = _context.ClimbStaminaCostPerSecond * Time.fixedDeltaTime;
@@ -27,7 +29,7 @@ namespace _02._Script._01_Players.FSM.MoveState {
 
                 if (_stats.Stamina <= 0f) {
                     _context.CancelClimb();
-                    _stateMachine.ChangeState<WalkState>();
+                    ReturnToMovement();
                     return;
                 }
             }
@@ -51,7 +53,7 @@ namespace _02._Script._01_Players.FSM.MoveState {
 
             if (_context.ClimbInput < 0f) {
                 _context.CancelClimb();
-                _stateMachine.ChangeState<WalkState>();
+                ReturnToMovement();
             }
         }
     }

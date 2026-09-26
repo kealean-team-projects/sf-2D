@@ -482,6 +482,7 @@ MonoBehaviour:
     wallJump: 0
   staminaHUD: {fileID: 0}
   fade: {fileID: 0}
+  animator: {fileID: 0}
   moveSpeed: 10
   moveSpeedMultiplier: 2
   climbUpSpeed: 10
@@ -536,7 +537,7 @@ MonoBehaviour:
   footstepDetectionDistance: 3
   footstepResumeWindow: 0.12
   minimumFallTime: 0.5
-  landingDetectionDistance: 15
+  landingDetectionDistance: 5
 --- !u!1 &7358476570333574337
 GameObject:
   m_ObjectHideFlags: 0

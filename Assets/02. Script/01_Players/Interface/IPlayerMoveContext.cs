@@ -6,7 +6,10 @@ namespace _02._Script._01_Players.Interface {
 
         bool CanSJ { get; }
         bool IsGrounded { get; }
+        float VerticalSpeed { get; }
         bool IsClimb { get; }
+        bool IsSprinting { get; }
+        bool IsCrouching { get; }
 
         float MoveInput { get; }
         float ClimbInput { get; }

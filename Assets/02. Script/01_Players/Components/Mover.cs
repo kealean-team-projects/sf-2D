@@ -59,6 +59,7 @@ namespace _02._Script._01_Players.Components {
         public bool IsGround { get; private set; }
 
         public bool CanClimb => !_isWallDashing && !_isClimbCancelPending;
+        public float VerticalSpeed => rb.linearVelocityY;
 
         public void RestorePosition(Vector2 position) {
             _restoreVersion++;
