@@ -24,6 +24,13 @@ namespace _02._Script._01_Players.Components {
         private int _restoreVersion;
         private float _timeInAir;
 
+        public event Action GroundUpdated;
+        public int RestoreVersion => _restoreVersion;
+
+        // Audio observes the supporting surface without changing movement's ground check.
+        public Collider2D GroundCollider { get; private set; }
+        private readonly RaycastHit2D[] _surfaceHits = new RaycastHit2D[8];
+
         private void Awake() {
             rb = transform.root.GetComponent<Rigidbody2D>();
             _originGravityScale = rb.gravityScale;
@@ -31,6 +38,8 @@ namespace _02._Script._01_Players.Components {
 
         private void FixedUpdate() {
             IsGround = CheckGround();
+            GroundCollider = IsGround ? FindSupportingSurface() : null;
+            GroundUpdated?.Invoke();
         }
 
 #if UNITY_EDITOR
@@ -64,6 +73,7 @@ namespace _02._Script._01_Players.Components {
 
             Physics2D.SyncTransforms();
             IsGround = CheckGround();
+            GroundCollider = IsGround ? FindSupportingSurface() : null;
         }
 
         #region Apply_States
@@ -134,6 +144,37 @@ namespace _02._Script._01_Players.Components {
 
         private bool CheckGround() {
             return Physics2D.OverlapBox(transform.position + checker, checkerSize, 0f, whatIsGround) != null;
+        }
+
+        public Collider2D FindSoundSurface(float extraDistance) {
+            // Only extend the sound query; the movement ground check is unchanged.
+            return extraDistance > 0f ? FindSupportingSurface(extraDistance) : GroundCollider;
+        }
+
+        private Collider2D FindSupportingSurface(float extraDistance = 0f) {
+            var filter = new ContactFilter2D();
+            filter.SetLayerMask(whatIsGround);
+            filter.useTriggers = false;
+            var center = (Vector2)(transform.position + checker);
+            var origin = center + Vector2.up * (checkerSize.y * 0.5f + 0.05f);
+            var distance = checkerSize.y + 0.1f + Mathf.Max(0f, extraDistance);
+            // Prefer the surface directly under the feet, then either edge on a ledge.
+            for (var sample = 0; sample < 3; sample++) {
+                var offset = sample == 0 ? 0f : checkerSize.x * (sample == 1 ? -0.4f : 0.4f);
+                var count = Physics2D.Raycast(origin + Vector2.right * offset, Vector2.down,
+                    filter, _surfaceHits, distance);
+                Collider2D closest = null;
+                var closestDistance = float.PositiveInfinity;
+                for (var i = 0; i < count; i++) {
+                    var hit = _surfaceHits[i];
+                    if (hit.fraction == 0f || hit.normal.y < 0.35f || hit.distance >= closestDistance)
+                        continue;
+                    closest = hit.collider;
+                    closestDistance = hit.distance;
+                }
+                if (closest != null) return closest;
+            }
+            return null;
         }
 
         public void CalculateAirTime(bool isClimbing) {

@@ -5,6 +5,7 @@ using _02._Script._05_Managers;
 using _02._Script.Boss.BossPatterns;
 using _02._Script.Boss.BossZones;
 using Cysharp.Threading.Tasks;
+using csiimnida.CSILib.SoundManager.RunTime;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
@@ -13,8 +14,15 @@ namespace _02._Script.Boss {
     public class BossRoom : MonoBehaviour
     {
         [SerializeField] private float startDelay = 1f;
-        [SerializeField] private float orthographSize = 24f;
+        [SerializeField, Min(0.01f)] private float cameraDistance = 127f;
         [SerializeField] private CinemachineCamera bossCamera;
+        [SerializeField, Min(0f)] private float zoomDuration = 0.7f;
+        [Header("Room Audio")]
+        [SerializeField] private StageAudio stageAudio;
+        [Tooltip("비워 두면 스테이지 배경음을 유지합니다.")]
+        [SerializeField] private string bossBackgroundMusic;
+        [SerializeField] private string roomEnterSound = "BossRoomEnter";
+        [SerializeField] private string lightsOnSound = "TurnOn";
         [SerializeField] private BossTrigger trigger;
         [SerializeField] private BossTimeLine timeLine;
         [SerializeField] private Boss boss;
@@ -32,7 +40,13 @@ namespace _02._Script.Boss {
         private float _normalGlobalIntensity;
         private Vector3 initialBossPosition;
         private Quaternion initialBossRotation;
-        private float entryLensSize;
+        private CinemachinePositionComposer positionComposer;
+        private float entryCameraDistance;
+        private bool presentationActive;
+        private bool firstScanCompleted;
+        private SoundManager soundManager;
+        private AudioSource entryAudio;
+        private AudioSource lightAudio;
 
         public InteractLight[] Lights => lights;
 
@@ -59,10 +73,11 @@ namespace _02._Script.Boss {
             trigger.OnEnter -= Begin;
             GameManager.OnRespawnReset -= ResetRoom;
             Stop();
+            IsStarted = false;
         }
 
         public void Begin() {
-            if (IsStarted || !isActiveAndEnabled) return;
+            if (IsStarted || roomCts != null || !isActiveAndEnabled) return;
             if (boss == null || lightCycle == null) {
                 Debug.LogError("BossRoom의 Boss와 Light Cycle을 연결하세요.", this);
                 return;
@@ -73,30 +88,48 @@ namespace _02._Script.Boss {
             }
 
             IsStarted = true;
+            firstScanCompleted = false;
             boss.Navigation = navigation;
-            if (bossCamera != null) {
-                entryLensSize = bossCamera.Lens.OrthographicSize;
-                bossCamera.Lens.OrthographicSize = orthographSize;
+            positionComposer = bossCamera != null
+                ? bossCamera.GetComponent<CinemachinePositionComposer>() : null;
+            if (positionComposer != null)
+                entryCameraDistance = positionComposer.CameraDistance;
+            else
+                Debug.LogWarning("Boss Camera에 CinemachinePositionComposer를 연결하세요.", this);
+            presentationActive = true;
+            soundManager = FindAnyObjectByType<SoundManager>();
+            if (stageAudio == null) {
+                foreach (var root in gameObject.scene.GetRootGameObjects()) {
+                    stageAudio = root.GetComponentInChildren<StageAudio>();
+                    if (stageAudio != null) break;
+                }
             }
+            if (soundManager != null && !string.IsNullOrWhiteSpace(roomEnterSound))
+                entryAudio = soundManager.PlayTrackedSound(roomEnterSound);
+            if (stageAudio != null) stageAudio.PauseMusic(this);
             boss.gameObject.SetActive(true);
             roomCts = new CancellationTokenSource();
-            Run(roomCts.Token).Forget();
+            Run(roomCts).Forget();
         }
 
-        private async UniTask Run(CancellationToken token) {
+        private async UniTask Run(CancellationTokenSource session) {
+            var token = session.Token;
             try {
-                await UniTask.Delay(TimeSpan.FromSeconds(startDelay), cancellationToken: token);
+                await ZoomOut(token);
+                token.ThrowIfCancellationRequested();
                 foreach (var roomLight in lights)
                     roomLight?.TurnOn();
                 
                 SetLightBrightness(1f);
+                PlayLightsOnSound();
+                await UniTask.Delay(TimeSpan.FromSeconds(Mathf.Max(0f, startDelay)), cancellationToken: token);
 
                 var firstCycle = true;
                 while (true) {
                     token.ThrowIfCancellationRequested();
                     SetLightBrightness(1f);
                     
-                    await lightCycle.Wait(token); // 추가
+                    await lightCycle.Wait(token);
                     await lightCycle.Dim(this, token);
                     
                     var darkUntil = Time.time + lightCycle.DarkHoldDuration;
@@ -111,19 +144,71 @@ namespace _02._Script.Boss {
                         await UniTask.NextFrame(token);
 
                     SetLightBrightness(1f);
+                    PlayLightsOnSound();
                     await UniTask.NextFrame(token);
                 }
             }
             catch (OperationCanceledException) { }
             finally {
-                roomCts.Dispose();
-                roomCts = null;
-                SetLightBrightness(1f);
+                session.Dispose();
+                if (ReferenceEquals(roomCts, session)) roomCts = null;
+                if (this != null && isActiveAndEnabled) SetLightBrightness(1f);
             }
+        }
+
+        private async UniTask ZoomOut(CancellationToken token) {
+            if (positionComposer == null) return;
+            var elapsed = 0f;
+            while (elapsed < zoomDuration) {
+                await UniTask.NextFrame(token);
+                token.ThrowIfCancellationRequested();
+                if (positionComposer == null) return;
+                elapsed += Time.deltaTime;
+                var progress = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(elapsed / zoomDuration));
+                positionComposer.CameraDistance = Mathf.Lerp(entryCameraDistance, cameraDistance, progress);
+            }
+            token.ThrowIfCancellationRequested();
+            if (positionComposer != null) positionComposer.CameraDistance = cameraDistance;
+        }
+
+        public void OnScanCompleted() {
+            if (!IsStarted || !presentationActive || firstScanCompleted) return;
+            firstScanCompleted = true;
+            if (stageAudio != null) stageAudio.ResumeMusic(this);
+            if (stageAudio != null && !string.IsNullOrWhiteSpace(bossBackgroundMusic))
+                stageAudio.OverrideMusic(bossBackgroundMusic, this);
+        }
+
+        public void OnPlayerDetected() {
+            if (!IsStarted || !presentationActive || soundManager == null ||
+                string.IsNullOrWhiteSpace(roomEnterSound)) return;
+            soundManager.StopSound(entryAudio);
+            entryAudio = soundManager.PlayTrackedSound(roomEnterSound);
+        }
+
+        private void PlayLightsOnSound() {
+            if (soundManager == null || string.IsNullOrWhiteSpace(lightsOnSound)) return;
+            soundManager.StopSound(lightAudio);
+            lightAudio = soundManager.PlayTrackedSound(lightsOnSound);
+        }
+
+        private void RestorePresentation() {
+            if (!presentationActive) return;
+            presentationActive = false;
+            if (positionComposer != null) positionComposer.CameraDistance = entryCameraDistance;
+            if (stageAudio != null) stageAudio.RestoreMusic(this);
+            if (stageAudio != null) stageAudio.ResumeMusic(this);
+            if (soundManager != null) {
+                soundManager.StopSound(entryAudio);
+                soundManager.StopSound(lightAudio);
+            }
+            entryAudio = null;
+            lightAudio = null;
         }
 
         public void Stop() {
             roomCts?.Cancel();
+            RestorePresentation();
         }
 
         private async UniTask ResetRoom()
@@ -133,6 +218,7 @@ namespace _02._Script.Boss {
             boss.Stop();
             // Wait until the old pattern's finally blocks have finished before restoring state.
             await UniTask.WaitUntil(() => roomCts == null);
+            if (this == null || !isActiveAndEnabled) return;
 
             boss.ResetForRetry(initialBossPosition, initialBossRotation);
 
@@ -141,7 +227,6 @@ namespace _02._Script.Boss {
                 roomLight.ResetForRetry();
             }
             if (globalLight != null) globalLight.intensity = _normalGlobalIntensity;
-            if (bossCamera != null) bossCamera.Lens.OrthographicSize = entryLensSize;
             IsStarted = false;
         }
 
