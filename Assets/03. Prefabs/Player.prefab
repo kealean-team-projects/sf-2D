@@ -91,7 +91,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::_01.Script.Player.CheckClimbWall
   isGizmos: 1
   gizmosColor: {r: 0, g: 0.21222556, b: 1, a: 1}
-  checkSize: {x: 0.43, y: 1.59}
+  checkSize: {x: 0.43, y: 1.35}
   whatIsLayer:
     serializedVersion: 2
     m_Bits: 512
@@ -249,6 +249,7 @@ MonoBehaviour:
   staminaHealBoost: 20
   maxStamina: 100
   staminaHealWaitTime: 5
+  heatStroke: 0
 --- !u!1 &2333632224885885106
 GameObject:
   m_ObjectHideFlags: 0
@@ -293,7 +294,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa8848ccd0fd407ebefa3e8197d66c28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_01.Script.Player.Components.Interactor
-  radius: 2.08
+  radius: 1.37
   offset: {x: 0, y: 0}
   target:
     useTriggers: 0
@@ -368,6 +369,7 @@ GameObject:
   - component: {fileID: 7646778522885899942}
   - component: {fileID: 2493825003367186672}
   - component: {fileID: 3257919969277940101}
+  - component: {fileID: 870000000000000100}
   m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
@@ -474,10 +476,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_01.Script.Player.Player
   staminaCosts:
-    runPerSecond: 20
-    climbPerSecond: 20
-    wallDash: 20
-    wallJump: 20
+    runPerSecond: 5
+    climbPerSecond: 5
+    wallDash: 10
+    wallJump: 0
   staminaHUD: {fileID: 0}
   fade: {fileID: 0}
   moveSpeed: 10
@@ -515,6 +517,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_02._Script.Players.PlayerProgress
   currentStage: 1
+--- !u!114 &870000000000000100
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6066075572630771389}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a2a60c236e2d7740a40359fa3cb4d88, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 7646778522885899942}
+  mover: {fileID: 6429140040753340759}
+  body: {fileID: 4037718769439411383}
+  minimumMoveSpeed: 0.1
+  footstepDetectionDistance: 3
+  footstepResumeWindow: 0.12
+  minimumFallTime: 0.5
+  landingDetectionDistance: 0
 --- !u!1 &7358476570333574337
 GameObject:
   m_ObjectHideFlags: 0
@@ -561,15 +583,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_01.Script.Player.Components.Mover
   rb: {fileID: 4037718769439411383}
-  jumpForce: 15
-  <IsGround>k__BackingField: 0
+  jumpForce: 20
   checker: {x: 0, y: 0, z: 0}
-  checkerSize: {x: 0.8, y: 0.3}
+  checkerSize: {x: 0.87, y: 0.62}
   whatIsGround:
     serializedVersion: 2
     m_Bits: 64
-  extraGravity: 15
+  extraGravity: 17
   gravityDelay: 0.3
+  <IsGround>k__BackingField: 0
 --- !u!114 &2619928809618370660
 MonoBehaviour:
   m_ObjectHideFlags: 0

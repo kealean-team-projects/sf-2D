@@ -531,6 +531,7 @@ GameObject:
   - component: {fileID: 26314177}
   - component: {fileID: 26314176}
   - component: {fileID: 26314179}
+  - component: {fileID: 26314180}
   m_Layer: 6
   m_Name: UnderWater - FirstFloor - Enviorment - Border - Left
   m_TagString: Untagged
@@ -1566,6 +1567,19 @@ MonoBehaviour:
   m_Area: 1
   m_IgnoreFromBuild: 0
   m_AffectedAgents: ffffffffi
+--- !u!114 &26314180
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 26314174}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09d8eca50718aaf438746e9ba636f418, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_02._Script._01_Players.Components.Audio.FootstepSurface
+  material: 1
 --- !u!1 &27915234
 GameObject:
   m_ObjectHideFlags: 0
@@ -2578,6 +2592,7 @@ GameObject:
   - component: {fileID: 51011168}
   - component: {fileID: 51011167}
   - component: {fileID: 51011166}
+  - component: {fileID: 870000000000001000}
   m_Layer: 9
   m_Name: UnderWater - ThirdFloor - Enviorment - Ground - Closed Sprite Shape (8)
   m_TagString: Untagged
@@ -2782,6 +2797,7 @@ GameObject:
   - component: {fileID: 56789982}
   - component: {fileID: 56789981}
   - component: {fileID: 56789984}
+  - component: {fileID: 870000000000001001}
   m_Layer: 6
   m_Name: UnderWater - ThirdFloor - Enviorment - Ground - Closed Sprite Shape (2)
   m_TagString: Untagged
@@ -4924,6 +4940,7 @@ GameObject:
   - component: {fileID: 103424431}
   - component: {fileID: 103424430}
   - component: {fileID: 103424429}
+  - component: {fileID: 870000000000001002}
   m_Layer: 9
   m_Name: UnderWater - BossFloor - Enviorment - Ground - Closed Sprite Shape
   m_TagString: Untagged
@@ -5847,6 +5864,7 @@ GameObject:
   - component: {fileID: 132905411}
   - component: {fileID: 132905410}
   - component: {fileID: 132905409}
+  - component: {fileID: 870000000000001003}
   m_Layer: 9
   m_Name: UnderWater - ThirdFloor - Enviorment - Ground - Closed Sprite Shape (3)
   m_TagString: Untagged
@@ -6124,6 +6142,7 @@ GameObject:
   - component: {fileID: 138888423}
   - component: {fileID: 138888422}
   - component: {fileID: 138888421}
+  - component: {fileID: 870000000000001004}
   m_Layer: 9
   m_Name: UnderWater - FirstFloor - Enviorment - Ground - Closed Sprite Shape (2)
   m_TagString: Untagged
@@ -6953,8 +6972,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 576
   flightBounds:
-    m_Center: {x: 2917.188, y: -454.86075, z: 0}
-    m_Extent: {x: 783.9155, y: 277.91006, z: 0}
+    m_Center: {x: 2843.188, y: -520.3992, z: 0}
+    m_Extent: {x: 641.9155, y: 163.44855, z: 0}
 --- !u!114 &155082062
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6962,14 +6981,14 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 155082060}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e04976799df50f54ba128eff723155a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: NavMeshPlus::NavMeshPlus.Components.NavMeshSurface
   m_AgentTypeID: -1372625422
   m_CollectObjects: 1
-  m_Size: {x: 1567.831, y: 10, z: 555.8201}
+  m_Size: {x: 1283.831, y: 10, z: 326.8971}
   m_Center: {x: 0, y: 0, z: 0}
   m_LayerMask:
     serializedVersion: 2
@@ -6985,7 +7004,7 @@ MonoBehaviour:
   m_BuildHeightMesh: 0
   m_MinRegionArea: 0
   m_HideEditorLogs: 1
-  m_NavMeshData: {fileID: 23800000, guid: ade4e24b6e37b2b49a582a8d7f9501aa, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: e1143ba2a44b2fe468e94cbfa540e502, type: 2}
 --- !u!4 &155082063
 Transform:
   m_ObjectHideFlags: 0
@@ -6995,7 +7014,7 @@ Transform:
   m_GameObject: {fileID: 155082060}
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 2917.188, y: -454.86075, z: 0}
+  m_LocalPosition: {x: 2843.188, y: -520.3992, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -7263,6 +7282,7 @@ GameObject:
   - component: {fileID: 170281729}
   - component: {fileID: 170281728}
   - component: {fileID: 170281731}
+  - component: {fileID: 870000000000001005}
   m_Layer: 6
   m_Name: UnderWater - FirstFloor - Enviorment - Ground - Closed Sprite Shape
   m_TagString: Untagged
@@ -7839,6 +7859,7 @@ GameObject:
   - component: {fileID: 193620832}
   - component: {fileID: 193620836}
   - component: {fileID: 193620835}
+  - component: {fileID: 870000000000001006}
   m_Layer: 6
   m_Name: UnderWater - BossFloor - Enviorment - Ground - Closed Sprite Shape (3)
   m_TagString: Untagged
@@ -10472,6 +10493,7 @@ GameObject:
   - component: {fileID: 262433762}
   - component: {fileID: 262433761}
   - component: {fileID: 262433760}
+  - component: {fileID: 870000000000001007}
   m_Layer: 9
   m_Name: UnderWater - BossFloor - Enviorment - Ground - Closed Sprite Shape (5)
   m_TagString: Untagged
@@ -11670,6 +11692,7 @@ GameObject:
   - component: {fileID: 277657568}
   - component: {fileID: 277657567}
   - component: {fileID: 277657570}
+  - component: {fileID: 870000000000001008}
   m_Layer: 6
   m_Name: UnderWater - ThirdFloor - Enviorment - Ground - Closed Sprite Shape (6)
   m_TagString: Untagged
@@ -12145,114 +12168,6 @@ Transform:
   - {fileID: 1079773533}
   m_Father: {fileID: 1226603208}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &292739300
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 292739301}
-  - component: {fileID: 292739302}
-  m_Layer: 8
-  m_Name: Spot Light 2D
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &292739301
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 292739300}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 513424631}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &292739302
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 292739300}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 073797afb82c5a1438f328866b10b3f0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.2D.Runtime::UnityEngine.Rendering.Universal.Light2D
-  m_ComponentVersion: 4
-  m_LightType: 3
-  m_BlendStyleIndex: 0
-  m_Light2DProvider:
-    rid: -2
-  m_SelectionSources:
-    rid: 3226912081575673947
-  m_FalloffIntensity: 0.5
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 1.58
-  m_LightVolumeIntensity: 1
-  m_LightVolumeEnabled: 0
-  m_ApplyToSortingLayers: 599d840a00000000f57c5d74953fc5fe93eff35b4f4643a1i
-  m_LightCookieSprite: {fileID: 0}
-  m_DeprecatedPointLightCookieSprite: {fileID: 0}
-  m_LightOrder: 0
-  m_AlphaBlendOnOverlap: 0
-  m_OverlapOperation: 0
-  m_NormalMapDistance: 3
-  m_NormalMapQuality: 2
-  m_UseNormalMap: 0
-  m_ShadowsEnabled: 1
-  m_ShadowIntensity: 0.75
-  m_ShadowSoftness: 0.3
-  m_ShadowSoftnessFalloffIntensity: 0.5
-  m_ShadowVolumeIntensityEnabled: 0
-  m_ShadowVolumeIntensity: 0.75
-  m_RenderingLayersMask:
-    serializedVersion: 0
-    m_Bits: 1
-  m_LocalBounds:
-    m_Center: {x: 0, y: -0.00000011920929, z: 0}
-    m_Extent: {x: 0.9985302, y: 0.99853027, z: 0}
-  m_PointLightInnerAngle: 360
-  m_PointLightOuterAngle: 360
-  m_PointLightInnerRadius: 6.13
-  m_PointLightOuterRadius: 13
-  m_ShapeLightParametricSides: 5
-  m_ShapeLightParametricAngleOffset: 0
-  m_ShapeLightParametricRadius: 1
-  m_ShapeLightFalloffSize: 0.5
-  m_ShapeLightFalloffOffset: {x: 0, y: 0}
-  m_ShapePath:
-  - {x: -0.5, y: -0.5, z: 0}
-  - {x: 0.5, y: -0.5, z: 0}
-  - {x: 0.5, y: 0.5, z: 0}
-  - {x: -0.5, y: 0.5, z: 0}
-  references:
-    version: 2
-    RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
-    - rid: 3226912081575673947
-      type: {class: Light2DProviderSources, ns: UnityEngine.Rendering.Universal, asm: Unity.RenderPipelines.Universal.2D.Runtime}
-      data:
-        m_SelectedHashCode: 3
-        m_SelectedSource:
-          rid: -2
-        m_Provider2DCache:
-          rid: 3226912081575673948
-    - rid: 3226912081575673948
-      type: {class: 'Provider2DCache`1[[UnityEngine.Rendering.Universal.Light2DProvider, Unity.RenderPipelines.Universal.2D.Runtime]]', ns: UnityEngine.Rendering.Universal, asm: Unity.RenderPipelines.Universal.2D.Runtime}
-      data:
-        m_Cache: []
 --- !u!1001 &298861444
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13346,6 +13261,7 @@ GameObject:
   - component: {fileID: 328365641}
   - component: {fileID: 328365640}
   - component: {fileID: 328365643}
+  - component: {fileID: 870000000000001009}
   m_Layer: 6
   m_Name: Cave - Upper - FirstGround
   m_TagString: Untagged
@@ -13746,7 +13662,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &333627591
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13774,7 +13690,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 333627590}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e04976799df50f54ba128eff723155a7, type: 3}
   m_Name: 
@@ -14974,6 +14890,7 @@ GameObject:
   - component: {fileID: 381183982}
   - component: {fileID: 381183981}
   - component: {fileID: 381183980}
+  - component: {fileID: 870000000000001010}
   m_Layer: 9
   m_Name: UnderWater - ThirdFloor - Enviorment - Ground - Closed Sprite Shape (5)
   m_TagString: Untagged
@@ -15352,6 +15269,7 @@ GameObject:
   - component: {fileID: 401303966}
   - component: {fileID: 401303965}
   - component: {fileID: 401303968}
+  - component: {fileID: 870000000000001011}
   m_Layer: 6
   m_Name: UnderWater - FirstFloor - Enviorment - Ground - Closed Sprite Shape (3)
   m_TagString: Untagged
@@ -20950,6 +20868,7 @@ GameObject:
   - component: {fileID: 426870827}
   - component: {fileID: 426870826}
   - component: {fileID: 426870825}
+  - component: {fileID: 870000000000001012}
   m_Layer: 9
   m_Name: UnderWater - ThirdFloor - Enviorment - Ground - Closed Sprite Shape (1)
   m_TagString: Untagged
@@ -22980,6 +22899,7 @@ GameObject:
   - component: {fileID: 462250355}
   - component: {fileID: 462250354}
   - component: {fileID: 462250353}
+  - component: {fileID: 870000000000001013}
   m_Layer: 9
   m_Name: UnderWater - ThirdFloor - Enviorment - Ground - Closed Sprite Shape (10)
   m_TagString: Untagged
@@ -30464,41 +30384,25 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 6066075572630771389, guid: 432c73efd45be8b47a624d69f87ce69e, type: 3}
-      propertyPath: m_IsActive
-      value: 1
+    - target: {fileID: 8931466274003963571, guid: 432c73efd45be8b47a624d69f87ce69e, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 3
       objectReference: {fileID: 0}
-    - target: {fileID: 6066075572630771389, guid: 432c73efd45be8b47a624d69f87ce69e, type: 3}
-      propertyPath: m_TagString
-      value: Player
+    - target: {fileID: 8931466274003963571, guid: 432c73efd45be8b47a624d69f87ce69e, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 3
       objectReference: {fileID: 0}
-    - target: {fileID: 7646778522885899942, guid: 432c73efd45be8b47a624d69f87ce69e, type: 3}
-      propertyPath: staminaHUD
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 7646778522885899942, guid: 432c73efd45be8b47a624d69f87ce69e, type: 3}
-      propertyPath: staminaCosts.wallDash
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7646778522885899942, guid: 432c73efd45be8b47a624d69f87ce69e, type: 3}
-      propertyPath: staminaCosts.wallJump
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7646778522885899942, guid: 432c73efd45be8b47a624d69f87ce69e, type: 3}
-      propertyPath: staminaCosts.runPerSecond
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7646778522885899942, guid: 432c73efd45be8b47a624d69f87ce69e, type: 3}
-      propertyPath: staminaCosts.climbPerSecond
+    - target: {fileID: 8931466274003963571, guid: 432c73efd45be8b47a624d69f87ce69e, type: 3}
+      propertyPath: m_LocalScale.z
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8931466274003963571, guid: 432c73efd45be8b47a624d69f87ce69e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1934.6
+      value: 12.099976
       objectReference: {fileID: 0}
     - target: {fileID: 8931466274003963571, guid: 432c73efd45be8b47a624d69f87ce69e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -515.6
+      value: 98.150024
       objectReference: {fileID: 0}
     - target: {fileID: 8931466274003963571, guid: 432c73efd45be8b47a624d69f87ce69e, type: 3}
       propertyPath: m_LocalPosition.z
@@ -30534,10 +30438,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 8931466274003963571, guid: 432c73efd45be8b47a624d69f87ce69e, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 292739301}
+    m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 432c73efd45be8b47a624d69f87ce69e, type: 3}
 --- !u!4 &513424631 stripped
@@ -37339,6 +37240,7 @@ GameObject:
   - component: {fileID: 689149384}
   - component: {fileID: 689149383}
   - component: {fileID: 689149386}
+  - component: {fileID: 870000000000001014}
   m_Layer: 6
   m_Name: UnderWater - ThirdFloor - Enviorment - Ground - Closed Sprite Shape
   m_TagString: Untagged
@@ -39640,6 +39542,7 @@ GameObject:
   - component: {fileID: 706996876}
   - component: {fileID: 706996875}
   - component: {fileID: 706996874}
+  - component: {fileID: 870000000000001015}
   m_Layer: 9
   m_Name: UnderWater - ThirdFloor - Enviorment - Ground - Closed Sprite Shape (6)
   m_TagString: Untagged
@@ -40239,6 +40142,7 @@ GameObject:
   - component: {fileID: 726806523}
   - component: {fileID: 726806522}
   - component: {fileID: 726806525}
+  - component: {fileID: 870000000000001016}
   m_Layer: 6
   m_Name: UnderWater - ThirdFloor - Enviorment - Ground - Closed Sprite Shape (4)
   m_TagString: Untagged
@@ -40479,6 +40383,7 @@ GameObject:
   - component: {fileID: 727427180}
   - component: {fileID: 727427179}
   - component: {fileID: 727427182}
+  - component: {fileID: 870000000000001017}
   m_Layer: 6
   m_Name: Cave - Upper - SecondGround
   m_TagString: Untagged
@@ -62497,6 +62402,7 @@ GameObject:
   - component: {fileID: 900935462}
   - component: {fileID: 900935461}
   - component: {fileID: 900935460}
+  - component: {fileID: 870000000000001018}
   m_Layer: 9
   m_Name: UnderWater - BossFloor - Enviorment - Ground - Closed Sprite Shape (1)
   m_TagString: Untagged
@@ -63447,6 +63353,7 @@ GameObject:
   - component: {fileID: 918607195}
   - component: {fileID: 918607194}
   - component: {fileID: 918607193}
+  - component: {fileID: 870000000000001019}
   m_Layer: 9
   m_Name: UnderWater - ThirdFloor - Enviorment - Ground - Closed Sprite Shape
   m_TagString: Untagged
@@ -64143,6 +64050,7 @@ GameObject:
   - component: {fileID: 929473710}
   - component: {fileID: 929473709}
   - component: {fileID: 929473712}
+  - component: {fileID: 870000000000001020}
   m_Layer: 6
   m_Name: UnderWater - ThirdFloor - Enviorment - Ground - Closed Sprite Shape (7)
   m_TagString: Untagged
@@ -65208,6 +65116,7 @@ GameObject:
   - component: {fileID: 992993320}
   - component: {fileID: 992993319}
   - component: {fileID: 992993318}
+  - component: {fileID: 870000000000001021}
   m_Layer: 9
   m_Name: UnderWater - FirstFloor - Enviorment - Ground - Closed Sprite Shape (4)
   m_TagString: Untagged
@@ -68817,6 +68726,7 @@ GameObject:
   - component: {fileID: 1107296085}
   - component: {fileID: 1107296089}
   - component: {fileID: 1107296088}
+  - component: {fileID: 870000000000001022}
   m_Layer: 6
   m_Name: UnderWater - BossFloor - Enviorment - Ground - Closed Sprite Shape (2)
   m_TagString: Untagged
@@ -70704,6 +70614,7 @@ GameObject:
   - component: {fileID: 1140022963}
   - component: {fileID: 1140022962}
   - component: {fileID: 1140022961}
+  - component: {fileID: 870000000000001023}
   m_Layer: 9
   m_Name: UnderWater - ThirdFloor - Enviorment - Ground - Closed Sprite Shape (11)
   m_TagString: Untagged
@@ -73256,6 +73167,7 @@ GameObject:
   - component: {fileID: 1179471251}
   - component: {fileID: 1179471250}
   - component: {fileID: 1179471253}
+  - component: {fileID: 1179471254}
   m_Layer: 6
   m_Name: UnderWater - FirstFloor - Enviorment - Border - Right
   m_TagString: Untagged
@@ -73923,6 +73835,19 @@ MonoBehaviour:
   m_Area: 1
   m_IgnoreFromBuild: 0
   m_AffectedAgents: ffffffffi
+--- !u!114 &1179471254
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1179471248}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09d8eca50718aaf438746e9ba636f418, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_02._Script._01_Players.Components.Audio.FootstepSurface
+  material: 1
 --- !u!1 &1192145088
 GameObject:
   m_ObjectHideFlags: 0
@@ -74811,6 +74736,7 @@ GameObject:
   - component: {fileID: 1200698339}
   - component: {fileID: 1200698338}
   - component: {fileID: 1200698337}
+  - component: {fileID: 870000000000001024}
   m_Layer: 9
   m_Name: UnderWater - ThirdFloor - Enviorment - Ground - Closed Sprite Shape (4)
   m_TagString: Untagged
@@ -75430,6 +75356,7 @@ GameObject:
   - component: {fileID: 1238697088}
   - component: {fileID: 1238697091}
   - component: {fileID: 1238697090}
+  - component: {fileID: 870000000000001025}
   m_Layer: 6
   m_Name: UnderWater - BossFloor - Enviorment - Ground - Closed Sprite Shape (1)
   m_TagString: Untagged
@@ -76145,7 +76072,7 @@ MonoBehaviour:
     LookAtTarget: {fileID: 0}
     CustomLookAtTarget: 0
   Lens:
-    FieldOfView: 15
+    FieldOfView: 11.7
     OrthographicSize: 9
     NearClipPlane: 0.1
     FarClipPlane: 5000
@@ -76173,7 +76100,7 @@ Transform:
   m_GameObject: {fileID: 1246242314}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1934.6, y: -515.6, z: -200.8}
+  m_LocalPosition: {x: 12.099976, y: 98.150024, z: -201.8}
   m_LocalScale: {x: 0.39836904, y: 0.39836904, z: 0.39836904}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -76191,7 +76118,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 886251e9a18ece04ea8e61686c173e1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachinePositionComposer
-  CameraDistance: 200.8
+  CameraDistance: 201.8
   DeadZoneDepth: 0
   Composition:
     ScreenPosition: {x: 0, y: 0}
@@ -78327,6 +78254,7 @@ GameObject:
   - component: {fileID: 1286454035}
   - component: {fileID: 1286454034}
   - component: {fileID: 1286454033}
+  - component: {fileID: 870000000000001026}
   m_Layer: 9
   m_Name: UnderWater - FirstFloor - Enviorment - Ground - Closed Sprite Shape
   m_TagString: Untagged
@@ -80396,8 +80324,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_02._Script.Boss.BossRoom
   startDelay: 2
-  orthographSize: 24
+  cameraDistance: 127
   bossCamera: {fileID: 1246242315}
+  zoomDuration: 0.7
+  stageAudio: {fileID: 870000000000000302}
+  bossBackgroundMusic: 
+  roomEnterSound: BossRoomEnter
+  lightsOnSound: TurnOn
   trigger: {fileID: 1304829975}
   timeLine: {fileID: 987798177}
   boss: {fileID: 766278339}
@@ -80538,6 +80471,7 @@ GameObject:
   - component: {fileID: 1390887966}
   - component: {fileID: 1390887965}
   - component: {fileID: 1390887968}
+  - component: {fileID: 870000000000001027}
   m_Layer: 6
   m_Name: UnderWater - FirstFloor - Enviorment - Ground - Closed Sprite Shape (4)
   m_TagString: Untagged
@@ -81292,6 +81226,7 @@ GameObject:
   - component: {fileID: 1421187952}
   - component: {fileID: 1421187951}
   - component: {fileID: 1421187950}
+  - component: {fileID: 870000000000001028}
   m_Layer: 9
   m_Name: UnderWater - ThirdFloor - Enviorment - Ground - Closed Sprite Shape (2)
   m_TagString: Untagged
@@ -83958,6 +83893,7 @@ GameObject:
   - component: {fileID: 1448531190}
   - component: {fileID: 1448531189}
   - component: {fileID: 1448531188}
+  - component: {fileID: 870000000000001029}
   m_Layer: 9
   m_Name: UnderWater - ThirdFloor - Enviorment - Ground - Closed Sprite Shape (12)
   m_TagString: Untagged
@@ -84496,6 +84432,7 @@ GameObject:
   - component: {fileID: 1455569727}
   - component: {fileID: 1455569726}
   - component: {fileID: 1455569729}
+  - component: {fileID: 870000000000001030}
   m_Layer: 6
   m_Name: UnderWater - FirstFloor - Enviorment - Ground - Closed Sprite Shape (1)
   m_TagString: Untagged
@@ -85096,6 +85033,7 @@ GameObject:
   - component: {fileID: 1463875666}
   - component: {fileID: 1463875665}
   - component: {fileID: 1463875668}
+  - component: {fileID: 870000000000001031}
   m_Layer: 6
   m_Name: UnderWater - ThirdFloor - Enviorment - Ground - Closed Sprite Shape (8)
   m_TagString: Untagged
@@ -85408,6 +85346,7 @@ GameObject:
   - component: {fileID: 1472655391}
   - component: {fileID: 1472655390}
   - component: {fileID: 1472655393}
+  - component: {fileID: 870000000000001032}
   m_Layer: 6
   m_Name: UnderWater - ThirdFloor - Enviorment - Ground - Closed Sprite Shape (11)
   m_TagString: Untagged
@@ -86621,6 +86560,7 @@ GameObject:
   - component: {fileID: 1515548344}
   - component: {fileID: 1515548343}
   - component: {fileID: 1515548342}
+  - component: {fileID: 870000000000001033}
   m_Layer: 9
   m_Name: UnderWater - ThirdFloor - Enviorment - Ground - Closed Sprite Shape (7)
   m_TagString: Untagged
@@ -88832,6 +88772,7 @@ GameObject:
   - component: {fileID: 1597957209}
   - component: {fileID: 1597957208}
   - component: {fileID: 1597957207}
+  - component: {fileID: 870000000000001034}
   m_Layer: 9
   m_Name: UnderWater - BossFloor - Enviorment - Ground - Closed Sprite Shape (3)
   m_TagString: Untagged
@@ -93647,6 +93588,7 @@ GameObject:
   - component: {fileID: 1643797009}
   - component: {fileID: 1643797008}
   - component: {fileID: 1643797007}
+  - component: {fileID: 870000000000001035}
   m_Layer: 9
   m_Name: UnderWater - BossFloor - Enviorment - Ground - Closed Sprite Shape (4)
   m_TagString: Untagged
@@ -94616,6 +94558,7 @@ GameObject:
   - component: {fileID: 1644764475}
   - component: {fileID: 1644764474}
   - component: {fileID: 1644764477}
+  - component: {fileID: 870000000000001036}
   m_Layer: 6
   m_Name: UnderWater - FirstFloor - Enviorment - Ground - Closed Sprite Shape (2)
   m_TagString: Untagged
@@ -95182,6 +95125,7 @@ GameObject:
   - component: {fileID: 1662773133}
   - component: {fileID: 1662773132}
   - component: {fileID: 1662773131}
+  - component: {fileID: 870000000000001037}
   m_Layer: 9
   m_Name: UnderWater - ThirdFloor - Enviorment - Ground - Closed Sprite Shape (9)
   m_TagString: Untagged
@@ -97215,6 +97159,7 @@ GameObject:
   - component: {fileID: 1745374710}
   - component: {fileID: 1745374709}
   - component: {fileID: 1745374712}
+  - component: {fileID: 870000000000001038}
   m_Layer: 6
   m_Name: UnderWater - ThirdFloor - Enviorment - Ground - Closed Sprite Shape (3)
   m_TagString: Untagged
@@ -97438,6 +97383,7 @@ GameObject:
   - component: {fileID: 1750919683}
   - component: {fileID: 1750919682}
   - component: {fileID: 1750919681}
+  - component: {fileID: 870000000000001039}
   m_Layer: 9
   m_Name: UnderWater - FirstFloor - Enviorment - Ground - Closed Sprite Shape (3)
   m_TagString: Untagged
@@ -98231,6 +98177,7 @@ GameObject:
   - component: {fileID: 1780496622}
   - component: {fileID: 1780496621}
   - component: {fileID: 1780496624}
+  - component: {fileID: 870000000000001040}
   m_Layer: 6
   m_Name: UnderWater - ThirdFloor - Enviorment - Ground - Closed Sprite Shape (9)
   m_TagString: Untagged
@@ -99058,6 +99005,7 @@ GameObject:
   - component: {fileID: 1808606708}
   - component: {fileID: 1808606712}
   - component: {fileID: 1808606711}
+  - component: {fileID: 870000000000001041}
   m_Layer: 6
   m_Name: UnderWater - BossFloor - Enviorment - Ground - Closed Sprite Shape (4)
   m_TagString: Untagged
@@ -100027,6 +99975,7 @@ GameObject:
   - component: {fileID: 1811561375}
   - component: {fileID: 1811561374}
   - component: {fileID: 1811561377}
+  - component: {fileID: 870000000000001042}
   m_Layer: 6
   m_Name: UnderWater - ThirdFloor - Enviorment - Ground - Closed Sprite Shape (1)
   m_TagString: Untagged
@@ -102025,6 +101974,7 @@ GameObject:
   - component: {fileID: 1843003619}
   - component: {fileID: 1843003618}
   - component: {fileID: 1843003621}
+  - component: {fileID: 870000000000001043}
   m_Layer: 6
   m_Name: UnderWater - ThirdFloor - Enviorment - Ground - Closed Sprite Shape (12)
   m_TagString: Untagged
@@ -103805,6 +103755,7 @@ GameObject:
   - component: {fileID: 1936236283}
   - component: {fileID: 1936236282}
   - component: {fileID: 1936236281}
+  - component: {fileID: 870000000000001044}
   m_Layer: 9
   m_Name: UnderWater - BossFloor - Enviorment - Ground - Closed Sprite Shape (2)
   m_TagString: Untagged
@@ -119387,6 +119338,7 @@ GameObject:
   - component: {fileID: 1995304893}
   - component: {fileID: 1995304896}
   - component: {fileID: 1995304895}
+  - component: {fileID: 870000000000001045}
   m_Layer: 6
   m_Name: UnderWater - BossFloor - Enviorment - Ground - Closed Sprite Shape
   m_TagString: Untagged
@@ -120526,6 +120478,7 @@ GameObject:
   - component: {fileID: 2034113893}
   - component: {fileID: 2034113897}
   - component: {fileID: 2034113896}
+  - component: {fileID: 870000000000001046}
   m_Layer: 6
   m_Name: UnderWater - BossFloor - Enviorment - Ground - Closed Sprite Shape (5)
   m_TagString: Untagged
@@ -122830,6 +122783,7 @@ GameObject:
   - component: {fileID: 2069394350}
   - component: {fileID: 2069394349}
   - component: {fileID: 2069394348}
+  - component: {fileID: 870000000000001047}
   m_Layer: 9
   m_Name: UnderWater - FirstFloor - Enviorment - Ground - Closed Sprite Shape (1)
   m_TagString: Untagged
@@ -123414,6 +123368,7 @@ GameObject:
   - component: {fileID: 2071994954}
   - component: {fileID: 2071994953}
   - component: {fileID: 2071994956}
+  - component: {fileID: 870000000000001048}
   m_Layer: 6
   m_Name: UnderWater - ThirdFloor - Enviorment - Ground - Closed Sprite Shape (5)
   m_TagString: Untagged
@@ -124062,6 +124017,7 @@ GameObject:
   - component: {fileID: 2097891525}
   - component: {fileID: 2097891524}
   - component: {fileID: 2097891527}
+  - component: {fileID: 870000000000001049}
   m_Layer: 6
   m_Name: UnderWater - ThirdFloor - Enviorment - Ground - Closed Sprite Shape (10)
   m_TagString: Untagged
@@ -126568,6 +126524,701 @@ SpriteShapeRenderer:
     m_Center: {x: 977.46796, y: 297.69427, z: 0}
     m_Extent: {x: 1013.11084, y: 489.55237, z: 0}
   m_SpriteSortPoint: 0
+--- !u!1 &870000000000000300
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 870000000000000301}
+  - component: {fileID: 870000000000000302}
+  m_Layer: 0
+  m_Name: StageAudio
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &870000000000000301
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 870000000000000300}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &870000000000000302
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 870000000000000300}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81420782be7c5ee488f333b2370b132c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  backgroundMusic: BG_2
+--- !u!114 &870000000000001000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 51011164}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09d8eca50718aaf438746e9ba636f418, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  material: 1
+--- !u!114 &870000000000001001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 56789979}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09d8eca50718aaf438746e9ba636f418, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  material: 1
+--- !u!114 &870000000000001002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 103424427}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09d8eca50718aaf438746e9ba636f418, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  material: 1
+--- !u!114 &870000000000001003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 132905407}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09d8eca50718aaf438746e9ba636f418, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  material: 1
+--- !u!114 &870000000000001004
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 138888419}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09d8eca50718aaf438746e9ba636f418, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  material: 1
+--- !u!114 &870000000000001005
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 170281726}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09d8eca50718aaf438746e9ba636f418, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  material: 1
+--- !u!114 &870000000000001006
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 193620830}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09d8eca50718aaf438746e9ba636f418, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  material: 1
+--- !u!114 &870000000000001007
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 262433758}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09d8eca50718aaf438746e9ba636f418, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  material: 1
+--- !u!114 &870000000000001008
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 277657565}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09d8eca50718aaf438746e9ba636f418, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  material: 1
+--- !u!114 &870000000000001009
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 328365638}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09d8eca50718aaf438746e9ba636f418, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  material: 1
+--- !u!114 &870000000000001010
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 381183978}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09d8eca50718aaf438746e9ba636f418, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  material: 1
+--- !u!114 &870000000000001011
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 401303963}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09d8eca50718aaf438746e9ba636f418, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  material: 1
+--- !u!114 &870000000000001012
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 426870823}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09d8eca50718aaf438746e9ba636f418, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  material: 1
+--- !u!114 &870000000000001013
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 462250351}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09d8eca50718aaf438746e9ba636f418, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  material: 1
+--- !u!114 &870000000000001014
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 689149381}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09d8eca50718aaf438746e9ba636f418, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  material: 1
+--- !u!114 &870000000000001015
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 706996872}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09d8eca50718aaf438746e9ba636f418, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  material: 1
+--- !u!114 &870000000000001016
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 726806520}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09d8eca50718aaf438746e9ba636f418, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  material: 1
+--- !u!114 &870000000000001017
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 727427177}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09d8eca50718aaf438746e9ba636f418, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  material: 1
+--- !u!114 &870000000000001018
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 900935458}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09d8eca50718aaf438746e9ba636f418, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  material: 1
+--- !u!114 &870000000000001019
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 918607191}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09d8eca50718aaf438746e9ba636f418, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  material: 1
+--- !u!114 &870000000000001020
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 929473707}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09d8eca50718aaf438746e9ba636f418, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  material: 1
+--- !u!114 &870000000000001021
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 992993316}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09d8eca50718aaf438746e9ba636f418, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  material: 1
+--- !u!114 &870000000000001022
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1107296083}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09d8eca50718aaf438746e9ba636f418, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  material: 1
+--- !u!114 &870000000000001023
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1140022959}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09d8eca50718aaf438746e9ba636f418, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  material: 1
+--- !u!114 &870000000000001024
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1200698335}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09d8eca50718aaf438746e9ba636f418, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  material: 1
+--- !u!114 &870000000000001025
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1238697085}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09d8eca50718aaf438746e9ba636f418, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  material: 1
+--- !u!114 &870000000000001026
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1286454031}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09d8eca50718aaf438746e9ba636f418, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  material: 1
+--- !u!114 &870000000000001027
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1390887963}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09d8eca50718aaf438746e9ba636f418, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  material: 1
+--- !u!114 &870000000000001028
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1421187948}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09d8eca50718aaf438746e9ba636f418, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  material: 1
+--- !u!114 &870000000000001029
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1448531186}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09d8eca50718aaf438746e9ba636f418, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  material: 1
+--- !u!114 &870000000000001030
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1455569724}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09d8eca50718aaf438746e9ba636f418, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  material: 1
+--- !u!114 &870000000000001031
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1463875663}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09d8eca50718aaf438746e9ba636f418, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  material: 1
+--- !u!114 &870000000000001032
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1472655388}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09d8eca50718aaf438746e9ba636f418, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  material: 1
+--- !u!114 &870000000000001033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1515548340}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09d8eca50718aaf438746e9ba636f418, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  material: 1
+--- !u!114 &870000000000001034
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1597957205}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09d8eca50718aaf438746e9ba636f418, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  material: 1
+--- !u!114 &870000000000001035
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1643797005}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09d8eca50718aaf438746e9ba636f418, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  material: 1
+--- !u!114 &870000000000001036
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1644764472}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09d8eca50718aaf438746e9ba636f418, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  material: 1
+--- !u!114 &870000000000001037
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1662773129}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09d8eca50718aaf438746e9ba636f418, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  material: 1
+--- !u!114 &870000000000001038
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1745374707}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09d8eca50718aaf438746e9ba636f418, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  material: 1
+--- !u!114 &870000000000001039
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1750919679}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09d8eca50718aaf438746e9ba636f418, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  material: 1
+--- !u!114 &870000000000001040
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1780496619}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09d8eca50718aaf438746e9ba636f418, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  material: 1
+--- !u!114 &870000000000001041
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1808606706}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09d8eca50718aaf438746e9ba636f418, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  material: 1
+--- !u!114 &870000000000001042
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1811561372}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09d8eca50718aaf438746e9ba636f418, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  material: 1
+--- !u!114 &870000000000001043
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1843003616}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09d8eca50718aaf438746e9ba636f418, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  material: 1
+--- !u!114 &870000000000001044
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1936236279}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09d8eca50718aaf438746e9ba636f418, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  material: 1
+--- !u!114 &870000000000001045
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1995304890}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09d8eca50718aaf438746e9ba636f418, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  material: 1
+--- !u!114 &870000000000001046
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2034113891}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09d8eca50718aaf438746e9ba636f418, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  material: 1
+--- !u!114 &870000000000001047
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2069394346}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09d8eca50718aaf438746e9ba636f418, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  material: 1
+--- !u!114 &870000000000001048
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2071994951}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09d8eca50718aaf438746e9ba636f418, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  material: 1
+--- !u!114 &870000000000001049
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2097891522}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09d8eca50718aaf438746e9ba636f418, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  material: 1
 --- !u!1001 &6570926689607498601
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -126712,6 +127363,7 @@ Transform:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 870000000000000301}
   - {fileID: 936911315}
   - {fileID: 1246242316}
   - {fileID: 513424630}

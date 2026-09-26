@@ -6,13 +6,16 @@ namespace csiimnida.CSILib.SoundManager.RunTime {
     public class SoundListSo : ScriptableObject {
         [SerializeField] private List<SoundSo> Sounds = new();
 
-        public Dictionary<string, SoundSo> SoundsDictionary;
+        [System.NonSerialized] public Dictionary<string, SoundSo> SoundsDictionary;
 
         private void OnEnable() {
+            SoundsDictionary = new Dictionary<string, SoundSo>();
             if (Sounds == null)
                 return;
-            SoundsDictionary = new Dictionary<string, SoundSo>();
-            foreach (var soundSo in Sounds) SoundsDictionary[soundSo.soundName] = soundSo;
+            foreach (var soundSo in Sounds) {
+                if (soundSo == null || string.IsNullOrEmpty(soundSo.soundName)) continue;
+                SoundsDictionary[soundSo.soundName] = soundSo;
+            }
         }
 
         public void AddSound(SoundSo soundSo) {
