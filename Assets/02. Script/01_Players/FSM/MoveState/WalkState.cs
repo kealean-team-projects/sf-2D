@@ -11,7 +11,7 @@ namespace _02._Script._01_Players.FSM.MoveState {
         public override void Tick() {
             if (CheckGround()) return;
             _context.Mover.ApplyManualMove(_context.MoveInput * _context.SpeedMultiplier
-                                                              * _context.CrouchSpeedMultiplier + _context.PushSpeed);
+                                                              * _context.CrouchSpeedMultiplier + _context.PushSpeed.x);
         }
 
         public override void Exit() { }

@@ -62,6 +62,7 @@ namespace _02._Script._01_Players {
         private void FixedUpdate() {
             if (IsDead) return;
             _moveStateMachine.Tick();
+            if (CanMove && !IsClimb) Mover.ApplyManualMoveY(PushSpeed.y);
         }
 
         private void LateUpdate() {
@@ -162,7 +163,7 @@ namespace _02._Script._01_Players {
         public Vector2 JumpSpeed => new(jumpXSpeed * jumpDir, jumpYSpeed);
         public float JumpDuration => jumpDuration;
         public float Impulse => jumpDashImpulse;
-        public float PushSpeed { get; private set; }
+        public Vector2 PushSpeed { get; private set; }
 
 
         public float SpeedMultiplier => SprintControl.IsSprinting ? moveSpeedMultiplier : 1f;
@@ -208,7 +209,7 @@ namespace _02._Script._01_Players {
             SprintControl.StopSprint();
         }
 
-        public void SetPushSpeed(float speed) {
+        public void SetPushSpeed(Vector2 speed) {
             PushSpeed = speed;
         }
 
@@ -345,7 +346,7 @@ namespace _02._Script._01_Players {
             CrouchControl.Stand();
             _stats.RestoreStamina(stamina);
 
-            PushSpeed = 0f;
+            PushSpeed = Vector2.zero;
             CanMove = true;
             CanSJ = true;
         }

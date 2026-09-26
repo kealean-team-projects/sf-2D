@@ -84,6 +84,14 @@ namespace _02._Script._01_Players.Components {
             ApplyExtraGravity();
         }
 
+        public void ApplyManualMoveY(float moveSpeed) {
+            if (Mathf.Approximately(moveSpeed, 0f)) return;
+            // Preserve faster jumps/falls in the current's direction without accumulating speed.
+            rb.linearVelocityY = moveSpeed > 0f
+                ? Mathf.Max(rb.linearVelocityY, moveSpeed)
+                : Mathf.Min(rb.linearVelocityY, moveSpeed);
+        }
+
         public void Jump(float multiplier = 1) {
             _timeInAir = 0;
             StopImmediately(false, true);

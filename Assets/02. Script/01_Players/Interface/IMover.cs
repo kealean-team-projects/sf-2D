@@ -9,6 +9,7 @@ namespace _02._Script._01_Players.Interface {
         void WallDash();
         void CancelClimb();
         void ApplyManualMove(float moveSpeed);
+        void ApplyManualMoveY(float moveSpeed);
         void ApplyClimb(float climbSpeed);
         void ApplyWallDash(float impulse);
         void ApplyWallJump(Vector2 jumpSpeed);
