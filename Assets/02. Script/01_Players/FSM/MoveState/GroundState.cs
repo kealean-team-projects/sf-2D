@@ -7,6 +7,9 @@ namespace _02._Script._01_Players.FSM.MoveState {
         protected GroundState(IPlayerMoveContext context, MoveStateMachine stateMachine) :
             base(context, stateMachine) { }
 
+        protected GroundState(IPlayerMoveContext context, MoveStateMachine stateMachine, string animBoolName) :
+            base(context, stateMachine, animBoolName) { }
+
         protected bool CheckGround() {
             return TryTransition<ClimbState>(_context.IsClimb);
         }

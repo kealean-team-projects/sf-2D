@@ -6,7 +6,8 @@ namespace _02._Script._01_Players.FSM.MoveState {
     public class WalkState : GroundState {
         public WalkState(IPlayerMoveContext context, MoveStateMachine stateMachine) : base(context, stateMachine) { }
 
-        public override void Enter() { }
+        public WalkState(IPlayerMoveContext context, MoveStateMachine stateMachine, string animBoolName) :
+            base(context, stateMachine, animBoolName) { }
 
         public override void Tick() {
             if (CheckGround()) return;
@@ -14,6 +15,5 @@ namespace _02._Script._01_Players.FSM.MoveState {
                                                               * _context.CrouchSpeedMultiplier + _context.PushSpeed.x);
         }
 
-        public override void Exit() { }
     }
 }

@@ -14,6 +14,7 @@ namespace _02._Script._01_Players {
         [SerializeField] private StaminaCosts staminaCosts = new();
         [SerializeField] private StaminaHUD staminaHUD;
         [SerializeField] private Image fade;
+        [SerializeField] private Animator animator;
 
         [Header("Walk Settings")] [SerializeField]
         private float moveSpeed = 10f;
@@ -39,6 +40,20 @@ namespace _02._Script._01_Players {
 
         private bool _canSJ = true;
         private float jumpDir;
+
+        public void SetAnimationBool(int parameterHash, bool value) {
+            // 애니메이션 구성은 선택 사항이며 이동 상태 전환을 막지 않는다.
+            if (animator == null || !animator.isActiveAndEnabled || animator.runtimeAnimatorController == null)
+                return;
+
+            foreach (var parameter in animator.parameters) {
+                if (parameter.nameHash != parameterHash || parameter.type != AnimatorControllerParameterType.Bool)
+                    continue;
+
+                animator.SetBool(parameterHash, value);
+                return;
+            }
+        }
 
         private void Update() {
             if (IsDead) return;

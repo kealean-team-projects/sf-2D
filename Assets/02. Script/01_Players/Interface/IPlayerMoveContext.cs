@@ -20,6 +20,7 @@ namespace _02._Script._01_Players.Interface {
         float Impulse { get; }
         float ClimbStaminaCostPerSecond { get; }
 
+        void SetAnimationBool(int parameterHash, bool value);
         void Jump();
         bool TryWallJump();
         bool TryWallDash();

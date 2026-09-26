@@ -12,9 +12,10 @@ namespace _02._Script._01_Players.FSM.MoveState {
             _stats = stats;
         }
 
-        public override void Enter() { }
-
-        public override void Exit() { }
+        public ClimbState(IPlayerMoveContext context, MoveStateMachine stateMachine, IStats stats, string animBoolName) :
+            base(context, stateMachine, animBoolName) {
+            _stats = stats;
+        }
 
         public override void Tick() {
             if (TryTransition<WalkState>(!_context.IsClimb))
