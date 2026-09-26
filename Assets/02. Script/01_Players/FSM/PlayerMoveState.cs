@@ -47,10 +47,12 @@ namespace _02._Script._01_Players.FSM {
         }
 
         protected void ReturnToMovement() {
-            if (_context.IsClimb)
-                _stateMachine.ChangeState<ClimbState>();
-            else
-                _stateMachine.ChangeState<WalkState>();
+            _stateMachine.ReturnToMovement(_context);
+        }
+
+        protected void ApplyHorizontalMovement() {
+            _context.Mover.ApplyManualMove(_context.MoveInput * _context.SpeedMultiplier
+                * _context.CrouchSpeedMultiplier + _context.PushSpeed.x);
         }
     }
 }

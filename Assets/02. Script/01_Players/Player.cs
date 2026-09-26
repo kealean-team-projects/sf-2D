@@ -190,6 +190,9 @@ namespace _02._Script._01_Players {
 
         public bool IsMoving => _inputReader.MoveInput != 0;
         public bool IsGrounded => Mover.IsGround;
+        public float VerticalSpeed => Mover.VerticalSpeed;
+        public bool IsSprinting => SprintControl.IsSprinting;
+        public bool IsCrouching => CrouchControl.IsCrouching;
 
         public bool IsClimb => !IsGrounded
                                && _checkClimbWall.IsClimbed
@@ -214,7 +217,7 @@ namespace _02._Script._01_Players {
         #region Simple Method
 
         public void ChangeSpeed(float speed) {
-            if (_moveStateMachine != null && _moveStateMachine.TryGetState<WalkState>(out var walkState))
+            if (_moveStateMachine != null)
                 moveSpeed = speed;
         }
 
@@ -355,8 +358,6 @@ namespace _02._Script._01_Players {
 
         public void RestoreState(Vector2 position, float stamina) {
             SprintControl.StopSprint();
-            _moveStateMachine.ChangeState<WalkState>();
-
             Mover.RestorePosition(position);
             CrouchControl.Stand();
             _stats.RestoreStamina(stamina);
@@ -364,6 +365,7 @@ namespace _02._Script._01_Players {
             PushSpeed = Vector2.zero;
             CanMove = true;
             CanSJ = true;
+            _moveStateMachine.ReturnToMovement(this);
         }
 
         public void FinishRespawn() {

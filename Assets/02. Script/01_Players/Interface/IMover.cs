@@ -3,6 +3,7 @@
 namespace _02._Script._01_Players.Interface {
     public interface IMover {
         bool IsGround { get; }
+        float VerticalSpeed { get; }
         bool CanClimb { get; }
         void CalculateAirTime(bool isClimbing);
         void Jump(float multiplier = 1);
