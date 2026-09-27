@@ -38,6 +38,29 @@ namespace _02._Script._01_Players.Components.Audio {
         private float _fallTime;
         private bool _landingPlayed;
 
+#if UNITY_EDITOR
+        // Temporary bounded diagnostics: never log per frame or include this in a build.
+        private int _tracedContacts;
+        private int _tracedPlayback;
+        private void OnCollisionEnter2D(Collision2D collision) {
+            if (_tracedContacts >= 3) return;
+            for (int i = 0; i < collision.contactCount; i++) {
+                if (collision.GetContact(i).normal.y < 0.35f) continue;
+                _tracedContacts++;
+                Debug.Log($"[LandingTiming] contact #{_tracedContacts} t={Time.realtimeSinceStartupAsDouble:F4}s frame={Time.frameCount} surface={collision.collider.name}", this);
+                break;
+            }
+        }
+
+        private void TraceLandingPlayback() {
+            if (_tracedPlayback >= 3) return;
+            _tracedPlayback++;
+            AudioSettings.GetDSPBufferSize(out int samples, out int buffers);
+            string clip = _landing != null && _landing.clip != null ? _landing.clip.name : "NO SOURCE";
+            Debug.Log($"[LandingTiming] play #{_tracedPlayback} t={Time.realtimeSinceStartupAsDouble:F4}s frame={Time.frameCount} clip={clip} playing={(_landing != null && _landing.isPlaying)} fall={_fallTime:F3}s DSP={samples}x{buffers}@{AudioSettings.outputSampleRate}Hz", this);
+        }
+#endif
+
         private void Awake() {
             if (player == null) player = GetComponent<Player>();
             if (mover == null) mover = GetComponentInChildren<Mover>();
@@ -114,6 +137,9 @@ namespace _02._Script._01_Players.Components.Audio {
                     var landingOnStone = material != null && material.Material == FootstepMaterial.Stone;
                     StopMovementSounds();
                     _landing = _manager.PlayTrackedSound(landingOnStone ? stoneLandingSound : landingSound);
+#if UNITY_EDITOR
+                    TraceLandingPlayback();
+#endif
                     _landingPlayed = true;
                 }
             }
