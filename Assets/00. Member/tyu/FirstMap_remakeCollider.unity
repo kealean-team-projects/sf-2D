@@ -9080,7 +9080,7 @@ SpriteShapeRenderer:
   - {fileID: -2084948043075760409, guid: 76dcb53c0ed026c4285198071b9b8eeb, type: 3}
   - {fileID: -4671000020934413352, guid: 76dcb53c0ed026c4285198071b9b8eeb, type: 3}
   m_LocalAABB:
-    m_Center: {x: 54.91989, y: 7.3904877, z: 0}
+    m_Center: {x: 54.919888, y: 7.3904877, z: 0}
     m_Extent: {x: 62.487003, y: 74.16164, z: 0}
   m_SpriteSortPoint: 0
 --- !u!1001 &542898753
@@ -15864,8 +15864,8 @@ SpriteShapeRenderer:
   m_Sprites:
   - {fileID: 21300000, guid: 5bf667168a0480e498f675198386a7f4, type: 3}
   m_LocalAABB:
-    m_Center: {x: 160.66907, y: 8.597746, z: 0}
-    m_Extent: {x: 58.844135, y: 11.507457, z: 0}
+    m_Center: {x: 160.66907, y: 8.597745, z: 0}
+    m_Extent: {x: 58.844135, y: 11.507456, z: 0}
   m_SpriteSortPoint: 0
 --- !u!1 &916767532
 GameObject:
@@ -21377,7 +21377,7 @@ SpriteShapeRenderer:
   - {fileID: -2084948043075760409, guid: 76dcb53c0ed026c4285198071b9b8eeb, type: 3}
   - {fileID: -4671000020934413352, guid: 76dcb53c0ed026c4285198071b9b8eeb, type: 3}
   m_LocalAABB:
-    m_Center: {x: 243.10059, y: -6.005989, z: 0}
+    m_Center: {x: 243.10059, y: -6.0059814, z: 0}
     m_Extent: {x: 104.50281, y: 79.57097, z: 0}
   m_SpriteSortPoint: 0
 --- !u!1001 &1174329332
@@ -22507,7 +22507,7 @@ SpriteShapeRenderer:
   - {fileID: 21300000, guid: 5bf667168a0480e498f675198386a7f4, type: 3}
   m_LocalAABB:
     m_Center: {x: 10.469292, y: 2.1831675, z: 0}
-    m_Extent: {x: 101.15579, y: 12.219396, z: 0}
+    m_Extent: {x: 101.15579, y: 12.219395, z: 0}
   m_SpriteSortPoint: 0
 --- !u!1001 &1206540806
 PrefabInstance:
@@ -25292,26 +25292,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 5930479872790022946, guid: 432c73efd45be8b47a624d69f87ce69e, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 5930479872790022946, guid: 432c73efd45be8b47a624d69f87ce69e, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5930479872790022946, guid: 432c73efd45be8b47a624d69f87ce69e, type: 3}
-      propertyPath: m_WasSpriteAssigned
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 6066075572630771389, guid: 432c73efd45be8b47a624d69f87ce69e, type: 3}
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 7646778522885899942, guid: 432c73efd45be8b47a624d69f87ce69e, type: 3}
-      propertyPath: animator
-      value: 
-      objectReference: {fileID: 30025700}
     - target: {fileID: 8492823252553191672, guid: 432c73efd45be8b47a624d69f87ce69e, type: 3}
       propertyPath: m_Size.x
       value: 0.88
@@ -25366,10 +25350,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 4206105646266471099, guid: 432c73efd45be8b47a624d69f87ce69e, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 30025698}
+    m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 432c73efd45be8b47a624d69f87ce69e, type: 3}
 --- !u!4 &1330852574 stripped
@@ -25377,22 +25358,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8931466274003963571, guid: 432c73efd45be8b47a624d69f87ce69e, type: 3}
   m_PrefabInstance: {fileID: 1330852573}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &1330852575 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4206105646266471099, guid: 432c73efd45be8b47a624d69f87ce69e, type: 3}
-  m_PrefabInstance: {fileID: 1330852573}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1330852576 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7646778522885899942, guid: 432c73efd45be8b47a624d69f87ce69e, type: 3}
-  m_PrefabInstance: {fileID: 1330852573}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 038d06262ebbea544995a5acb3d140fa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::_01.Script.Player.Player
 --- !u!1001 &1334927639
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -42534,10 +42499,10 @@ EdgeCollider2D:
   m_Offset: {x: 0, y: 0}
   m_EdgeRadius: 0.02
   m_Points:
-  - {x: 985.4879, y: 76.71978}
-  - {x: 984.8918, y: 75.77085}
-  - {x: 986.3084, y: 72.89585}
-  - {x: 986.8084, y: 73.187515}
+  - {x: 985.7379, y: 81.96978}
+  - {x: 984.6418, y: 77.52085}
+  - {x: 985.0584, y: 74.64585}
+  - {x: 986.5584, y: 72.187515}
   - {x: 988.3084, y: 75.77085}
   - {x: 988.2932, y: 76.836174}
   m_AdjacentStartPoint: {x: 0, y: 0}
@@ -44959,8 +44924,8 @@ SpriteShapeRenderer:
   - {fileID: -2084948043075760409, guid: 76dcb53c0ed026c4285198071b9b8eeb, type: 3}
   - {fileID: -4671000020934413352, guid: 76dcb53c0ed026c4285198071b9b8eeb, type: 3}
   m_LocalAABB:
-    m_Center: {x: 28.904045, y: -145.95068, z: 0}
-    m_Extent: {x: 25.130766, y: 34.374107, z: 0}
+    m_Center: {x: 28.904047, y: -145.95068, z: 0}
+    m_Extent: {x: 25.130768, y: 34.374107, z: 0}
   m_SpriteSortPoint: 0
 --- !u!1 &1823909176
 GameObject:
@@ -45152,8 +45117,8 @@ SpriteShapeRenderer:
   m_Sprites:
   - {fileID: 21300000, guid: 5bf667168a0480e498f675198386a7f4, type: 3}
   m_LocalAABB:
-    m_Center: {x: 204.99442, y: -16.588247, z: 0}
-    m_Extent: {x: 87.650856, y: 18.88278, z: 0}
+    m_Center: {x: 204.99442, y: -16.58825, z: 0}
+    m_Extent: {x: 87.650856, y: 18.882782, z: 0}
   m_SpriteSortPoint: 0
 --- !u!1001 &1836434755
 PrefabInstance:
@@ -46556,6 +46521,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_02._Script._01_Players.Components.Audio.FootstepSurface
   material: 1
+  surfaceOverrides: []
+  surfaceTolerance: 0.05
 --- !u!114 &1900000007
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -46569,6 +46536,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_02._Script._01_Players.Components.Audio.FootstepSurface
   material: 1
+  surfaceOverrides: []
+  surfaceTolerance: 0.05
 --- !u!1001 &1901779863
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -49166,8 +49135,8 @@ SpriteShapeRenderer:
   - {fileID: -2084948043075760409, guid: 76dcb53c0ed026c4285198071b9b8eeb, type: 3}
   - {fileID: -4671000020934413352, guid: 76dcb53c0ed026c4285198071b9b8eeb, type: 3}
   m_LocalAABB:
-    m_Center: {x: 62.700676, y: 81.02213, z: 0}
-    m_Extent: {x: 26.153418, y: 57.279743, z: 0}
+    m_Center: {x: 62.700676, y: 81.02214, z: 0}
+    m_Extent: {x: 26.153418, y: 57.279747, z: 0}
   m_SpriteSortPoint: 0
 --- !u!1001 &2081568633
 PrefabInstance:

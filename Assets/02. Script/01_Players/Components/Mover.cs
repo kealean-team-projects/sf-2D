@@ -29,6 +29,7 @@ namespace _02._Script._01_Players.Components {
 
         // Audio observes the supporting surface without changing movement's ground check.
         public Collider2D GroundCollider { get; private set; }
+        public Vector2 SoundSurfacePoint { get; private set; }
         private readonly ContactPoint2D[] _groundContacts = new ContactPoint2D[16];
         private readonly RaycastHit2D[] _surfaceHits = new RaycastHit2D[8];
 
@@ -76,8 +77,7 @@ namespace _02._Script._01_Players.Components {
             rb.gravityScale = _originGravityScale;
 
             Physics2D.SyncTransforms();
-            // Contacts still describe the previous physics step immediately after a teleport.
-            GroundCollider = FindSupportingSurface(includeContacts: false);
+            GroundCollider = FindSupportingSurface();
             IsGround = GroundCollider != null;
         }
 
@@ -161,12 +161,7 @@ namespace _02._Script._01_Players.Components {
             return extraDistance > 0f ? FindSupportingSurface(extraDistance) : GroundCollider;
         }
 
-        private Collider2D FindSupportingSurface(float extraDistance = 0f, bool includeContacts = true) {
-            if (includeContacts) {
-                var contactSurface = FindGroundContact();
-                if (contactSurface != null) return contactSurface;
-            }
-
+        private Collider2D FindSupportingSurface(float extraDistance = 0f) {
             var filter = new ContactFilter2D();
             filter.SetLayerMask(whatIsGround);
             filter.useTriggers = false;
@@ -189,25 +184,6 @@ namespace _02._Script._01_Players.Components {
                 }
                 if (closest != null) return closest;
             }
-            return null;
-        }
-
-        private Collider2D FindGroundContact() {
-            var filter = new ContactFilter2D();
-            filter.SetLayerMask(whatIsGround);
-            filter.useTriggers = false;
-            var count = rb.GetContacts(filter, _groundContacts);
-            for (var i = 0; i < count; i++) {
-                var contact = _groundContacts[i];
-                var surface = contact.otherCollider;
-                if (surface == null ||
-                    (whatIsGround.value & (1 << surface.gameObject.layer)) == 0 ||
-                    contact.normal.y < 0.35f)
-                    continue;
-
-                return surface;
-            }
-
             return null;
         }
 
