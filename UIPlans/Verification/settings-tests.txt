@@ -1,0 +1,2 @@
+PASS: volume endpoints and midpoint, neutral brightness, preview/cancel rollback, apply/reopen retained values.
+No real PlayerPrefs or display settings were changed by these checks.

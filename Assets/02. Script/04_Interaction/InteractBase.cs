@@ -32,6 +32,5 @@ namespace _02._Script._04_Interaction {
 
             _highlighted = highlight;
         }
-
     }
 }

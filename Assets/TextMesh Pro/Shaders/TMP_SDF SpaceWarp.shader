@@ -285,8 +285,8 @@ Shader "TextMeshPro/Distance Field - SpaceWarp"
 
                 faceColor *= tex2D(_FaceTex, input.textures.xy + float2(_FaceUVSpeedX, _FaceUVSpeedY) * _Time.y);
                 outlineColor *= tex2D(_OutlineTex,
-                                               input.textures.zw + float2(_OutlineUVSpeedX, _OutlineUVSpeedY) * _Time.
-                                               y);
+                                      input.textures.zw + float2(_OutlineUVSpeedX, _OutlineUVSpeedY) * _Time.
+                                      y);
 
                 faceColor = GetColor(sd, faceColor, outlineColor, outline, softness);
 
@@ -308,7 +308,7 @@ Shader "TextMeshPro/Distance Field - SpaceWarp"
 
                 fixed4 reflcol = texCUBE(_Cube, reflect(input.viewDir, -n));
                 faceColor.rgb += reflcol.rgb * lerp(_ReflectFaceColor.rgb, _ReflectOutlineColor.rgb,
-                                          saturate(sd + outline * 0.5)) * faceColor.a;
+                                  saturate(sd + outline * 0.5)) * faceColor.a;
                 #endif
 
                 #if UNDERLAY_ON

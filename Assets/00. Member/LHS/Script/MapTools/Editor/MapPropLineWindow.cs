@@ -3,85 +3,51 @@ using MapTools;
 using UnityEditor;
 using UnityEngine;
 
-namespace _00._Member.LHS.Script.MapTools.Editor
-{
-    public sealed class MapPropLineWindow : EditorWindow
-    {
-        [SerializeField]
-        private MapPropLineProfile profile;
+namespace _00._Member.LHS.Script.MapTools.Editor {
+    public sealed class MapPropLineWindow : EditorWindow {
+        [SerializeField] private MapPropLineProfile profile;
 
-        [SerializeField]
-        private Transform parent;
+        [SerializeField] private Transform parent;
 
-        [SerializeField]
-        private PropPlacementMode placementMode;
+        [SerializeField] private PropPlacementMode placementMode;
 
-        [SerializeField]
-        private Vector3 startPosition;
+        [SerializeField] private Vector3 startPosition;
 
-        [SerializeField]
-        private Vector3 endPosition =
-            new Vector3(10f, 0f, 0f);
+        [SerializeField] private Vector3 endPosition = new(10f, 0f, 0f);
 
-        [SerializeField]
-        private Vector3 startControlPoint =
-            new Vector3(3.33f, 0f, 0f);
+        [SerializeField] private Vector3 startControlPoint = new(3.33f, 0f, 0f);
 
-        [SerializeField]
-        private Vector3 endControlPoint =
-            new Vector3(6.66f, 0f, 0f);
+        [SerializeField] private Vector3 endControlPoint = new(6.66f, 0f, 0f);
 
-        [SerializeField]
-        private int count = 10;
+        [SerializeField] private int count = 10;
 
-        [SerializeField]
-        private float minimumDistance = 1f;
+        [SerializeField] private float minimumDistance = 1f;
 
-        [SerializeField]
-        private Vector2 zOffsetRange =
-            new Vector2(-1f, 1f);
+        [SerializeField] private Vector2 zOffsetRange = new(-1f, 1f);
 
-        [SerializeField]
-        private Vector2 scaleRange =
-            new Vector2(0.9f, 1.1f);
+        [SerializeField] private Vector2 scaleRange = new(0.9f, 1.1f);
 
-        [SerializeField]
-        private bool randomFlipX = true;
+        [SerializeField] private bool randomFlipX = true;
 
-        [SerializeField]
-        private int seed = 12345;
+        [SerializeField] private int seed = 12345;
 
-        [SerializeField]
-        private bool overrideSortingLayer;
+        [SerializeField] private bool overrideSortingLayer;
 
-        [SerializeField]
-        private int sortingLayerId;
+        [SerializeField] private int sortingLayerId;
 
-        [SerializeField]
-        private int baseSortingOrder = 100;
+        [SerializeField] private int baseSortingOrder = 100;
 
-        [MenuItem(
-            "Tools/Map Tools/Prop Line Generator")]
-        private static void Open()
-        {
-            GetWindow<MapPropLineWindow>(
-                "Prop Line Generator");
-        }
-
-        private void OnEnable()
-        {
+        private void OnEnable() {
             SceneView.duringSceneGui +=
                 OnSceneGUI;
         }
 
-        private void OnDisable()
-        {
+        private void OnDisable() {
             SceneView.duringSceneGui -=
                 OnSceneGUI;
         }
 
-        private void OnGUI()
-        {
+        private void OnGUI() {
             EditorGUILayout.Space(6f);
 
             profile =
@@ -124,8 +90,7 @@ namespace _00._Member.LHS.Script.MapTools.Editor
 
             if (
                 placementMode ==
-                PropPlacementMode.Bezier)
-            {
+                PropPlacementMode.Bezier) {
                 startControlPoint =
                     EditorGUILayout.Vector3Field(
                         "Start Control",
@@ -138,9 +103,7 @@ namespace _00._Member.LHS.Script.MapTools.Editor
 
                 if (GUILayout.Button(
                         "Reset Curve Handles"))
-                {
                     ResetCurveHandles();
-                }
             }
 
             count =
@@ -160,19 +123,14 @@ namespace _00._Member.LHS.Script.MapTools.Editor
             EditorGUILayout.Space(8f);
 
             using (
-                new EditorGUILayout.HorizontalScope())
-            {
+                new EditorGUILayout.HorizontalScope()) {
                 if (GUILayout.Button(
                         "Start From Selection"))
-                {
                     SetFromSelection(true);
-                }
 
                 if (GUILayout.Button(
                         "End From Selection"))
-                {
                     SetFromSelection(false);
-                }
             }
 
             EditorGUILayout.Space(8f);
@@ -222,57 +180,53 @@ namespace _00._Member.LHS.Script.MapTools.Editor
                     "Override Sorting Layer",
                     overrideSortingLayer);
 
-            if (overrideSortingLayer)
-            {
-                DrawSortingSettings();
-            }
+            if (overrideSortingLayer) DrawSortingSettings();
 
             EditorGUILayout.Space(12f);
 
             using (
                 new EditorGUI.DisabledScope(
                     profile == null ||
-                    profile.Prefab == null))
-            {
+                    profile.Prefab == null)) {
                 if (GUILayout.Button(
                         "Generate",
                         GUILayout.Height(34f)))
-                {
                     Generate();
-                }
             }
 
-            if (GUI.changed)
-            {
-                SceneView.RepaintAll();
-            }
+            if (GUI.changed) SceneView.RepaintAll();
+        }
+
+        [MenuItem(
+            "Tools/Map Tools/Prop Line Generator")]
+        private static void Open() {
+            GetWindow<MapPropLineWindow>(
+                "Prop Line Generator");
         }
 
         private void OnSceneGUI(
-            SceneView sceneView)
-        {
+            SceneView sceneView) {
             EditorGUI.BeginChangeCheck();
 
-            Vector3 newStart =
+            var newStart =
                 Handles.PositionHandle(
                     startPosition,
                     Quaternion.identity);
 
-            Vector3 newEnd =
+            var newEnd =
                 Handles.PositionHandle(
                     endPosition,
                     Quaternion.identity);
 
-            Vector3 newStartControl =
+            var newStartControl =
                 startControlPoint;
 
-            Vector3 newEndControl =
+            var newEndControl =
                 endControlPoint;
 
             if (
                 placementMode ==
-                PropPlacementMode.Bezier)
-            {
+                PropPlacementMode.Bezier) {
                 newStartControl =
                     Handles.PositionHandle(
                         startControlPoint,
@@ -300,8 +254,7 @@ namespace _00._Member.LHS.Script.MapTools.Editor
                     null,
                     3f);
             }
-            else
-            {
+            else {
                 Handles.DrawLine(
                     newStart,
                     newEnd);
@@ -337,13 +290,12 @@ namespace _00._Member.LHS.Script.MapTools.Editor
             Repaint();
         }
 
-        private void ResetCurveHandles()
-        {
+        private void ResetCurveHandles() {
             Undo.RecordObject(
                 this,
                 "Reset Curve Handles");
 
-            Vector3 delta =
+            var delta =
                 endPosition -
                 startPosition;
 
@@ -358,33 +310,29 @@ namespace _00._Member.LHS.Script.MapTools.Editor
             SceneView.RepaintAll();
         }
 
-        private void DrawSortingSettings()
-        {
-            SortingLayer[] layers =
+        private void DrawSortingSettings() {
+            var layers =
                 SortingLayer.layers;
 
             if (layers.Length == 0)
                 return;
 
-            string[] layerNames =
+            var layerNames =
                 new string[layers.Length];
 
-            int currentIndex = 0;
+            var currentIndex = 0;
 
-            for (int i = 0;
+            for (var i = 0;
                  i < layers.Length;
-                 i++)
-            {
+                 i++) {
                 layerNames[i] =
                     layers[i].name;
 
                 if (
                     layers[i].id ==
                     sortingLayerId)
-                {
                     currentIndex =
                         i;
-                }
             }
 
             currentIndex =
@@ -406,39 +354,30 @@ namespace _00._Member.LHS.Script.MapTools.Editor
         }
 
         private void SetFromSelection(
-            bool start)
-        {
+            bool start) {
             if (
                 Selection.activeTransform ==
                 null)
-            {
                 return;
-            }
 
             Undo.RecordObject(
                 this,
                 "Set Prop Path Position");
 
             if (start)
-            {
                 startPosition =
                     Selection.activeTransform.position;
-            }
             else
-            {
                 endPosition =
                     Selection.activeTransform.position;
-            }
 
             Repaint();
             SceneView.RepaintAll();
         }
 
-        private void Generate()
-        {
-            try
-            {
-                PropLineRequest request =
+        private void Generate() {
+            try {
+                var request =
                     new PropLineRequest(
                         profile,
                         parent,
@@ -460,8 +399,7 @@ namespace _00._Member.LHS.Script.MapTools.Editor
                 PropLineGenerator.Generate(
                     request);
             }
-            catch (Exception exception)
-            {
+            catch (Exception exception) {
                 Debug.LogException(
                     exception);
             }

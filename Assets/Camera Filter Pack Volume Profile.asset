@@ -74,7 +74,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 491acdefe9a5c1347a15f9773fd962cd, type: 3}
   m_Name: CameraFilterPackVolume_Color_GrayScale
   m_EditorClassIdentifier: BalioProductions.CameraFilterPack.URP::BalioProductions.CameraFilterPack.URP.CameraFilterPackVolume_Color_GrayScale
-  active: 1
+  active: 0
   intensity:
     m_OverrideState: 1
     m_Value: 0
@@ -101,8 +101,8 @@ MonoBehaviour:
     m_OverrideState: 0
     m_Value: 0.9
   intensity:
-    m_OverrideState: 0
-    m_Value: 0
+    m_OverrideState: 1
+    m_Value: 1
   scatter:
     m_OverrideState: 0
     m_Value: 0.7
@@ -152,6 +152,46 @@ MonoBehaviour:
   - {fileID: 1713550204636836340}
   - {fileID: 7760715892339026404}
   - {fileID: -3490026221829742339}
+  - {fileID: 534986780744768573}
+  - {fileID: 3586690683644094860}
+  - {fileID: 3610119955910925687}
+--- !u!114 &534986780744768573
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4226fd433c24b142a64a882dcea496a, type: 3}
+  m_Name: CameraFilterPackVolume_BlurHole
+  m_EditorClassIdentifier: BalioProductions.CameraFilterPack.URP::BalioProductions.CameraFilterPack.URP.CameraFilterPackVolume_BlurHole
+  active: 0
+  intensity:
+    m_OverrideState: 1
+    m_Value: 1
+  _Distortion:
+    m_OverrideState: 1
+    m_Value: 1
+  _Alpha:
+    m_OverrideState: 1
+    m_Value: 1
+  _Alpha2:
+    m_OverrideState: 1
+    m_Value: 0
+  _CenterX:
+    m_OverrideState: 1
+    m_Value: 0.5
+  _CenterY:
+    m_OverrideState: 1
+    m_Value: 0.5
+  _Radius:
+    m_OverrideState: 1
+    m_Value: 0.218
+  _SpotSize:
+    m_OverrideState: 1
+    m_Value: 1
 --- !u!114 &1713550204636836340
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -171,6 +211,56 @@ MonoBehaviour:
   _Distortion:
     m_OverrideState: 0
     m_Value: 1
+--- !u!114 &3586690683644094860
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ccf1aba9553839d41ae37dd52e9ebcce, type: 3}
+  m_Name: MotionBlur
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.MotionBlur
+  active: 0
+  mode:
+    m_OverrideState: 1
+    m_Value: 0
+  quality:
+    m_OverrideState: 1
+    m_Value: 0
+  intensity:
+    m_OverrideState: 1
+    m_Value: 1
+  clamp:
+    m_OverrideState: 1
+    m_Value: 0.2
+--- !u!114 &3610119955910925687
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6074510e4f5b214c8abf677821e5b65, type: 3}
+  m_Name: CameraFilterPackVolume_Distortion_Wave
+  m_EditorClassIdentifier: BalioProductions.CameraFilterPack.URP::BalioProductions.CameraFilterPack.URP.CameraFilterPackVolume_Distortion_Wave
+  active: 0
+  intensity:
+    m_OverrideState: 1
+    m_Value: 1
+  _Amplitude:
+    m_OverrideState: 0
+    m_Value: 0.012
+  _Frequency:
+    m_OverrideState: 0
+    m_Value: 10
+  _Speed:
+    m_OverrideState: 0
+    m_Value: 1.5
 --- !u!114 &3701794378123291586
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -217,7 +307,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7299db1d14dd8f64299b09a0691a8a0c, type: 3}
   m_Name: CameraFilterPackVolume_TV_Horror
   m_EditorClassIdentifier: BalioProductions.CameraFilterPack.URP::BalioProductions.CameraFilterPack.URP.CameraFilterPackVolume_TV_Horror
-  active: 1
+  active: 0
   intensity:
     m_OverrideState: 1
     m_Value: 0

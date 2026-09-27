@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using UnityEditor;
 using UnityEngine;
 
@@ -314,3 +315,4 @@ namespace _VFX_Lib._03._Scripts.Editor.HierarchyStyler {
         }
     }
 }
+#endif

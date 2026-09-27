@@ -1,6 +1,8 @@
 ﻿using System;
-using System.Collections;
+using Cysharp.Threading.Tasks;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -10,9 +12,10 @@ namespace _00._Member.LHS.Script {
         [SerializeField] private SceneAsset[] chapterSceneLists;
 #endif
 
-        private string[] chapterSceneNames;
+        [SerializeField, HideInInspector] private string[] chapterSceneNames = Array.Empty<string>();
 
         private bool isLoading;
+        public bool IsLoading => isLoading;
         public static ChapterLoader Instance { get; private set; }
 
         public Scene CurrentScene { get; private set; }
@@ -24,7 +27,18 @@ namespace _00._Member.LHS.Script {
         }
 
         private void Start() {
-            StartCoroutine(SwitchScene("MainMenu"));
+            if (Instance != this) return;
+            var menu = SceneManager.GetSceneByName("MainMenu");
+            if (menu.IsValid() && menu.isLoaded) {
+                CurrentScene = menu;
+                SceneManager.SetActiveScene(menu);
+                return;
+            }
+            SwitchScene("MainMenu").Forget();
+        }
+
+        private void OnDestroy() {
+            if (Instance == this) Instance = null;
         }
 
 
@@ -45,23 +59,48 @@ namespace _00._Member.LHS.Script {
         }
 #endif
 
-        private IEnumerator SwitchScene(string sceneName) {
-            if (isLoading) yield break;
+        private async UniTask SwitchScene(string sceneName) {
+            if (isLoading) return;
+            if (string.IsNullOrEmpty(sceneName) || !Application.CanStreamedLevelBeLoaded(sceneName)) {
+                Debug.LogWarning($"챕터 씬 '{sceneName}'을 불러올 수 없습니다. Build Profiles의 Scene List를 확인해주세요.", this);
+                return;
+            }
             isLoading = true;
+            try {
+                if (CurrentScene.IsValid() && CurrentScene.isLoaded)
+                    await SceneManager.UnloadSceneAsync(CurrentScene);
 
-            if (CurrentScene.IsValid())
-                yield return SceneManager.UnloadSceneAsync(CurrentScene);
-
-            yield return SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
-            SceneManager.SetActiveScene(SceneManager.GetSceneByName(sceneName));
-            CurrentScene = SceneManager.GetSceneByName(sceneName);
-
-            isLoading = false;
+                await SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
+                CurrentScene = SceneManager.GetSceneByName(sceneName);
+                SceneManager.SetActiveScene(CurrentScene);
+            }
+            finally {
+                isLoading = false;
+            }
         }
 
-        public IEnumerator LoadChapter(int chapterNumber) {
-            if (chapterNumber <= 0 || chapterNumber > chapterSceneNames.Length) yield break;
-            yield return SwitchScene(chapterSceneNames[chapterNumber - 1]);
+        public bool TryLoadChapter(int chapterNumber) {
+            if (isLoading) return false;
+            if (!TryGetChapterName(chapterNumber, out var sceneName)) return false;
+            SwitchScene(sceneName).Forget();
+            return true;
+        }
+
+        private bool TryGetChapterName(int chapterNumber, out string sceneName) {
+            sceneName = null;
+            if (chapterSceneNames == null || chapterNumber <= 0 || chapterNumber > chapterSceneNames.Length) {
+                Debug.LogWarning($"등록되지 않은 챕터 번호입니다: {chapterNumber}", this);
+                return false;
+            }
+            sceneName = chapterSceneNames[chapterNumber - 1];
+            if (!string.IsNullOrEmpty(sceneName) && Application.CanStreamedLevelBeLoaded(sceneName)) return true;
+            Debug.LogWarning($"챕터 {chapterNumber}의 씬이 비어 있거나 Scene List에 등록되지 않았습니다.", this);
+            return false;
+        }
+
+        public async UniTaskVoid LoadChapter(int chapterNumber) {
+            if (isLoading || !TryGetChapterName(chapterNumber, out var sceneName)) return;
+            await SwitchScene(sceneName);
         }
     }
 }
