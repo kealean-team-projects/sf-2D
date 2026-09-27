@@ -29,6 +29,7 @@ namespace _02._Script._01_Players.Components {
 
         // Audio observes the supporting surface without changing movement's ground check.
         public Collider2D GroundCollider { get; private set; }
+        public Vector2 SoundSurfacePoint { get; private set; }
         private readonly RaycastHit2D[] _surfaceHits = new RaycastHit2D[8];
 
         private void Awake() {
@@ -164,6 +165,7 @@ namespace _02._Script._01_Players.Components {
             filter.SetLayerMask(whatIsGround);
             filter.useTriggers = false;
             var center = (Vector2)(transform.position + checker);
+            SoundSurfacePoint = center;
             var origin = center + Vector2.up * (checkerSize.y * 0.5f + 0.05f);
             var distance = checkerSize.y + 0.1f + Mathf.Max(0f, extraDistance);
             // Prefer the surface directly under the feet, then either edge on a ledge.
@@ -179,6 +181,7 @@ namespace _02._Script._01_Players.Components {
                         continue;
                     closest = hit.collider;
                     closestDistance = hit.distance;
+                    SoundSurfacePoint = hit.point;
                 }
                 if (closest != null) return closest;
             }

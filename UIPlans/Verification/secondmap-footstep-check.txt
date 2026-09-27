@@ -1,0 +1,1 @@
+Stone floor samples=115, via composite=63, incorrect=0, unchanged default samples=1125
