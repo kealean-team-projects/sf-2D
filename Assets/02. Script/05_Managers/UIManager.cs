@@ -2,6 +2,7 @@
 using _02._Script._01_Players;
 using _02._Script.UI;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace _02._Script._05_Managers
 {
@@ -9,8 +10,8 @@ namespace _02._Script._05_Managers
     {
         public static UIManager Instance { get; private set; }
         
-        
         [SerializeField] private StaminaHUD staminaHUD;
+        [SerializeField] private GameObject settingsPanel;
 
         private Player currentPlayer;
         
@@ -34,6 +35,25 @@ namespace _02._Script._05_Managers
 
             currentPlayer = player;
             currentPlayer.SetHUD(staminaHUD);
+            staminaHUD.gameObject.SetActive(true);
+        }
+        
+        public void OpenSettings() {
+            settingsPanel.SetActive(true);
+        }
+
+        public void CloseSettings() {
+            settingsPanel.SetActive(false);
+        }
+        
+        private void Update() {
+            if (Keyboard.current.escapeKey.wasPressedThisFrame)
+            {
+                if (settingsPanel.activeSelf)
+                    CloseSettings();
+                else
+                    OpenSettings();
+            }
         }
     }
 }
