@@ -157,6 +157,24 @@ namespace _02._Script.Boss
             reportedMissingPath = false;
         }
 
+        public bool TryGetClearPosition(Vector2 desired, out Vector2 position)
+        {
+            position = desired;
+            if (!IsReady || !NavMesh.SamplePosition(desired, out var hit, radius * 3f, query))
+                return false;
+            position = hit.position;
+            // Sampling alone can pick a polygon beside (or across) thin terrain.
+            var overlaps = new List<Collider2D>();
+            return Physics2D.OverlapCircle(position, radius, obstacleFilter, overlaps) == 0;
+        }
+
+        public Vector2 GetClearDestination(Rigidbody2D body, Vector2 destination)
+        {
+            Vector2 delta = destination - body.position;
+            return CanMove(body, delta, out float allowed)
+                ? destination : body.position + delta.normalized * allowed;
+        }
+
         public void MoveTowards(Rigidbody2D body, Vector2 destination, float speed)
         {
             if (!IsReady) return;
