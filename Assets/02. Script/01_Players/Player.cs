@@ -123,6 +123,7 @@ namespace _02._Script._01_Players {
 
             _damage.OnDamaged += OnDead;
             progress.Initialize(this);
+            UIManager.Instance.RegisterPlayer(this);
         }
 
         protected override void OnDispose() {
@@ -229,6 +230,10 @@ namespace _02._Script._01_Players {
 
         public void SetPushSpeed(Vector2 speed) {
             PushSpeed = speed;
+        }
+        
+        public void SetHUD(StaminaHUD hud) {
+            staminaHUD = hud;
         }
 
         #endregion
