@@ -1378,7 +1378,7 @@ SpriteShapeRenderer:
   - {fileID: 21300000, guid: 77f4c1bac56090d42bf12d77aa9f52c0, type: 3}
   m_LocalAABB:
     m_Center: {x: 108.45572, y: 27.358671, z: 0}
-    m_Extent: {x: 34.396122, y: 20.397167, z: 0}
+    m_Extent: {x: 34.396122, y: 20.39717, z: 0}
   m_SpriteSortPoint: 0
 --- !u!1 &46312164
 GameObject:
@@ -17629,7 +17629,7 @@ SpriteShapeRenderer:
   - {fileID: 21300004, guid: b05a701117b2ea2429ceedae27da038d, type: 3}
   m_LocalAABB:
     m_Center: {x: -10.750179, y: -8.205112, z: 0}
-    m_Extent: {x: 30.80708, y: 5.957326, z: 0}
+    m_Extent: {x: 30.80708, y: 5.9573255, z: 0}
   m_SpriteSortPoint: 0
 --- !u!1001 &731380670
 PrefabInstance:
@@ -84050,7 +84050,7 @@ SpriteShapeRenderer:
   - {fileID: 21300000, guid: 77f4c1bac56090d42bf12d77aa9f52c0, type: 3}
   m_LocalAABB:
     m_Center: {x: 28.200935, y: 2.4643126, z: 0}
-    m_Extent: {x: 13.367948, y: 13.423948, z: 0}
+    m_Extent: {x: 13.367949, y: 13.423947, z: 0}
   m_SpriteSortPoint: 0
 --- !u!60 &1700000000
 PolygonCollider2D:

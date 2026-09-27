@@ -1,0 +1,9 @@
+Dragon Guardian segmented-tail PSB rig complete
+Version: 3
+Layers: 11
+Bones: 35
+Weighted vertices: 2378
+Torso pixels on limb sprites follow the body bone.
+Mipmaps off; Default and active texture platforms uncompressed at up to 4096 px.
+Imported atlas: 1024x512, RGBA32, mip levels 1.
+Mesh and weights are stored in the PSB .meta through Unity PSD Importer.
