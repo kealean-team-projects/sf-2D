@@ -36,9 +36,11 @@ namespace _02._Script._01_Players.Components {
             _originGravityScale = rb.gravityScale;
         }
 
-        private void FixedUpdate() {
-            IsGround = CheckGround();
-            GroundCollider = IsGround ? FindSupportingSurface() : null;
+        private void FixedUpdate()
+        {
+            GroundCollider = FindSupportingSurface();
+            IsGround = GroundCollider != null;
+
             GroundUpdated?.Invoke();
         }
 
@@ -73,8 +75,8 @@ namespace _02._Script._01_Players.Components {
             rb.gravityScale = _originGravityScale;
 
             Physics2D.SyncTransforms();
-            IsGround = CheckGround();
-            GroundCollider = IsGround ? FindSupportingSurface() : null;
+            GroundCollider = FindSupportingSurface();
+            IsGround = GroundCollider != null;
         }
 
         #region Apply_States
@@ -124,7 +126,7 @@ namespace _02._Script._01_Players.Components {
             _isWallDashing = false;
         }
 
-        #endregion"
+        #endregion
 
         #region Climb Control
 
@@ -151,9 +153,6 @@ namespace _02._Script._01_Players.Components {
 
         #region Rigidbody
 
-        private bool CheckGround() {
-            return Physics2D.OverlapBox(transform.position + checker, checkerSize, 0f, whatIsGround) != null;
-        }
 
         public Collider2D FindSoundSurface(float extraDistance) {
             // Only extend the sound query; the movement ground check is unchanged.

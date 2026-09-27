@@ -1,3 +1,4 @@
+using System;
 using _02._Script._01_Players.Components.ControllerCompo;
 using _02._Script._01_Players.Components.DamageCompo;
 using _02._Script._01_Players.Components.Stamina;
@@ -40,6 +41,18 @@ namespace _02._Script._01_Players {
 
         private bool _canSJ = true;
         private float jumpDir;
+        
+        public event Action<PlayerMoveState, PlayerMoveState> MoveStateChanged;
+
+        public PlayerMoveState CurrentMoveState =>
+            _moveStateMachine?.CurrentState;
+        
+        private void HandleMoveStateChanged(
+            PlayerMoveState previousState,
+            PlayerMoveState currentState)
+        {
+            MoveStateChanged?.Invoke(previousState, currentState);
+        }
 
         public void SetAnimationBool(int parameterHash, bool value) {
             // 애니메이션 구성은 선택 사항이며 이동 상태 전환을 막지 않는다.
@@ -114,6 +127,7 @@ namespace _02._Script._01_Players {
             _damage = GetComponent<DamageModule>();
             SprintControl = new SprintController(_stats, staminaCosts.runPerSecond);
             _moveStateMachine = PlayerMoveStateFactory.Create(this, _stats);
+            _moveStateMachine.StateChanged += HandleMoveStateChanged;
 
             var viewerObject = new GameObject("StateMachineViewer");
             viewerObject.transform.SetParent(transform, false);
@@ -132,6 +146,11 @@ namespace _02._Script._01_Players {
 
             _damage.OnDamaged -= OnDead;
             progress.Shutdown();
+            
+            if (_moveStateMachine != null)
+            {
+                _moveStateMachine.StateChanged -= HandleMoveStateChanged;
+            }
         }
 
         #region ModulesGet
@@ -264,17 +283,23 @@ namespace _02._Script._01_Players {
 
         #region CheckMethod
 
-        public bool TryWallJump() {
-            if (!CanStartWallAction(staminaCosts.wallJump)) return false;
+        public bool TryWallJump()
+        {
+            if (!CanStartWallAction(staminaCosts.wallJump))
+                return false;
 
             _stats.UseStamina(staminaCosts.wallJump, true);
+
             return true;
         }
 
-        public bool TryWallDash() {
-            if (!CanStartWallAction(staminaCosts.wallDash)) return false;
+        public bool TryWallDash()
+        {
+            if (!CanStartWallAction(staminaCosts.wallDash))
+                return false;
 
             _stats.UseStamina(staminaCosts.wallDash, true);
+
             return true;
         }
 
@@ -344,8 +369,10 @@ namespace _02._Script._01_Players {
             Mover.EndWallDash();
         }
 
-        public void Jump() {
+        public void Jump()
+        {
             if (!CanSJ) return;
+
             Mover.Jump();
         }
 
