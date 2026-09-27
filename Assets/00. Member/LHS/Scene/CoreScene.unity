@@ -2930,11 +2930,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_00._Member.LHS.Script.ChapterLoader
   chapterSceneLists:
-  - {fileID: 102900000, guid: 5bba83634b0483a43b4f8a070c168886, type: 3}
+  - {fileID: 102900000, guid: 909eaf4987a333c47ae9c6107b5b40ba, type: 3}
   - {fileID: 102900000, guid: f2ae88a4c1532304cb696b55729fc798, type: 3}
   - {fileID: 102900000, guid: 6c48e77e564fd3f498035c5a956e523a, type: 3}
   chapterSceneNames:
-  - FirstMap
+  - FirstMap_remakeCollider
   - SecondMap_remakeCollider
   - ThirdMap
 --- !u!1 &1402625536
@@ -5114,8 +5114,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aa13a5431164a7f42bfe562f231e13af, type: 3}
-  m_Name:
-  m_EditorClassIdentifier:
+  m_Name: 
+  m_EditorClassIdentifier: 
   _soundListSo: {fileID: 11400000, guid: 380dcdb0a6bd8f1429264bd58af6907b, type: 2}
   _mixer: {fileID: 24100000, guid: 18dbd229627698846934e4865f1760c3, type: 2}
 --- !u!1660057539 &9223372036854775807

@@ -77,7 +77,8 @@ namespace _02._Script.Boss {
                 if (shadow == null || !shadow.isActiveAndEnabled) continue;
 
                 var collider = _shadowColliders[i];
-                var bounds = collider != null && collider.enabled
+                var bounds = collider != null && collider.enabled &&
+                             collider.compositeOperation == Collider2D.CompositeOperation.None
                     ? collider.bounds
                     : shadow.GetShadowBounds();
                 bool detected = scanLight.enabled
