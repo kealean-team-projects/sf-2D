@@ -49,11 +49,11 @@ TagManager:
   - name: Item
     uniqueID: 1542713235
     locked: 0
-  - name: Player
-    uniqueID: 4274339733
-    locked: 0
   - name: Ground
     uniqueID: 1952283893
+    locked: 0
+  - name: Player
+    uniqueID: 4274339733
     locked: 0
   - name: Architecture
     uniqueID: 2705540687
