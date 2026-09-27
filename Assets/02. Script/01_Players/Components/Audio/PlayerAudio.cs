@@ -16,9 +16,7 @@ namespace _02._Script._01_Players.Components.Audio {
         [SerializeField, Min(0f)] private float footstepResumeWindow = 0.12f;
         [Header("Landing")]
         [Tooltip("착지음에 필요한 최소 연속 추락 시간(초). 상승·등반 시간은 제외하며, 0이면 모든 착지에서 재생합니다.")]
-        [SerializeField, Min(0f)] private float minimumFallTime = 0.2f;
-        [Tooltip("착지음 전용으로 기존 발밑 감지 범위를 아래로 늘리는 거리(Unity 단위). 0이면 기존 착지 시점에 재생합니다.")]
-        [SerializeField, Min(0f)] private float landingDetectionDistance = 0.15f;
+        [SerializeField, Min(0f)] private float minimumFallTime = 0.08f;
         private string walkSound = "Walk";
         private string runSound = "Run";
         private string landingSound = "Landing";
@@ -108,10 +106,9 @@ namespace _02._Script._01_Players.Components.Audio {
             var stone = surface != null && surface.Material == FootstepMaterial.Stone;
 
             if (_manager == null) _manager = FindAnyObjectByType<SoundManager>();
-            if (!_wasGrounded && !_landingPlayed && _fallTime >= minimumFallTime && _manager != null) {
-                var landingSurface = grounded ? mover.GroundCollider
-                    : falling && landingDetectionDistance > 0f
-                        ? mover.FindSoundSurface(landingDetectionDistance) : null;
+            // Play on the airborne -> grounded transition, never from a distant surface query.
+            if (grounded && !_wasGrounded && !_landingPlayed && _fallTime >= minimumFallTime && _manager != null) {
+                var landingSurface = mover.GroundCollider;
                 if (landingSurface != null) {
                     var material = landingSurface.GetComponentInParent<FootstepSurface>();
                     var landingOnStone = material != null && material.Material == FootstepMaterial.Stone;

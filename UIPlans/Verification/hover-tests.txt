@@ -1,0 +1,1 @@
+PASS: Start, Settings, Exit hover changes background and border; pointer exit restores both; disabled buttons do not highlight.

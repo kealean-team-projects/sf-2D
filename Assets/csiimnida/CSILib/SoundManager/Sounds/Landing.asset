@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: SoundManager.runtime::csiimnida.CSILib.SoundManager.RunTime.SoundSo
   soundName: Landing
   soundType: 1
-  clip: {fileID: 8300000, guid: 1161c062d7a6d5246824d020d7ced4c6, type: 3}
+  clip: {fileID: 8300000, guid: db9f3cfe1ed14aa9a8e95a44b13b7629, type: 3}
   loop: 0
   Priority: 128
   volume: 0.641

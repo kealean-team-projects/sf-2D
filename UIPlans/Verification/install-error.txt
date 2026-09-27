@@ -1,0 +1,8 @@
+System.InvalidOperationException: This can only be used during play mode, please use EditorSceneManager.NewScene() instead.
+  at (wrapper managed-to-native) UnityEngine.SceneManagement.SceneManager.CreateScene_Injected(UnityEngine.Bindings.ManagedSpanWrapper&,UnityEngine.SceneManagement.CreateSceneParameters&,UnityEngine.SceneManagement.Scene&)
+  at UnityEngine.SceneManagement.SceneManager.CreateScene (System.String sceneName, UnityEngine.SceneManagement.CreateSceneParameters parameters) [0x00039] in <d5ea965f39d74501b56f4006ef80da34>:0 
+  at UnityEngine.SceneManagement.SceneManager.CreateScene (System.String sceneName) [0x00008] in <d5ea965f39d74501b56f4006ef80da34>:0 
+  at ForestUIInstaller.CapturePreviews () [0x00010] in C:\sf-2D\Assets\Editor\ForestUI\ForestUIAssets.cs:62 
+  at ForestUIInstaller.BuildAssets () [0x00014] in C:\sf-2D\Assets\Editor\ForestUI\ForestUIAssets.cs:20 
+  at ForestUIInstaller.Install () [0x0003a] in C:\sf-2D\Assets\Editor\ForestUI\ForestUIInstaller.cs:41 
+  at ForestUIInstaller.AutoInstall () [0x0006c] in C:\sf-2D\Assets\Editor\ForestUI\ForestUIInstaller.cs:30 

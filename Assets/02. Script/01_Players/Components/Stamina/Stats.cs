@@ -15,9 +15,10 @@ namespace _02._Script._01_Players.Components.Stamina {
 
         private bool _canCharge = true;
         private bool _uniTaskIsRunning;
+        private int _chargeVersion;
 
         public void Initialize(Agent owner) {
-            Stamina = maxStamina;
+            RestoreStamina(maxStamina);
             heatStroke = 0;
         }
 
@@ -62,11 +63,17 @@ namespace _02._Script._01_Players.Components.Stamina {
 
         public void RestoreStamina(float savedStamina) {
             Stamina = Mathf.Clamp(savedStamina, 0f, maxStamina);
+            // A pending delay belongs to the previous life, not the restored state.
+            _chargeVersion++;
+            _canCharge = true;
+            _uniTaskIsRunning = false;
         }
 
         private async UniTask WaitCharge() {
             _uniTaskIsRunning = true;
+            int version = _chargeVersion;
             await UniTask.Delay(TimeSpan.FromSeconds(staminaHealWaitTime));
+            if (version != _chargeVersion) return;
             _canCharge = true;
             _uniTaskIsRunning = false;
         }

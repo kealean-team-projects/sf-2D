@@ -366,6 +366,7 @@ namespace _02._Script._01_Players {
             Mover.RestorePosition(position);
             CrouchControl.Stand();
             _stats.RestoreStamina(stamina);
+            staminaHUD?.UpdateStamina(_stats.Stamina);
 
             PushSpeed = Vector2.zero;
             CanMove = true;

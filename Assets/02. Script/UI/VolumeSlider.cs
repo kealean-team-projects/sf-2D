@@ -8,8 +8,15 @@ namespace _02._Script.UI {
         [SerializeField] private Slider volumeSlider;
         [SerializeField] private string param;
 
+        public AudioMixer Mixer => mixer;
+
         public void SliderChange() {
-            mixer.SetFloat(param, volumeSlider.value <= volumeSlider.minValue ? -80f : volumeSlider.value);
+            float value = volumeSlider.value;
+            float decibels = value <= 0f
+                ? -80f
+                : Mathf.Log10(value) * 20f;
+
+            mixer.SetFloat(param, decibels);
         }
     }
 }

@@ -1,0 +1,1 @@
+PASS: saved MainMenu scene deserializes, all 3 persistent button callbacks resolve, foreground reference resolves, integrated Canvas rendered. Gameplay transitions were not run in this isolated check.

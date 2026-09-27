@@ -28,6 +28,12 @@ namespace _00._Member.LHS.Script {
 
         private void Start() {
             if (Instance != this) return;
+            var menu = SceneManager.GetSceneByName("MainMenu");
+            if (menu.IsValid() && menu.isLoaded) {
+                CurrentScene = menu;
+                SceneManager.SetActiveScene(menu);
+                return;
+            }
             SwitchScene("MainMenu").Forget();
         }
 

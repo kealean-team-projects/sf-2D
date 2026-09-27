@@ -1,0 +1,1 @@
+PASS: native Image graphics, SpriteSwap buttons, no missing scripts, Cancel/Apply callbacks; 16:9 and 16:10 rendered.

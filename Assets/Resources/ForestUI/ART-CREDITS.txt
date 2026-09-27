@@ -1,0 +1,11 @@
+ForestBackdrop.png
+Generated with OpenAI image generation for this project's forest menu design.
+
+Heading.ttf
+Cormorant Garamond Regular by Christian Thalmann / Catharsis Fonts.
+Source: https://github.com/CatharsisFonts/Cormorant
+License: SIL Open Font License 1.1. See Heading-OFL.txt in this folder.
+
+UI borders, leaf ornaments and icons are original project artwork baked into the Sprites folder.
+They use standard Unity Image components; buttons use native Sprite Swap states.
+Body text uses the project's existing TextMesh Pro default font.
