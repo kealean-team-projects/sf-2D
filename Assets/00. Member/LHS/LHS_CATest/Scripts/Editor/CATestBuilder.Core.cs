@@ -45,7 +45,7 @@ namespace LHS_CATest.EditorTools {
         public const int LayerClimbWall = 9;
 
         // ───────────────────────── Menu ─────────────────────────
-        [MenuItem("Tools/LHS_CATest/1. Build ALL (Core + Forest0~2 + DeepSea)", priority = 1)]
+        [MenuItem("Tools/LHS_CATest/1. Build ALL (Core + Forest0~2 + DeepSea + Twilight + Title)", priority = 1)]
         public static void BuildAll() {
             if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;
             try {
@@ -62,8 +62,12 @@ namespace LHS_CATest.EditorTools {
                 BuildForest2Scene();
                 EditorUtility.DisplayProgressBar("LHS_CATest", "DeepSea", 0.65f);
                 BuildDeepSeaScene();
+                EditorUtility.DisplayProgressBar("LHS_CATest", "Twilight (황혼의 성역)", 0.75f);
+                BuildTwilightScene();
                 EditorUtility.DisplayProgressBar("LHS_CATest", "Core", 0.85f);
                 BuildCoreScene();
+                EditorUtility.DisplayProgressBar("LHS_CATest", "Title", 0.95f);
+                BuildTitleScene();
                 OpenEditSetup();
                 Debug.Log("[LHS_CATest] Build ALL 완료. CATest_CoreScene 을 연 상태에서 Play 하세요.");
             }
@@ -90,6 +94,24 @@ namespace LHS_CATest.EditorTools {
             PrepareAssets(); BuildPrefabs(); BuildCoreScene(); OpenEditSetup();
         }
 
+        [MenuItem("Tools/LHS_CATest/5. Rebuild Twilight only (마지막 챕터)", priority = 23)]
+        public static void MenuTwilight() {
+            if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;
+            PrepareAssets(); BuildPrefabs(); BuildTwilightScene(); OpenEditSetup();
+        }
+
+        [MenuItem("Tools/LHS_CATest/6. Rebuild Title + Core (UI)", priority = 24)]
+        public static void MenuTitle() {
+            if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;
+            PrepareAssets(); BuildPrefabs(); BuildCoreScene(); BuildTitleScene(); OpenEditSetup();
+        }
+
+        [MenuItem("Tools/LHS_CATest/Open Title (타이틀부터 Play)", priority = 42)]
+        public static void OpenTitle() {
+            if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;
+            if (File.Exists(TitleScenePath)) EditorSceneManager.OpenScene(TitleScenePath, OpenSceneMode.Single);
+        }
+
         [MenuItem("Tools/LHS_CATest/Open Edit Setup (Core + 모든 맵)", priority = 40)]
         public static void OpenEditSetup() {
             if (!File.Exists(CoreScenePath)) return;
@@ -98,6 +120,7 @@ namespace LHS_CATest.EditorTools {
             if (File.Exists(Forest1ScenePath)) EditorSceneManager.OpenScene(Forest1ScenePath, OpenSceneMode.Additive);
             if (File.Exists(Forest2ScenePath)) EditorSceneManager.OpenScene(Forest2ScenePath, OpenSceneMode.Additive);
             if (File.Exists(DeepSeaScenePath)) EditorSceneManager.OpenScene(DeepSeaScenePath, OpenSceneMode.Additive);
+            if (File.Exists(TwilightScenePath)) EditorSceneManager.OpenScene(TwilightScenePath, OpenSceneMode.Additive);
             SceneManager.SetActiveScene(SceneManager.GetSceneByPath(CoreScenePath));
         }
 

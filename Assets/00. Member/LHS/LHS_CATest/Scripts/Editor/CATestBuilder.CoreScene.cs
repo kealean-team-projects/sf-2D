@@ -137,11 +137,12 @@ namespace LHS_CATest.EditorTools {
             var so = new SerializedObject(streamer);
             so.FindProperty("target").objectReferenceValue = player.transform;
             var zones = so.FindProperty("zones");
-            zones.arraySize = 4;
+            zones.arraySize = 5;
             FillZone(zones.GetArrayElementAtIndex(0), "CATest_Forest0_Sunny", Forest0ScenePath, new Rect(-1965, -45, 705, 190), 40f, 80f);
             FillZone(zones.GetArrayElementAtIndex(1), "CATest_Forest1_LushFog", Forest1ScenePath, new Rect(-1290, -45, 830, 150), 40f, 80f);
             FillZone(zones.GetArrayElementAtIndex(2), "CATest_Forest2_DreamMountain", Forest2ScenePath, new Rect(-480, -35, 400, 190), 40f, 80f);
             FillZone(zones.GetArrayElementAtIndex(3), "CATest_DeepSea", DeepSeaScenePath, new Rect(225, -132, 875, 150), 52f, 95f);
+            FillZone(zones.GetArrayElementAtIndex(4), "CATest_Twilight", TwilightScenePath, new Rect(1360, -40, 690, 150), 40f, 90f);
             so.ApplyModifiedPropertiesWithoutUndo();
 
             // 분위기 디렉터
@@ -159,6 +160,9 @@ namespace LHS_CATest.EditorTools {
             var hud = hudGo.AddComponent<CATestHUD>();
             Set(hud, "keySprite", Sp(ArtDir + "/CATest_KeyCap.png"));
             Set(hud, "softSprite", Sp(ArtDir + "/CATest_SoftPanel.png"));
+
+            // 게임 UI: ESC 메뉴(설정/타이틀로) + 용 대화창/선택지 + 엔딩 화면 (UGUI)
+            BuildGameUI(systems.transform);
 
             // 부트스트랩 + 테스트용 시작 지점
             var bsGo = new GameObject("CATest_Bootstrap");
@@ -197,6 +201,15 @@ namespace LHS_CATest.EditorTools {
                 ("C+F1 굴 앞", new Vector2(1000f, -88.5f)),
                 ("C+F2 상승 통로", new Vector2(1030f, -88.5f)),
                 ("C+F3 빛이 드는 틈", new Vector2(1055f, -28.5f)),
+                ("C+F4 백색 협곡 (마지막 챕터)", new Vector2(1418f, 2f)),
+                ("C+F5 금 간 석판 다리", new Vector2(1494f, 14f)),
+                ("C+F6 모래바람 평지", new Vector2(1582f, 3f)),
+                ("C+F7 백색 성역", new Vector2(1646f, 3f)),
+                ("C+F8 룬 순서 퍼즐", new Vector2(1694f, 10.5f)),
+                ("C+F9 심판의 빛", new Vector2(1746f, 10.5f)),
+                ("C+F10 떠다니는 석판", new Vector2(1797f, 10.5f)),
+                ("C+F11 용의 둥지 앞 (엔딩 전 세이브)", new Vector2(TwPreDragonSave.x, 16f)),
+                ("C+F12 용의 둥지 (엔딩 직전)", new Vector2(1905f, 16f)),
             };
             sp.arraySize = points.Length;
             for (var i = 0; i < points.Length; i++) {

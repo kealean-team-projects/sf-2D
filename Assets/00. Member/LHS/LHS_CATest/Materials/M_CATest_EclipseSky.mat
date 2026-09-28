@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: M_CATest_EclipseSky
+  m_Shader: {fileID: 4800000, guid: f96c9ac50a7209b49aac1d1e45dfa13e, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 0122bbe93179c1b4a8b23c3a9de92afc, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _Aspect: 1.9
+    - _CloudAmount: 0.8
+    - _CloudSpeed: 0.004
+    - _FlareAngle: -58
+    - _FlareStrength: 0.45
+    - _GlowSize: 0.1
+    - _HorizonY: 0.44
+    - _HotPower: 4
+    - _MidY: 0.7
+    - _Radius: 0.072
+    - _RingWidth: 0.004
+    - _StarAmount: 0.6
+    m_Colors:
+    - _CloudDark: {r: 0.079999976, g: 0.06999998, b: 0.13999996, a: 1}
+    - _CloudLit: {r: 0.5, g: 0.26, b: 0.32, a: 1}
+    - _DiskColor: {r: 0.03, g: 0.02, b: 0.049999982, a: 1}
+    - _EclipsePos: {r: 0.607, g: 0.62, b: 0, a: 0}
+    - _GlowColor: {r: 0.7, g: 0.18, b: 0.24, a: 1}
+    - _HorizonColor: {r: 0.36, g: 0.22, b: 0.32, a: 1}
+    - _HotDir: {r: 0.55, g: -0.83, b: 0, a: 0}
+    - _MidColor: {r: 0.12, g: 0.1, b: 0.21, a: 1}
+    - _RingColor: {r: 1.6, g: 0.28, b: 0.22, a: 1}
+    - _RingHot: {r: 3.2, g: 2, b: 1.1, a: 1}
+    - _TopColor: {r: 0.035, g: 0.035, b: 0.089999996, a: 1}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1

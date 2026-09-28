@@ -13,7 +13,9 @@ namespace LHS_CATest {
     ///  1) 화면 암전(페이드)          : 구덩이 낙하 → 심해 착수 연출
     ///  2) 지역 이름(화면 중앙 상단)  : CATestAreaZone 에 들어가면 표시
     ///  3) 상호작용 안내(E 키)         : 플레이어 Interactor 가 지금 선택한 대상 위에 표시
-    ///  4) 조작 힌트(화면 하단)        : CATestHintZone 안에 있을 때 표시
+    ///  4) 조작 힌트(화면 하단)        : CATestHintZone 안에 있을 때 표시 (화창한 숲 튜토리얼에서만 사용)
+    ///  5) 영화 모드 검은 띠(레터박스)  : 컷신 동안 위/아래에서 검은 띠가 들어옴 (SetLetterbox)
+    ///  6) 머리 위 대사                : 텍스트 상자 없이 흰 글자로 플레이어 머리 위에 한 글자씩 나타남 (Say / SayLines)
     ///
     /// UI는 코드로 만든다(프리팹/폰트 에셋 없이 동작). 한글은 TMP 기본 폰트(LiberationSans)에 글리프가 없어서
     /// OS 한글 폰트(바탕/맑은 고딕)를 동적 폰트로 불러와 UGUI Text 로 그린다.
@@ -44,10 +46,19 @@ namespace LHS_CATest {
         private Text _promptKey;
         private CanvasGroup _hintGroup;
         private Text _hintText;
+        private RectTransform _barTop, _barBottom;
+        private float _barAmount, _barTarget, _barSpeed = 1f;
+        private const float BarHeight = 118f; // 1080 기준 (약 11%) — 2.39:1 영화 화면비에 가까운 두께
+        private RectTransform _speech;
+        private CanvasGroup _speechGroup;
+        private Text _speechText;
+        private int _speechVersion;
+        private Transform _speechTarget;
 
         private int _titleVersion;
         private float _fadeTarget;
         private float _fadeSpeed;
+        private Color _fadeColor = Color.black;
         private object _hintOwner;
         private float _hintAlpha;
 
@@ -150,16 +161,139 @@ namespace LHS_CATest {
             Instance._hintOwner = null;
         }
 
+        // ───────────────────────── Letterbox ─────────────────────────
+        /// <summary>영화 모드 검은 띠. on=true 면 위/아래에서 띠가 들어오고, false 면 빠진다.</summary>
+        public static void SetLetterbox(bool on, float duration = 0.9f) {
+            if (Instance == null) return;
+            Instance._barTarget = on ? 1f : 0f;
+            Instance._barSpeed = 1f / Mathf.Max(0.01f, duration);
+        }
+
+        public static bool LetterboxOn => Instance != null && Instance._barTarget > 0.5f;
+
+        // ───────────────────────── Speech (머리 위 대사) ─────────────────────────
+        /// <summary>
+        /// 대사 한 줄을 target(없으면 플레이어) 머리 위에 띄운다. 한 글자씩 타자기처럼 나타나고, hold 초 뒤 사라진다.
+        /// hold &lt; 0 이면 글자 수로 자동 계산. 끝날 때까지 기다릴 수 있도록 UniTask 를 돌려준다(컷신용).
+        /// 새 대사가 오면 이전 대사는 즉시 교체된다.
+        /// </summary>
+        public static UniTask Say(string text, float hold = -1f, Transform target = null) {
+            if (Instance == null || string.IsNullOrEmpty(text)) return UniTask.CompletedTask;
+            // 설정에서 "머리 위 대사"를 끈 경우: 글자는 띄우지 않고, 컷신 흐름이 너무 급해지지 않도록 짧게만 기다린다.
+            if (!CATestSettings.ShowPlayerLines) return UniTask.Delay(System.TimeSpan.FromSeconds(0.35f), true);
+            return Instance.SpeechRoutine(text, hold, target);
+        }
+
+        /// <summary>설정에서 대사를 끄면 지금 떠 있는 대사도 바로 숨긴다.</summary>
+        public static void HideSpeechNow() {
+            if (Instance == null) return;
+            Instance._speechVersion++;
+            Instance._speechGroup.alpha = 0f;
+        }
+
+        /// <summary>페이드 색(기본 검정). 흰 빛으로 사라지는 연출(차원 이동, 귀환 엔딩)에 흰색으로 바꿔 쓴다.</summary>
+        public static void SetFadeColor(Color c) {
+            if (Instance == null) return;
+            Instance._fadeColor = new Color(c.r, c.g, c.b, 1f);
+            var f = Instance._fader.color;
+            Instance._fader.color = new Color(c.r, c.g, c.b, f.a);
+        }
+
+        /// <summary>여러 줄을 순서대로 말한다. 줄 사이 gap 초.</summary>
+        public static async UniTask SayLines(string[] lines, float gap = 0.25f, Transform target = null) {
+            if (lines == null) return;
+            foreach (var line in lines) {
+                if (Instance == null) return;
+                await Say(line, -1f, target);
+                await UniTask.Delay(System.TimeSpan.FromSeconds(gap), true);
+            }
+        }
+
+        private async UniTask SpeechRoutine(string text, float hold, Transform target) {
+            var version = ++_speechVersion;
+            _speechTarget = target;
+            if (hold < 0f) hold = Mathf.Clamp(1.1f + text.Length * 0.07f, 1.6f, 4.5f);
+            _speechText.text = string.Empty;
+            // 등장: 살짝 위로 떠오르며 나타남
+            for (var t = 0f; t < 0.2f; t += Time.unscaledDeltaTime) {
+                if (version != _speechVersion) return;
+                _speechGroup.alpha = t / 0.2f;
+                await UniTask.Yield();
+            }
+            _speechGroup.alpha = 1f;
+            // 타자기: 초당 약 18글자
+            var shown = 0f;
+            while (shown < text.Length) {
+                if (version != _speechVersion) return;
+                shown += Time.unscaledDeltaTime * 18f;
+                _speechText.text = text.Substring(0, Mathf.Min(text.Length, Mathf.FloorToInt(shown) + 1));
+                await UniTask.Yield();
+            }
+            _speechText.text = text;
+            await UniTask.Delay(System.TimeSpan.FromSeconds(hold), true);
+            for (var t = 0f; t < 0.45f; t += Time.unscaledDeltaTime) {
+                if (version != _speechVersion) return;
+                _speechGroup.alpha = 1f - t / 0.45f;
+                await UniTask.Yield();
+            }
+            if (version == _speechVersion) {
+                _speechGroup.alpha = 0f;
+                _speechTarget = null;
+            }
+        }
+
+        /// <summary>
+        /// 플레이어 "머리 꼭대기" 월드 좌표.
+        /// 콜라이더는 몸통만 감싸는 경우가 많아(머리카락/모자 스프라이트가 콜라이더 위로 튀어나옴)
+        /// 콜라이더 윗면과 SpriteRenderer 들의 윗면 중 더 높은 쪽을 쓴다 → 대사가 머리와 겹치지 않는다.
+        /// </summary>
+        private static Vector3 PlayerHeadTop(Component p) {
+            var pcol = p.GetComponent<Collider2D>();
+            var x = pcol != null ? pcol.bounds.center.x : p.transform.position.x;
+            var top = pcol != null ? pcol.bounds.max.y : p.transform.position.y + 1.5f;
+            foreach (var r in p.GetComponentsInChildren<SpriteRenderer>()) {
+                if (r == null || !r.enabled || r.sprite == null) continue;
+                var b = r.bounds;
+                if (b.size.y > 6f) continue; // 이펙트 등 비정상적으로 큰 스프라이트 무시
+                top = Mathf.Max(top, b.max.y);
+            }
+            return new Vector3(x, top, p.transform.position.z);
+        }
+
+        private void UpdateSpeech() {
+            if (_speechGroup.alpha <= 0.001f) return;
+            var cam = Camera.main;
+            if (cam == null) return;
+            Vector3 head;
+            if (_speechTarget != null) head = _speechTarget.position + Vector3.up * 2.4f;
+            else {
+                FindPlayer();
+                if (_player == null) return;
+                head = PlayerHeadTop(_player) + Vector3.up * 0.6f;
+            }
+            var screen = cam.WorldToScreenPoint(head);
+            if (screen.z < 0f) return;
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(_canvasRect, screen, null, out var local);
+            // 부드럽게 따라가기(카메라가 흔들려도 글자가 떨리지 않게)
+            _speech.anchoredPosition = Vector2.Lerp(_speech.anchoredPosition, local + new Vector2(0f, 14f), 1f - Mathf.Exp(-Time.unscaledDeltaTime * 18f));
+        }
+
         // ───────────────────────── Update ─────────────────────────
         private void Update() {
+            _barAmount = Mathf.MoveTowards(_barAmount, _barTarget, _barSpeed * Time.unscaledDeltaTime);
+            var eased = _barAmount * _barAmount * (3f - 2f * _barAmount);
+            _barTop.sizeDelta = new Vector2(0f, BarHeight * eased);
+            _barBottom.sizeDelta = new Vector2(0f, BarHeight * eased);
+            UpdateSpeech();
+
             var a = _fader.color.a;
             if (!Mathf.Approximately(a, _fadeTarget)) {
                 a = Mathf.MoveTowards(a, _fadeTarget, _fadeSpeed * Time.unscaledDeltaTime);
-                _fader.color = new Color(0f, 0f, 0f, a);
+                _fader.color = new Color(_fadeColor.r, _fadeColor.g, _fadeColor.b, a);
             }
             _fader.enabled = a > 0.001f;
 
-            _hintAlpha = Mathf.MoveTowards(_hintAlpha, _hintOwner != null ? 1f : 0f, Time.unscaledDeltaTime * 3f);
+            _hintAlpha = Mathf.MoveTowards(_hintAlpha, _hintOwner != null && _barTarget < 0.5f ? 1f : 0f, Time.unscaledDeltaTime * 3f);
             _hintGroup.alpha = _hintAlpha;
 
             UpdatePrompt();
@@ -172,7 +306,8 @@ namespace LHS_CATest {
                 target = CurrentTargetField.GetValue(_interactor) as Component;
             if (target != null && target is Behaviour b && !b.isActiveAndEnabled) target = null;
 
-            var want = target != null ? 1f : 0f;
+            // 컷신(검은 띠) 중에는 E 안내를 숨긴다
+            var want = target != null && _barTarget < 0.5f ? 1f : 0f;
             _promptGroup.alpha = Mathf.MoveTowards(_promptGroup.alpha, want, Time.unscaledDeltaTime * 8f);
             if (target == null) return;
 
@@ -267,6 +402,28 @@ namespace LHS_CATest {
             hbg.rectTransform.sizeDelta = new Vector2(900f, 110f);
             _hintText = NewText("Text", hintRoot, bodyFont, 30, new Color(0.97f, 0.95f, 0.88f), TextAnchor.MiddleCenter);
             _hintText.rectTransform.sizeDelta = new Vector2(1100f, 70f);
+
+            // 머리 위 대사: 상자·외곽선·그림자 없이 순수한 흰 글자, 작게(22px @1080p).
+            //  Text 컴포넌트만 두고 Outline/Shadow 효과 컴포넌트는 붙이지 않는다.
+            _speech = NewRect("Speech", _canvasRect, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0f), Vector2.zero, new Vector2(700f, 40f));
+            _speechGroup = _speech.gameObject.AddComponent<CanvasGroup>();
+            _speechGroup.alpha = 0f;
+            _speechGroup.blocksRaycasts = false;
+            _speechText = NewText("Text", _speech, bodyFont, 22, Color.white, TextAnchor.LowerCenter);
+            _speechText.rectTransform.pivot = new Vector2(0.5f, 0f);
+            _speechText.rectTransform.sizeDelta = new Vector2(700f, 40f);
+
+            // 영화 모드 검은 띠 (위/아래). 높이 0 에서 시작해 컷신 때 BarHeight 까지 늘어난다.
+            _barTop = NewRect("LetterboxTop", _canvasRect, new Vector2(0.5f, 1f), new Vector2(0.5f, 1f), Vector2.zero, Vector2.zero);
+            _barTop.anchorMin = new Vector2(0f, 1f);
+            _barTop.anchorMax = new Vector2(1f, 1f);
+            _barTop.gameObject.AddComponent<Image>().color = Color.black;
+            _barBottom = NewRect("LetterboxBottom", _canvasRect, new Vector2(0.5f, 0f), new Vector2(0.5f, 0f), Vector2.zero, Vector2.zero);
+            _barBottom.anchorMin = new Vector2(0f, 0f);
+            _barBottom.anchorMax = new Vector2(1f, 0f);
+            _barBottom.gameObject.AddComponent<Image>().color = Color.black;
+            _barTop.GetComponent<Image>().raycastTarget = false;
+            _barBottom.GetComponent<Image>().raycastTarget = false;
 
             // 페이드(가장 위)
             _fader = NewImage("Fader", _canvasRect, null, new Color(0f, 0f, 0f, 0f));

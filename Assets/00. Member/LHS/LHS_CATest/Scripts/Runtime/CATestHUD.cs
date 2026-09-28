@@ -58,6 +58,7 @@ namespace LHS_CATest {
         private int _titleVersion;
         private float _fadeTarget;
         private float _fadeSpeed;
+        private Color _fadeColor = Color.black;
         private object _hintOwner;
         private float _hintAlpha;
 
@@ -178,7 +179,24 @@ namespace LHS_CATest {
         /// </summary>
         public static UniTask Say(string text, float hold = -1f, Transform target = null) {
             if (Instance == null || string.IsNullOrEmpty(text)) return UniTask.CompletedTask;
+            // 설정에서 "머리 위 대사"를 끈 경우: 글자는 띄우지 않고, 컷신 흐름이 너무 급해지지 않도록 짧게만 기다린다.
+            if (!CATestSettings.ShowPlayerLines) return UniTask.Delay(System.TimeSpan.FromSeconds(0.35f), true);
             return Instance.SpeechRoutine(text, hold, target);
+        }
+
+        /// <summary>설정에서 대사를 끄면 지금 떠 있는 대사도 바로 숨긴다.</summary>
+        public static void HideSpeechNow() {
+            if (Instance == null) return;
+            Instance._speechVersion++;
+            Instance._speechGroup.alpha = 0f;
+        }
+
+        /// <summary>페이드 색(기본 검정). 흰 빛으로 사라지는 연출(차원 이동, 귀환 엔딩)에 흰색으로 바꿔 쓴다.</summary>
+        public static void SetFadeColor(Color c) {
+            if (Instance == null) return;
+            Instance._fadeColor = new Color(c.r, c.g, c.b, 1f);
+            var f = Instance._fader.color;
+            Instance._fader.color = new Color(c.r, c.g, c.b, f.a);
         }
 
         /// <summary>여러 줄을 순서대로 말한다. 줄 사이 gap 초.</summary>
@@ -271,7 +289,7 @@ namespace LHS_CATest {
             var a = _fader.color.a;
             if (!Mathf.Approximately(a, _fadeTarget)) {
                 a = Mathf.MoveTowards(a, _fadeTarget, _fadeSpeed * Time.unscaledDeltaTime);
-                _fader.color = new Color(0f, 0f, 0f, a);
+                _fader.color = new Color(_fadeColor.r, _fadeColor.g, _fadeColor.b, a);
             }
             _fader.enabled = a > 0.001f;
 

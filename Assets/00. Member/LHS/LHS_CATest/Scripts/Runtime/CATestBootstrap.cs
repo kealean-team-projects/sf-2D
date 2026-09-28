@@ -46,12 +46,20 @@ namespace LHS_CATest {
                 return;
             }
 
+            // 타이틀에서 넘어온 경우: 새로 시작 = 0번(오프닝) / 이어하기 = 저장 파일 위치
+            var mode = CATestSceneFlow.ConsumeMode();
+            var index = mode == CATestStartMode.NewGame ? 0 : startIndex;
+            var cont = mode == CATestStartMode.Continue ? CATestSave.LoadContinue() : null;
             var pos = startPoints.Length > 0
-                ? startPoints[Mathf.Clamp(startIndex, 0, startPoints.Length - 1)].position
+                ? startPoints[Mathf.Clamp(index, 0, startPoints.Length - 1)].position
                 : (Vector2)playerRoot.transform.position;
+            if (cont != null) pos = new Vector2(cont.positionX, cont.positionY);
             StartPosition = pos;
             playerRoot.transform.position = new Vector3(pos.x, pos.y, playerRoot.transform.position.z);
-            if (playIntro && startIndex == 0) {
+            if (cont != null) {
+                CATestHUD.FadeTo(1f, 0f).Forget(); // 맵이 로드되고 자리를 잡을 때까지 검은 화면
+            }
+            else if (playIntro && index == 0) {
                 // 첫 프레임부터 검은 화면 + 영화 모드 띠 (굴 꼭대기가 잠깐 보이지 않게)
                 CATestIntroCutscene.Pending = true;
                 CATestHUD.FadeTo(1f, 0f).Forget();
@@ -67,6 +75,17 @@ namespace LHS_CATest {
             await UniTask.Yield();
             if (this == null) return;
             playerRoot.SetActive(true);
+
+            if (cont != null) {
+                // 원본 저장 시스템의 복원 경로 그대로 사용: SaveManager.RestoreProgress() → Save.sf2d 읽기
+                // → PlayerProgress.RestoreProgress() → Player.RestoreState(위치, 기력). 부활 위치도 이 지점이 된다.
+                await UniTask.DelayFrame(2);
+                if (this == null) return;
+                if (_02._Script._05_Managers.SaveManager.Instance != null) _02._Script._05_Managers.SaveManager.Instance.RestoreProgress();
+                await CATestHUD.FadeTo(0f, 1.2f);
+                var place = CATestSave.LastPlaceName;
+                if (!string.IsNullOrEmpty(place)) CATestHUD.ShowTitle(place, "이어하기");
+            }
         }
 
         [Header("Debug")]
@@ -105,8 +124,12 @@ namespace LHS_CATest {
                 else {
                     // 테스트 편의: 순간이동한 곳을 부활 위치로 저장(물리 위치가 반영되도록 2프레임 뒤)
                     await UniTask.DelayFrame(2);
-                    if (player != null && !player.IsDead && _02._Script._05_Managers.SaveManager.Instance != null)
-                        _02._Script._05_Managers.SaveManager.Instance.RequestCapture();
+                    if (player != null && !player.IsDead) {
+                        // 라벨 "C+F12 용의 둥지 (엔딩 직전)" → 앞의 키 이름을 떼고 장소 이름으로 저장(타이틀 '이어하기' 옆에 표시됨)
+                        var label = startPoints[i].label ?? string.Empty;
+                        var sp = label.IndexOf(' ');
+                        CATestSave.SaveHere(sp >= 0 ? label.Substring(sp + 1) : label);
+                    }
                 }
                 Debug.Log($"[CATest] 순간이동 [{i}] {startPoints[i].label} {pos}");
             }

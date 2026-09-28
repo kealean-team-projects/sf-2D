@@ -69,6 +69,14 @@ namespace LHS_CATest.EditorTools {
             var godRay = Shader.Find("LHS_CATest/GodRay2D");
             if (godRay == null) Debug.LogError("[LHS_CATest] LHS_CATest/GodRay2D 셰이더를 찾을 수 없습니다.");
             MatGodRay = Mat("M_CATest_GodRay", godRay, Tex(ArtDir + "/CATest_White.png"), true);
+            // 마지막 챕터: 일식 하늘 / 거울 물 (Shaders/CATest_EclipseSky, CATest_MirrorWater)
+            var skyShader = Shader.Find("LHS_CATest/EclipseSky");
+            var mirrorShader = Shader.Find("LHS_CATest/MirrorWater");
+            if (skyShader == null || mirrorShader == null) Debug.LogError("[LHS_CATest] EclipseSky / MirrorWater 셰이더를 찾을 수 없습니다.");
+            MatSky = Mat("M_CATest_EclipseSky", skyShader, Tex(ArtDir + "/CATest_White.png"), false);
+            ConfigureSkyMaterial(MatSky);
+            MatMirror = Mat("M_CATest_MirrorWater", mirrorShader, Tex(ArtDir + "/CATest_White.png"), false);
+            PrepareUISprites();
             AssetDatabase.SaveAssets();
         }
 
@@ -125,6 +133,7 @@ namespace LHS_CATest.EditorTools {
             PThornSeed = Variant(SrcElectronic, "PV_CATest_ThornSeed", DecorateThornSeed);
             PLampForest = Variant(SrcLightObj, "PV_CATest_LampMushroom", DecorateLampForest);
             PDeadZone = Load<GameObject>(SrcDeadZone);
+            BuildTwilightPrefabs(holder);
 
             Object.DestroyImmediate(holder.gameObject);
             AssetDatabase.SaveAssets();

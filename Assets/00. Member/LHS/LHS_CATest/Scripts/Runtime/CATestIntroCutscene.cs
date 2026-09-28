@@ -181,7 +181,7 @@ namespace LHS_CATest {
             CATestCutscene.Shake(0.4f, 0.35f);
             // 첫 부활 위치를 착지 지점으로 저장. (저장 안 하면 게임 시작 위치 = 틈 꼭대기에서 부활해 틈에 끼인다)
             await UniTask.DelayFrame(2);
-            if (_02._Script._05_Managers.SaveManager.Instance != null) _02._Script._05_Managers.SaveManager.Instance.RequestCapture();
+            CATestSave.SaveHere("화창한 숲");
             await CATestCutscene.Wait(1.6f);
             if (id != _runId) return;
             await CATestHUD.SayLines(CATestLines.Get("intro_land"), 0.35f);

@@ -2438,6 +2438,7 @@ MonoBehaviour:
   activateBurst: {fileID: 4731397818881269223}
   loopParticles: {fileID: 4187145806576017182}
   bobTarget: {fileID: 2173232262942824855}
+  placeName: 
 --- !u!1 &3384699852831390572
 GameObject:
   m_ObjectHideFlags: 0
@@ -2580,7 +2581,7 @@ MonoBehaviour:
   m_Light2DProvider:
     rid: -2
   m_SelectionSources:
-    rid: 2145400710889210445
+    rid: 2145400717989642420
   m_FalloffIntensity: 0.6
   m_Color: {r: 0.4, g: 0.85, b: 1, a: 1}
   m_Intensity: 0.4
@@ -2626,7 +2627,7 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
-    - rid: 2145400710889210445
+    - rid: 2145400717989642420
       type: {class: Light2DProviderSources, ns: UnityEngine.Rendering.Universal, asm: Unity.RenderPipelines.Universal.2D.Runtime}
       data:
         m_SelectedHashCode: 3

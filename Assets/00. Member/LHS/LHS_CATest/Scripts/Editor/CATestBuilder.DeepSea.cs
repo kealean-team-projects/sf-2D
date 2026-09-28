@@ -476,6 +476,19 @@ namespace LHS_CATest.EditorTools {
             var vent = Inst(PCurrentColumn, gameplay, new Vector3(1037f, -90f, 0)); vent.name = "Shaft_BubbleVent";
             var vb = vent.GetComponent<BoxCollider2D>(); vb.size = new Vector2(4.5f, 30f); vb.offset = new Vector2(0, 15f);
             Inst(PSaveSea, gameplay, new Vector3(1052f, -30f, 0)).name = "SavePoint_06_LightCrack";
+            // 마지막 챕터로: 틈으로 쏟아지는 흰 빛 웅덩이에 들어서면 빛에 삼켜져 "황혼의 성역"으로 (CATestRealmTransition)
+            var realm = new GameObject("RealmTransition_ToTwilight");
+            realm.transform.SetParent(gameplay, false);
+            realm.transform.position = new Vector3(1066f, -27f, 0f);
+            var rbox = realm.AddComponent<BoxCollider2D>();
+            rbox.isTrigger = true;
+            rbox.size = new Vector2(6f, 6f);
+            var rt = realm.AddComponent<CATestRealmTransition>();
+            Set(rt, "arrival", TwArrival);
+            GodRay(gameplay, "RealmLight", 1066f, -30f, 24f, 5f, 0f, C(1f, 0.97f, 0.93f), 1.6f, 13f, "Default", 44, 1f, 0.6f, 4f, 1.4f);
+            Light(gameplay, "RealmPool", new Vector3(1066f, -28f, 0f), C(1f, 0.95f, 0.9f), 1.4f, 8f, 1.5f);
+            Motes(gameplay, "RealmMotes", new Rect(1062f, -30f, 8f, 10f), -0.3f, MatAddDot, C(1f, 1f, 1f, 0.8f), C(1f, 0.9f, 0.85f, 0.5f),
+                18f, 0.04f, 0.1f, new Vector2(0f, 0.8f), 0.3f, 3f, "Player", 40);
         }
 
         private static void Pit(Transform ground, Transform gameplay, Random rnd, string name, float x0, float x1, float floorY, Color tint) {

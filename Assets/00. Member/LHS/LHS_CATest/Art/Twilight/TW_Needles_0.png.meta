@@ -1,0 +1,457 @@
+fileFormatVersion: 2
+guid: 0e547572c17323d43a492c75f1459ee2
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 6354300497402431158
+    second: TW_Needles_0_0
+  - first:
+      213: 3230530027143796378
+    second: TW_Needles_0_1
+  - first:
+      213: -2197167928425425316
+    second: TW_Needles_0_2
+  - first:
+      213: 8972089897669474413
+    second: TW_Needles_0_3
+  - first:
+      213: 3797966853554864792
+    second: TW_Needles_0_4
+  - first:
+      213: -7514450378509592235
+    second: TW_Needles_0_5
+  - first:
+      213: 8891994178522552104
+    second: TW_Needles_0_6
+  - first:
+      213: -7493383236773605567
+    second: TW_Needles_0_7
+  - first:
+      213: 1338722512855906965
+    second: TW_Needles_0_8
+  - first:
+      213: 4017922881123036055
+    second: TW_Needles_0_9
+  - first:
+      213: -3571447428794206565
+    second: TW_Needles_0_10
+  - first:
+      213: 2942994532073437167
+    second: TW_Needles_0_11
+  - first:
+      213: -1158330361516239687
+    second: TW_Needles_0_12
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationMethod: 0
+  spriteTessellationDetail: -1
+  spriteGeometrySubdivision: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: TW_Needles_0_0
+      rect:
+        serializedVersion: 2
+        x: 5
+        y: 40
+        width: 22
+        height: 43
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6b682c7c2a20f2850800000000000000
+      internalID: 6354300497402431158
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TW_Needles_0_1
+      rect:
+        serializedVersion: 2
+        x: 44
+        y: 59
+        width: 53
+        height: 92
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a96932091f525dc20800000000000000
+      internalID: 3230530027143796378
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TW_Needles_0_2
+      rect:
+        serializedVersion: 2
+        x: 117
+        y: 31
+        width: 92
+        height: 173
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c56525209671281e0800000000000000
+      internalID: -2197167928425425316
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TW_Needles_0_3
+      rect:
+        serializedVersion: 2
+        x: 213
+        y: 68
+        width: 21
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d68b57bc934438c70800000000000000
+      internalID: 8972089897669474413
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TW_Needles_0_4
+      rect:
+        serializedVersion: 2
+        x: 247
+        y: 11
+        width: 50
+        height: 107
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 89288d61bb615b430800000000000000
+      internalID: 3797966853554864792
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TW_Needles_0_5
+      rect:
+        serializedVersion: 2
+        x: 305
+        y: 50
+        width: 57
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 559d2aaa13f47b790800000000000000
+      internalID: -7514450378509592235
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TW_Needles_0_6
+      rect:
+        serializedVersion: 2
+        x: 367
+        y: 5
+        width: 60
+        height: 111
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8279da3f795b66b70800000000000000
+      internalID: 8891994178522552104
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TW_Needles_0_7
+      rect:
+        serializedVersion: 2
+        x: 456
+        y: 55
+        width: 37
+        height: 70
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 14f0e36d5a7220890800000000000000
+      internalID: -7493383236773605567
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TW_Needles_0_8
+      rect:
+        serializedVersion: 2
+        x: 490
+        y: 9
+        width: 87
+        height: 220
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 59a38975809149210800000000000000
+      internalID: 1338722512855906965
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TW_Needles_0_9
+      rect:
+        serializedVersion: 2
+        x: 567
+        y: 52
+        width: 25
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 79ba040929782c730800000000000000
+      internalID: 4017922881123036055
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TW_Needles_0_10
+      rect:
+        serializedVersion: 2
+        x: 595
+        y: 31
+        width: 74
+        height: 109
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b963db06c7baf6ec0800000000000000
+      internalID: -3571447428794206565
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TW_Needles_0_11
+      rect:
+        serializedVersion: 2
+        x: 693
+        y: 44
+        width: 51
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fe7772c2fed97d820800000000000000
+      internalID: 2942994532073437167
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TW_Needles_0_12
+      rect:
+        serializedVersion: 2
+        x: 752
+        y: 26
+        width: 27
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9b4564d5ca8ccefe0800000000000000
+      internalID: -1158330361516239687
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      TW_Needles_0_0: 6354300497402431158
+      TW_Needles_0_1: 3230530027143796378
+      TW_Needles_0_10: -3571447428794206565
+      TW_Needles_0_11: 2942994532073437167
+      TW_Needles_0_12: -1158330361516239687
+      TW_Needles_0_2: -2197167928425425316
+      TW_Needles_0_3: 8972089897669474413
+      TW_Needles_0_4: 3797966853554864792
+      TW_Needles_0_5: -7514450378509592235
+      TW_Needles_0_6: 8891994178522552104
+      TW_Needles_0_7: -7493383236773605567
+      TW_Needles_0_8: 1338722512855906965
+      TW_Needles_0_9: 4017922881123036055
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

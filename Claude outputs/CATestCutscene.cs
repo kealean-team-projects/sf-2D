@@ -73,74 +73,14 @@ namespace LHS_CATest {
         }
 
         public static void Shake(float strength = 0.5f, float duration = 0.4f) {
+            if (!CATestSettings.ScreenShake) return; // 설정에서 화면 흔들림을 끈 경우
             if (CATestCutsceneCamera.Instance != null) CATestCutsceneCamera.Instance.Shake(strength, duration).Forget();
         }
+
+        /// <summary>씬 전환(타이틀로 가기 등) 직전: 잠금 횟수만 0 으로(플레이어는 곧 사라지므로 입력맵은 건드리지 않음).</summary>
+        public static void ResetState() => _lockCount = 0;
 
         public static UniTask Wait(float seconds) => UniTask.Delay(System.TimeSpan.FromSeconds(seconds), true);
     }
 
-    /// <summary>
-    /// 컷신 전용 카메라. CoreScene 에 하나. 평소에는 vcam 오브젝트가 꺼져 있다.
-    /// Focus 로 목표 지점(target Transform 이동)을 비추고, Release 로 끈다.
-    /// 흔들기(Shake)는 플레이어/컷신 카메라 둘 다에 적용되도록 Cinemachine 과 무관하게 메인 카메라 뒤에서 offset 을 준다.
-    /// </summary>
-    public sealed class CATestCutsceneCamera : MonoBehaviour {
-        [SerializeField] private CinemachineCamera vcam;
-        [SerializeField] private CinemachinePositionComposer composer;
-        [SerializeField] private Transform target;
-        [SerializeField] private float defaultDistance = 110f;
-
-        public static CATestCutsceneCamera Instance { get; private set; }
-        private CinemachineBrain _brain;
-
-        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-        private static void ResetStatics() => Instance = null;
-
-        private void Awake() {
-            Instance = this;
-            if (vcam != null) vcam.gameObject.SetActive(false);
-        }
-
-        private void OnDestroy() {
-            if (Instance == this) Instance = null;
-        }
-
-        private CinemachineBrain Brain {
-            get {
-                if (_brain == null && Camera.main != null) _brain = Camera.main.GetComponent<CinemachineBrain>();
-                return _brain;
-            }
-        }
-
-        public void Focus(Vector3 point, float blend, float distance) {
-            if (vcam == null || target == null) return;
-            target.position = point;
-            if (composer != null) composer.CameraDistance = distance > 0f ? distance : defaultDistance;
-            if (Brain != null) Brain.DefaultBlend = new CinemachineBlendDefinition(CinemachineBlendDefinition.Styles.EaseInOut, blend);
-            if (!vcam.gameObject.activeSelf) vcam.gameObject.SetActive(true);
-        }
-
-        /// <summary>이미 켜진 상태에서 목표만 옮길 때(카메라가 따라감).</summary>
-        public void MoveTarget(Vector3 point) {
-            if (target != null) target.position = point;
-        }
-
-        public void Release(float blend) {
-            if (vcam == null) return;
-            if (Brain != null) Brain.DefaultBlend = new CinemachineBlendDefinition(CinemachineBlendDefinition.Styles.EaseInOut, blend);
-            vcam.gameObject.SetActive(false);
-        }
-
-        public async UniTaskVoid Shake(float strength, float duration) {
-            var cam = Camera.main;
-            if (cam == null) return;
-            // Cinemachine 이 매 프레임 카메라 위치를 덮어쓰므로, 렌더 직전(LateUpdate 이후)에 흔들림 offset 을 더한다.
-            for (var t = 0f; t < duration; t += Time.unscaledDeltaTime) {
-                if (cam == null) return;
-                var k = 1f - t / duration;
-                cam.transform.position += (Vector3)(Random.insideUnitCircle * strength * k);
-                await UniTask.Yield(PlayerLoopTiming.PostLateUpdate);
-            }
-        }
-    }
 }
