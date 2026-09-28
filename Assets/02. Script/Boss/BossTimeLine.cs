@@ -30,10 +30,11 @@ namespace _02._Script.Boss {
 
                 elapsed += Time.fixedDeltaTime;
                 boss.RbCompo.MovePosition(
-                    Vector2.Lerp(start, end, elapsed / descendDuration));
+                    boss.Navigation.GetClearDestination(boss.RbCompo,
+                        Vector2.Lerp(start, end, elapsed / descendDuration)));
             }
 
-            boss.RbCompo.MovePosition(end);
+            boss.RbCompo.MovePosition(boss.Navigation.GetClearDestination(boss.RbCompo, end));
         }
     }
 }

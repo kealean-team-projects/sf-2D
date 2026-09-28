@@ -9,6 +9,7 @@ namespace _02._Script._01_Players.FSM {
         private const float RisingSpeedThreshold = 0.1f;
         private readonly Dictionary<Type, PlayerMoveState> _states = new();
         public PlayerMoveState CurrentState { get; private set; }
+        public event Action<PlayerMoveState, PlayerMoveState> StateChanged;
 
         public void Tick() {
             CurrentState?.UpdateState();
@@ -34,12 +35,19 @@ namespace _02._Script._01_Players.FSM {
             return false;
         }
 
-        public void ChangeState(PlayerMoveState nextState) {
-            if (nextState == null || CurrentState == nextState) return;
+        public void ChangeState(PlayerMoveState nextState)
+        {
+            if (nextState == null || CurrentState == nextState)
+                return;
+
+            PlayerMoveState previousState = CurrentState;
 
             CurrentState?.Exit();
+
             CurrentState = nextState;
             CurrentState.Enter();
+
+            StateChanged?.Invoke(previousState, CurrentState);
         }
 
         public void HandleJumpInput() {

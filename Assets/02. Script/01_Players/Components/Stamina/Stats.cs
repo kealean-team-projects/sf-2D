@@ -6,7 +6,11 @@ using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace _02._Script._01_Players.Components.Stamina {
-    public class Stats : MonoBehaviour, IAgentModule, IStats {
+    public class Stats : MonoBehaviour, IAgentModule, IStats
+    {
+        public event Action<float> OnStaminaChanged;
+        public float StaminaRatio => maxStamina > 0f ? Mathf.Clamp01(Stamina / maxStamina) : 0f;
+        
         [SerializeField] private float staminaHealSlow;
         [SerializeField] private float staminaHealBoost;
         [SerializeField] private float maxStamina;
@@ -39,7 +43,19 @@ namespace _02._Script._01_Players.Components.Stamina {
             }
         }
 
-        public float Stamina { get; private set; }
+        private float stamina;
+
+        public float Stamina
+        {
+            get => stamina;
+            private set
+            {
+                if (Mathf.Approximately(stamina, value)) return;
+
+                stamina = value;
+                OnStaminaChanged?.Invoke(StaminaRatio);
+            }
+        }
 
         public void StaminaUpdate(bool isGrounded, bool isWalking, bool isClimb) {
             if (!_canCharge) {

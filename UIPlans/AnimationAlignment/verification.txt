@@ -1,0 +1,7 @@
+BEFORE: reproduced mixed baselines: Walk=4.598753, Jump=2.462, Fall has no root Y key.
+PlayerJump: root Y at t=0 2.462000 -> 4.761376; other curves and timing unchanged; 5 Unity samples passed.
+PlayerFall: root Y at t=0 <missing> -> 4.598753; other curves and timing unchanged; 5 Unity samples passed.
+PlayerCrawl: root Y at t=0 3.080000 -> 3.839377; other curves and timing unchanged; 5 Unity samples passed.
+PlayerCrawlWalk: root Y at t=0 3.080000 -> 3.839377; other curves and timing unchanged; 5 Unity samples passed.
+PlayerFallGround: root Y at t=0 3.080000 -> 3.839377; other curves and timing unchanged; 5 Unity samples passed.
+PASS: landing ends at Walk/Run height; no changes to Walk/Run or already-aligned Idle/Climb/Wall actions.

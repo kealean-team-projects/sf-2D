@@ -62,11 +62,11 @@ namespace _02._Script._01_Players {
     public class Sprint { public bool IsSprinting; }
 }
 namespace _02._Script._01_Players.Components {
-    public class Mover { public bool IsGround; public int RestoreVersion; public Collider2D GroundCollider,Surface; public event Action GroundUpdated; public Collider2D FindSoundSurface(float extra)=>Surface; }
+    public class Mover { public bool IsGround; public int RestoreVersion; public Vector2 SoundSurfacePoint; public Collider2D GroundCollider,Surface; public event Action GroundUpdated; public Collider2D FindSoundSurface(float extra)=>Surface; }
 }
 namespace _02._Script._01_Players.Components.Audio {
     public enum FootstepMaterial { Grass,Stone }
-    public class FootstepSurface { public FootstepMaterial Material; }
+    public class FootstepSurface { public FootstepMaterial Material; public FootstepMaterial MaterialAt(Vector2 point) => Material; }
 }
 namespace csiimnida.CSILib.SoundManager.RunTime {
     public class SoundManager {

@@ -53,6 +53,10 @@ namespace _02._Script.Boss.BossPatterns
 
             returnPosition = new Vector2(x, Mathf.Clamp(zone.spawnPoint.position.y, minY, maxY));
 
+            if (!owner.Navigation.TryGetClearPosition(returnPosition, out returnPosition)) return;
+            if (!bounds.Contains(new Vector3(returnPosition.x, returnPosition.y, bounds.center.z))) return;
+            x = returnPosition.x;
+
             var hit = Physics2D.Raycast(returnPosition, Vector2.down, groundCheckDistance, groundLayer);
 
             if (hit.collider == null) return;
@@ -61,17 +65,25 @@ namespace _02._Script.Boss.BossPatterns
 
             owner.SetReturnPosition(returnPosition);
             owner.RbCompo.position = returnPosition;
+            Physics2D.SyncTransforms();
+            searchPosition = owner.Navigation.GetClearDestination(owner.RbCompo, searchPosition);
+            var descendDeadline = Time.time + Vector2.Distance(returnPosition, searchPosition) /
+                Mathf.Max(0.1f, descendSpeed) + 2f;
 
             while (Vector2.Distance(owner.RbCompo.position, searchPosition) > 0.01f)
             {
                 await UniTask.Yield(PlayerLoopTiming.FixedUpdate, token, cancelImmediately: true);
                 token.ThrowIfCancellationRequested();
 
+                if (Time.time >= descendDeadline) break;
+
                 owner.RbCompo.MovePosition(Vector2.MoveTowards(
                     owner.RbCompo.position,
-                    searchPosition,
-                    descendSpeed * Time.fixedDeltaTime));
+                    owner.Navigation.GetClearDestination(owner.RbCompo, searchPosition),
+                    Mathf.Max(0.1f, descendSpeed) * Time.fixedDeltaTime));
             }
+
+            searchPosition = owner.RbCompo.position;
 
             try
             {

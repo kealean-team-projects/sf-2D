@@ -1,0 +1,7 @@
+PASS: all three tabs; draft preserved across tabs; audio/display Cancel; audio Apply; ESC Closed event; no missing scripts; six renders.
+Runtime build: Assembly-CSharp, 0 errors (19 pre-existing/unrelated warnings).
+Native prefab IDs used by CoreScene were retained; all local references resolve.
+Visual inspection: Audio/Display/Controls at 1920x1080 and 1920x1200.
+Reuses existing sprites and fonts; no runtime UI generation.
+Main menu and gameplay ESC share ForestSettings. Closed event clears High Pass on Apply/Cancel/ESC.
+Actual standalone resolution changes, physical input/audio listening, and live gameplay were not exercised.

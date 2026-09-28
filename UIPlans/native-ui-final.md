@@ -22,3 +22,11 @@ Verification:
 - Physical display mode changes and standalone application exit still require a player-build check.
 
 Historical reports and the ignored PreviewProject are verification artifacts, not runtime UI infrastructure.
+
+## 2026-09-28 Settings tabs
+ForestSettings now has saved native AUDIO / DISPLAY / CONTROLS pages.
+AUDIO exposes Master, BGM and SFX with separate persisted values.
+DISPLAY retains brightness, resolution and fullscreen.
+CONTROLS reflects Control.inputactions and ClimbState wall-action combinations.
+Gameplay ESC and main-menu Settings now open the same modal; closing it clears the settings High Pass filter.
+See ../UIPlans/SettingsTabs/verification.txt for isolated rendering and interaction checks.

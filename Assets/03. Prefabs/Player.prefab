@@ -71,7 +71,7 @@ Transform:
   m_GameObject: {fileID: 1120806340258614605}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.49, y: 0, z: 0}
+  m_LocalPosition: {x: 0.49, y: 1.84, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -91,7 +91,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::_01.Script.Player.CheckClimbWall
   isGizmos: 1
   gizmosColor: {r: 0, g: 0.21222556, b: 1, a: 1}
-  checkSize: {x: 0.43, y: 1.35}
+  checkSize: {x: 0.59, y: 3.53}
   whatIsLayer:
     serializedVersion: 2
     m_Bits: 512
@@ -107,6 +107,7 @@ GameObject:
   - component: {fileID: 4206105646266471099}
   - component: {fileID: 5930479872790022946}
   - component: {fileID: 3993367064624703980}
+  - component: {fileID: 8125477302181944201}
   m_Layer: 0
   m_Name: Visual
   m_TagString: Untagged
@@ -126,7 +127,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 3131975003365338435}
   m_Father: {fileID: 8931466274003963571}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &5930479872790022946
@@ -137,7 +139,7 @@ SpriteRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1680997780196192073}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -178,7 +180,7 @@ SpriteRenderer:
   m_SortingLayer: 3
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -9095717837082945937, guid: 207ee8102dd4143d288186ef0be518ee, type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -186,7 +188,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 2}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
 --- !u!114 &3993367064624703980
@@ -201,6 +203,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ab589e11f2f4e739c843f1972fea1c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_02._Script.Player.Components.ControllerCompo.FacingController
+--- !u!114 &8125477302181944201
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1680997780196192073}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f15b72a1d0c74c2f9d61693e5ad7341b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  material: {fileID: 2100000, guid: 451d6b44a0474bcb95fb763613958ba1, type: 2}
 --- !u!1 &2327042566820510680
 GameObject:
   m_ObjectHideFlags: 0
@@ -433,8 +448,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_Size: {x: 1, y: 2}
+  m_Offset: {x: 0, y: 1.8}
+  m_Size: {x: 1, y: 5}
   m_Direction: 0
 --- !u!50 &4037718769439411383
 Rigidbody2D:
@@ -476,13 +491,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_01.Script.Player.Player
   staminaCosts:
-    runPerSecond: 5
-    climbPerSecond: 5
+    runPerSecond: 10
+    climbPerSecond: 8
     wallDash: 10
     wallJump: 0
   staminaHUD: {fileID: 0}
   fade: {fileID: 0}
-  animator: {fileID: 0}
+  animator: {fileID: 6018314773775398805}
   moveSpeed: 10
   moveSpeedMultiplier: 2
   climbUpSpeed: 10
@@ -536,7 +551,7 @@ MonoBehaviour:
   minimumMoveSpeed: 0.1
   footstepDetectionDistance: 3
   footstepResumeWindow: 0.12
-  minimumFallTime: 0.08
+  minimumFallTime: 0.5
 --- !u!1 &7358476570333574337
 GameObject:
   m_ObjectHideFlags: 0
@@ -607,3 +622,112 @@ MonoBehaviour:
   targetCollider: {fileID: 8492823252553191672}
   crouchingSize: {x: 1, y: 1}
   crouchingOffset: {x: 0, y: -0.5}
+--- !u!1001 &4348459227894486173
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 4206105646266471099}
+    m_Modifications:
+    - target: {fileID: -8653719598885068355, guid: eed540ca8e9515941a14b7f16a034ee9, type: 3}
+      propertyPath: m_Name
+      value: SDCharacter
+      objectReference: {fileID: 0}
+    - target: {fileID: -7552582706839291426, guid: eed540ca8e9515941a14b7f16a034ee9, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7552582706839291426, guid: eed540ca8e9515941a14b7f16a034ee9, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -2.86
+      objectReference: {fileID: 0}
+    - target: {fileID: -7552582706839291426, guid: eed540ca8e9515941a14b7f16a034ee9, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7552582706839291426, guid: eed540ca8e9515941a14b7f16a034ee9, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7552582706839291426, guid: eed540ca8e9515941a14b7f16a034ee9, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7552582706839291426, guid: eed540ca8e9515941a14b7f16a034ee9, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7552582706839291426, guid: eed540ca8e9515941a14b7f16a034ee9, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7552582706839291426, guid: eed540ca8e9515941a14b7f16a034ee9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7552582706839291426, guid: eed540ca8e9515941a14b7f16a034ee9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7552582706839291426, guid: eed540ca8e9515941a14b7f16a034ee9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: -8653719598885068355, guid: eed540ca8e9515941a14b7f16a034ee9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6018314773775398805}
+    - targetCorrespondingSourceObject: {fileID: -8653719598885068355, guid: eed540ca8e9515941a14b7f16a034ee9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7735632696637998707}
+  m_SourcePrefab: {fileID: 4843985084834002234, guid: eed540ca8e9515941a14b7f16a034ee9, type: 3}
+--- !u!4 &3131975003365338435 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -7552582706839291426, guid: eed540ca8e9515941a14b7f16a034ee9, type: 3}
+  m_PrefabInstance: {fileID: 4348459227894486173}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &4305190001675941152 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -8653719598885068355, guid: eed540ca8e9515941a14b7f16a034ee9, type: 3}
+  m_PrefabInstance: {fileID: 4348459227894486173}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &6018314773775398805
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4305190001675941152}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 7579c16023c617344912a584becb23c3, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &7735632696637998707
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4305190001675941152}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2622d7313ad14df383bd9eab144a706d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::_02._Script._01_Players.PlayerAnimationController
+  player: {fileID: 7646778522885899942}
+  animator: {fileID: 6018314773775398805}

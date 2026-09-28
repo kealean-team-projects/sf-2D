@@ -1,0 +1,240 @@
+{
+  "source": "DragonGuardian_Concept_v14.png",
+  "canvas": {
+    "width": 2172,
+    "height": 724,
+    "pixelsPerUnitSuggestion": 100
+  },
+  "coordinateSystem": "pixel coordinates, origin at top-left",
+  "assembly": "All aligned PNGs share the original canvas; place them at the same transform. Use tail_full OR tail_01..05.",
+  "layers": [
+    {
+      "name": "head",
+      "kind": "main",
+      "sortingOrder": 50,
+      "pivotCanvas": [
+        211,
+        354
+      ],
+      "pivotCropped": [
+        196,
+        81
+      ],
+      "croppedRect": {
+        "left": 15,
+        "top": 273,
+        "width": 243,
+        "height": 118
+      }
+    },
+    {
+      "name": "body",
+      "kind": "main",
+      "sortingOrder": 20,
+      "pivotCanvas": [
+        475,
+        354
+      ],
+      "pivotCropped": [
+        298,
+        41
+      ],
+      "croppedRect": {
+        "left": 177,
+        "top": 313,
+        "width": 811,
+        "height": 96
+      }
+    },
+    {
+      "name": "tail_full",
+      "kind": "main",
+      "sortingOrder": 10,
+      "pivotCanvas": [
+        924,
+        356
+      ],
+      "pivotCropped": [
+        57,
+        35
+      ],
+      "croppedRect": {
+        "left": 867,
+        "top": 321,
+        "width": 1295,
+        "height": 99
+      }
+    },
+    {
+      "name": "front_far",
+      "kind": "main",
+      "sortingOrder": 5,
+      "pivotCanvas": [
+        312,
+        370
+      ],
+      "pivotCropped": [
+        93,
+        22
+      ],
+      "croppedRect": {
+        "left": 219,
+        "top": 348,
+        "width": 128,
+        "height": 150
+      }
+    },
+    {
+      "name": "rear_far",
+      "kind": "main",
+      "sortingOrder": 6,
+      "pivotCanvas": [
+        814,
+        369
+      ],
+      "pivotCropped": [
+        39,
+        30
+      ],
+      "croppedRect": {
+        "left": 775,
+        "top": 339,
+        "width": 82,
+        "height": 108
+      }
+    },
+    {
+      "name": "rear_near",
+      "kind": "main",
+      "sortingOrder": 30,
+      "pivotCanvas": [
+        863,
+        368
+      ],
+      "pivotCropped": [
+        42,
+        34
+      ],
+      "croppedRect": {
+        "left": 821,
+        "top": 334,
+        "width": 88,
+        "height": 123
+      }
+    },
+    {
+      "name": "front_near",
+      "kind": "main",
+      "sortingOrder": 40,
+      "pivotCanvas": [
+        347,
+        365
+      ],
+      "pivotCropped": [
+        54,
+        34
+      ],
+      "croppedRect": {
+        "left": 293,
+        "top": 331,
+        "width": 99,
+        "height": 197
+      }
+    },
+    {
+      "name": "tail_01",
+      "kind": "tail-segment",
+      "sortingOrder": 10,
+      "pivotCanvas": [
+        899,
+        357
+      ],
+      "pivotCropped": [
+        32,
+        33
+      ],
+      "croppedRect": {
+        "left": 867,
+        "top": 324,
+        "width": 330,
+        "height": 83
+      }
+    },
+    {
+      "name": "tail_02",
+      "kind": "tail-segment",
+      "sortingOrder": 9,
+      "pivotCanvas": [
+        1134,
+        357
+      ],
+      "pivotCropped": [
+        32,
+        29
+      ],
+      "croppedRect": {
+        "left": 1102,
+        "top": 328,
+        "width": 335,
+        "height": 77
+      }
+    },
+    {
+      "name": "tail_03",
+      "kind": "tail-segment",
+      "sortingOrder": 8,
+      "pivotCanvas": [
+        1374,
+        357
+      ],
+      "pivotCropped": [
+        32,
+        24
+      ],
+      "croppedRect": {
+        "left": 1342,
+        "top": 333,
+        "width": 325,
+        "height": 67
+      }
+    },
+    {
+      "name": "tail_04",
+      "kind": "tail-segment",
+      "sortingOrder": 7,
+      "pivotCanvas": [
+        1604,
+        357
+      ],
+      "pivotCropped": [
+        32,
+        17
+      ],
+      "croppedRect": {
+        "left": 1572,
+        "top": 340,
+        "width": 325,
+        "height": 56
+      }
+    },
+    {
+      "name": "tail_05",
+      "kind": "tail-segment",
+      "sortingOrder": 6,
+      "pivotCanvas": [
+        1834,
+        357
+      ],
+      "pivotCropped": [
+        32,
+        36
+      ],
+      "croppedRect": {
+        "left": 1802,
+        "top": 321,
+        "width": 360,
+        "height": 99
+      }
+    }
+  ]
+}
