@@ -14,6 +14,8 @@ namespace _02._Script._01_Players.Interface {
         void ApplyClimb(float climbSpeed);
         void ApplyWallDash(float impulse);
         void ApplyWallJump(Vector2 jumpSpeed);
+        void ApplyWallDashVelocity(float speed);
+        void ClampRiseSpeed(float maxRiseSpeed);
 
         void EndWallDash();
         void RestorePosition(Vector2 position);

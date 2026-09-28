@@ -1,4 +1,5 @@
 using System;
+using _02._Script._01_Players.Components.CheckComponent;
 using _02._Script._01_Players.Components.ControllerCompo;
 using _02._Script._01_Players.Components.DamageCompo;
 using _02._Script._01_Players.Components.Stamina;
@@ -34,13 +35,27 @@ namespace _02._Script._01_Players {
         [SerializeField] private float jumpDuration = 0.2f;
         [SerializeField] private float jumpDashImpulse = 3f;
 
+        [Tooltip("벽점프 직후 이 시간 동안은 도착한 벽에 다시 붙지 않는다(출발한 벽에 바로 재부착되는 것 방지).")]
+        [SerializeField] private float wallJumpMinTime = 0.08f;
+
+        [Tooltip("벽점프 입력 잠금 최대 시간. 보통은 상승이 끝나(낙하 시작) 입력이 먼저 풀린다.")]
+        [SerializeField] private float wallJumpMaxTime = 0.8f;
+
+        [Header("WallDash Settings")]
+        [Tooltip("벽 등반 대쉬 속도(유닛/초). 대쉬 동안 중력 0, 이 속도로 위로 이동.")]
+        [SerializeField] private float wallDashSpeed = 22f;
+
+        [SerializeField] private float wallDashDuration = 0.22f;
+
+        [Tooltip("대쉬가 끝날 때 남기는 최대 상승 속도. 벽 끝을 넘으면 이 속도로 살짝 튀어 올라 턱 위로 올라선다.")]
+        [SerializeField] private float wallDashExitSpeed = 8f;
+
         [Header("Crouch Settings")] [SerializeField]
         private float crouchSpeedMultiplier = 0.5f;
 
         [SerializeField] private PlayerProgress progress;
 
         private bool _canSJ = true;
-        private float jumpDir;
         
         public event Action<PlayerMoveState, PlayerMoveState> MoveStateChanged;
 
@@ -70,7 +85,8 @@ namespace _02._Script._01_Players {
 
         private void Update() {
             if (IsDead) return;
-            if (!IsClimb) _facingController.UpdateFacing(MoveInput);
+            // 벽점프 중에는 입력으로 방향이 바뀌지 않는다(점프 방향을 바라봐야 다음 벽을 감지할 수 있다).
+            if (!IsClimb && !IsWallJump) _facingController.UpdateFacing(MoveInput);
 
             Mover.CalculateAirTime(IsClimb);
 
@@ -78,7 +94,6 @@ namespace _02._Script._01_Players {
             SprintControl.Tick(IsMoving);
 
             ClimbSpeed = ClimbInput > 0f ? climbUpSpeed : climbDownSpeed;
-            jumpDir = _facingController.IsFacingLeft ? 1f : -1f;
             if (_isHeat)
                 _stats.HeatStrokeUpdate(10, _damage);
             if (_isHighHeat)
@@ -195,9 +210,15 @@ namespace _02._Script._01_Players {
 
 
         public float ClimbSpeed { get; private set; }
-        public Vector2 JumpSpeed => new(jumpXSpeed * jumpDir, jumpYSpeed);
+        // 점프 입력 순간의 방향으로 계산한다(방향키와 점프를 같은 프레임에 눌러도 누른 방향이 반영되도록).
+        public Vector2 JumpSpeed => new(jumpXSpeed * GetWallJumpDirection(), jumpYSpeed);
         public float JumpDuration => jumpDuration;
         public float Impulse => jumpDashImpulse;
+        public float WallJumpMinTime => wallJumpMinTime;
+        public float WallJumpMaxTime => wallJumpMaxTime;
+        public float WallDashSpeed => wallDashSpeed;
+        public float WallDashDuration => wallDashDuration;
+        public float WallDashExitSpeed => wallDashExitSpeed;
         public Vector2 PushSpeed { get; private set; }
 
 
@@ -219,8 +240,11 @@ namespace _02._Script._01_Players {
                                && Mover.CanClimb
                                && _stats.Stamina > 0f;
 
-        public bool IsWallJump => _moveStateMachine.CurrentState is WallJumpState;
-        public bool IsWallDash => _moveStateMachine.CurrentState is WallDashState;
+        // 스태미나/대쉬 여부와 상관없이 "지금 등반 가능한 벽에 닿아 있는가"
+        public bool IsTouchingClimbWall => _checkClimbWall != null && _checkClimbWall.IsClimbed;
+
+        public bool IsWallJump => _moveStateMachine != null && _moveStateMachine.CurrentState is WallJumpState;
+        public bool IsWallDash => _moveStateMachine != null && _moveStateMachine.CurrentState is WallDashState;
 
         public bool CanMove { get; private set; } = true;
 
@@ -245,6 +269,10 @@ namespace _02._Script._01_Players {
             CanMove = false;
             CanSJ = false;
             SprintControl.StopSprint();
+        }
+
+        public void FaceDirection(float xDirection) {
+            _facingController.UpdateFacing(xDirection);
         }
 
         public void SetPushSpeed(Vector2 speed) {
@@ -301,6 +329,16 @@ namespace _02._Script._01_Players {
             _stats.UseStamina(staminaCosts.wallDash, true);
 
             return true;
+        }
+
+        // 기본: 벽 반대쪽으로 점프. 양면 덩굴(ClimbSurface.twoSided)에 매달려 있으면 입력한 방향으로 뛸 수 있다.
+        private float GetWallJumpDirection() {
+            var away = _facingController.IsFacingLeft ? 1f : -1f;
+            if (!IsClimb || _inputReader.MoveInput == 0f) return away;
+            var surface = _checkClimbWall.CurrentSurface;
+            if (surface != null && surface.TryGetComponent(out ClimbSurface climbSurface) && climbSurface.TwoSided)
+                return Mathf.Sign(_inputReader.MoveInput);
+            return away;
         }
 
         private bool CanStartWallAction(float staminaCost) {

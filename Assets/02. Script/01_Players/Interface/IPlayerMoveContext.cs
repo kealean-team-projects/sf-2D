@@ -21,6 +21,12 @@ namespace _02._Script._01_Players.Interface {
         Vector2 JumpSpeed { get; }
         float JumpDuration { get; }
         float Impulse { get; }
+        float WallJumpMinTime { get; }
+        float WallJumpMaxTime { get; }
+        float WallDashSpeed { get; }
+        float WallDashDuration { get; }
+        float WallDashExitSpeed { get; }
+        bool IsTouchingClimbWall { get; }
         float ClimbStaminaCostPerSecond { get; }
 
         void SetAnimationBool(int parameterHash, bool value);
@@ -29,5 +35,6 @@ namespace _02._Script._01_Players.Interface {
         bool TryWallDash();
         void CancelClimb();
         void EndWallDash();
+        void FaceDirection(float xDirection);
     }
 }

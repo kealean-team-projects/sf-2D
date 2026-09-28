@@ -6,6 +6,7 @@ namespace _02._Script._01_Players.Components.CheckComponent {
     public class CheckClimbWall : Check, ICheckClimbWall, IAgentModule {
         private void FixedUpdate() {
             var col = CheckCol();
+            CurrentSurface = col;
             IsClimbed = col != null;
         }
 
@@ -13,5 +14,6 @@ namespace _02._Script._01_Players.Components.CheckComponent {
 
         public Type Type => typeof(ICheckClimbWall);
         [field: SerializeField] public bool IsClimbed { get; private set; }
+        public Collider2D CurrentSurface { get; private set; }
     }
 }

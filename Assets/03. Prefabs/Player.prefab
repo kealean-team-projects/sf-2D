@@ -489,8 +489,8 @@ MonoBehaviour:
   moveSpeedMultiplier: 2
   climbUpSpeed: 10
   climbDownSpeed: 20
-  jumpXSpeed: 8
-  jumpYSpeed: 12
+  jumpXSpeed: 11
+  jumpYSpeed: 15
   jumpDuration: 0.2
   jumpDashImpulse: 3
   crouchSpeedMultiplier: 0.5

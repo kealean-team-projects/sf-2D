@@ -36,6 +36,26 @@ namespace _02._Script._01_Players.Components {
         private void Awake() {
             rb = transform.root.GetComponent<Rigidbody2D>();
             _originGravityScale = rb.gravityScale;
+            _body = rb.GetComponent<CapsuleCollider2D>();
+        }
+
+        // 공중에서 (등반 불가) 벽 쪽으로 방향키를 누르고 있으면, 벽에 계속 몸을 밀어붙이는 힘 때문에
+        // 마찰력(기본 0.4)이 생겨 떨어지지 않고 벽에 붙어 버린다. → 공중 + 그 방향이 막힌 가파른 벽이면 수평 속도를 0으로.
+        // (마찰 0 재질로 바꾸면 경사면에 가만히 서 있을 때 미끄러지므로 이 방식을 사용)
+        private CapsuleCollider2D _body;
+        private readonly RaycastHit2D[] _wallHits = new RaycastHit2D[4];
+
+        private bool IsPressingIntoWall(float dir) {
+            if (_body == null) return false;
+            var filter = new ContactFilter2D();
+            filter.SetLayerMask(whatIsGround);
+            filter.useTriggers = false;
+            var count = _body.Cast(new Vector2(dir, 0f), filter, _wallHits, 0.04f);
+            for (var i = 0; i < count; i++) {
+                var n = _wallHits[i].normal;
+                if (Mathf.Abs(n.y) < 0.5f && n.x * dir < -0.5f) return true;
+            }
+            return false;
         }
 
         private void FixedUpdate()
@@ -85,6 +105,7 @@ namespace _02._Script._01_Players.Components {
 
         public void ApplyManualMove(float moveSpeed) {
             rb.gravityScale = _originGravityScale;
+            if (!IsGround && moveSpeed != 0f && IsPressingIntoWall(Mathf.Sign(moveSpeed))) moveSpeed = 0f;
             rb.linearVelocityX = moveSpeed;
             ApplyExtraGravity();
         }
@@ -105,6 +126,19 @@ namespace _02._Script._01_Players.Components {
 
         public void ApplyWallDash(float impulse) {
             rb.AddForceY(impulse, ForceMode2D.Impulse);
+        }
+
+        // 벽 등반 대쉬: 대쉬 동안 중력을 끄고 일정한 속도로 벽을 따라 올라간다.
+        // (기존 ApplyWallDash는 충격량 3을 더하는 방식이라 질량 1 기준 속도가 3밖에 늘지 않았다)
+        public void ApplyWallDashVelocity(float speed) {
+            rb.gravityScale = 0f;
+            rb.linearVelocity = new Vector2(0f, speed);
+        }
+
+        // 대쉬 종료 시 남은 상승 속도를 제한하고 중력을 되돌린다.
+        public void ClampRiseSpeed(float maxRiseSpeed) {
+            rb.gravityScale = _originGravityScale;
+            if (rb.linearVelocityY > maxRiseSpeed) rb.linearVelocityY = maxRiseSpeed;
         }
 
         public void ApplyWallJump(Vector2 walljumpDir) {
