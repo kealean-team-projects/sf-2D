@@ -41,6 +41,8 @@ namespace LHS_CATest {
             var phase = _t < calmTime ? Phase.Calm : _t < calmTime + warnTime ? Phase.Warn : Phase.Blow;
             if (phase != Current) {
                 Current = phase;
+                if (phase == Phase.Warn) CATestAudio.PlaySfx("wind_warn", new Vector3(area.center.x, area.center.y, 0f));
+                else if (phase == Phase.Blow) CATestAudio.PlaySfx("wind_gust", new Vector3(area.center.x, area.center.y, 0f));
                 SetEmit(warnParticles, phase == Phase.Warn || phase == Phase.Blow);
                 SetEmit(gustParticles, phase == Phase.Blow);
             }
