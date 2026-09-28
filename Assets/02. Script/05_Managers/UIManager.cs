@@ -110,10 +110,12 @@ namespace _02._Script._05_Managers
         private void Update() {
             if (Instance == this && Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
             {
-                UIAudio.Play("OptionSound");
+                bool isMainMenu = UnityEngine.SceneManagement.SceneManager.GetSceneByName("MainMenu").isLoaded;
+                if (!isMainMenu)
+                    UIAudio.Play("OptionSound");
                 if (forestSettings != null && forestSettings.IsOpen)
                     forestSettings.Escape();
-                else if (UnityEngine.SceneManagement.SceneManager.GetSceneByName("MainMenu").isLoaded)
+                else if (isMainMenu)
                     return;
                 else
                     OpenSettings();

@@ -12606,6 +12606,7 @@ GameObject:
   - component: {fileID: 1700000025}
   - component: {fileID: 1700000026}
   - component: {fileID: 1700000027}
+  - component: {fileID: 8900000100}
   m_Layer: 6
   m_Name: GroundCollider
   m_TagString: Untagged
@@ -17353,6 +17354,7 @@ GameObject:
   - component: {fileID: 721232032}
   - component: {fileID: 1500001544}
   - component: {fileID: 1500001545}
+  - component: {fileID: 8900000101}
   m_Layer: 9
   m_Name: WallCollider
   m_TagString: Untagged
@@ -141104,3 +141106,53 @@ SceneRoots:
   - {fileID: 1041882023}
   - {fileID: 951536283}
   - {fileID: 165931661}
+--- !u!114 &8900000100
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 490444591}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09d8eca50718aaf438746e9ba636f418, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  material: 0
+  surfaceOverrides: []
+  stoneRegions:
+  - {fileID: 1700000006}
+  - {fileID: 1700000008}
+  - {fileID: 1700000011}
+  - {fileID: 1700000013}
+  - {fileID: 1700000015}
+  - {fileID: 1700000018}
+  - {fileID: 1700000024}
+  - {fileID: 1700000025}
+  - {fileID: 1700000026}
+  surfaceTolerance: 0.05
+--- !u!114 &8900000101
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 721232031}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09d8eca50718aaf438746e9ba636f418, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  material: 0
+  surfaceOverrides: []
+  stoneRegions:
+  - {fileID: 1700000006}
+  - {fileID: 1700000008}
+  - {fileID: 1700000011}
+  - {fileID: 1700000013}
+  - {fileID: 1700000015}
+  - {fileID: 1700000018}
+  - {fileID: 1700000024}
+  - {fileID: 1700000025}
+  - {fileID: 1700000026}
+  surfaceTolerance: 0.05

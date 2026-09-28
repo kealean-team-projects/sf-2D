@@ -2,10 +2,10 @@
 using PrimeTween;
 using UnityEngine;
 using UnityEngine.UI;
-using PrimeTween;
 
 namespace _02._Script
 {
+    [DefaultExecutionOrder(10000)]
     public class StaminaUI : MonoBehaviour
     {
         [SerializeField] private CanvasGroup canvasGroup;
@@ -37,6 +37,8 @@ namespace _02._Script
 
         private RectTransform rectTransform;
         private Camera cam;
+        private Vector3 originalScale;
+        private float referenceProjectedHeight;
 
         private Tween whiteTween;
         
@@ -47,6 +49,7 @@ namespace _02._Script
         {
             rectTransform = GetComponent<RectTransform>();
             cam = Camera.main;
+            originalScale = rectTransform.localScale;
             normalTrailColor = staminaWhiteFill.color;
             normalFillColor = staminaFill.color;
             canvasGroup.alpha = 0f;
@@ -108,15 +111,28 @@ namespace _02._Script
                 fillSpeed * Time.deltaTime);
         }
         
-        public void SetTarget(Transform target) => followTarget = target;
+        public void SetTarget(Transform target) {
+            if (followTarget == target) return;
+            followTarget = target;
+            referenceProjectedHeight = 0f;
+        }
 
         private void LateUpdate()
         {
             if (followTarget == null) return;
             if (cam == null) return;
 
-            Vector3 screenPoint = cam.WorldToScreenPoint(
-                followTarget.position + followOffset);
+            Vector3 worldPoint = followTarget.position + followOffset;
+            Vector3 screenPoint = cam.WorldToScreenPoint(worldPoint);
+            if (screenPoint.z <= 0f) return;
+
+            // Project one world unit: handles perspective distance, FOV and orthographic zoom.
+            float projectedHeight = Mathf.Abs(
+                cam.WorldToViewportPoint(worldPoint + cam.transform.up).y -
+                cam.WorldToViewportPoint(worldPoint).y);
+            if (referenceProjectedHeight <= 0f) referenceProjectedHeight = projectedHeight;
+            if (referenceProjectedHeight > 0f)
+                rectTransform.localScale = originalScale * (projectedHeight / referenceProjectedHeight);
 
             screenPoint.z = 0f;
             transform.position = screenPoint;

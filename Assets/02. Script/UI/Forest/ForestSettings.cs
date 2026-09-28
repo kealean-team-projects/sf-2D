@@ -61,6 +61,8 @@ namespace _02._Script.UI.Forest {
         private bool previousMenuInteractable;
         private bool previousMenuRaycasts;
         private float previousMenuAlpha;
+        private float previousTimeScale;
+        private bool ownsPause;
         public bool IsOpen => modal!=null && modal.activeSelf;
         public event Action Closed;
 
@@ -144,6 +146,11 @@ namespace _02._Script.UI.Forest {
                 Cursor.lockState=CursorLockMode.None; Cursor.visible=true;
             }
             modal.SetActive(true);
+            if(!previewMode) {
+                previousTimeScale=Time.timeScale;
+                ownsPause=true;
+                Time.timeScale=0f;
+            }
             ShowTab(0);
             openedAt=Time.unscaledTime;
             if(panelFade!=null) panelFade.alpha=previewMode?1f:0f;
@@ -220,6 +227,7 @@ namespace _02._Script.UI.Forest {
         }
 
         private void Dismiss() {
+            RestoreTime();
             resolution.Hide();
             modal.SetActive(false);
             if(backgroundMenu!=null) {
@@ -236,6 +244,13 @@ namespace _02._Script.UI.Forest {
 
         private void OnDisable() {
             if(initialized && IsOpen) Cancel();
+            RestoreTime();
+        }
+
+        private void RestoreTime() {
+            if(!ownsPause) return;
+            ownsPause=false;
+            Time.timeScale=previousTimeScale;
         }
     }
 }
