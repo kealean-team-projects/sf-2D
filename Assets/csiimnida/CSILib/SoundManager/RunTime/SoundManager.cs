@@ -10,9 +10,23 @@ namespace csiimnida.CSILib.SoundManager.RunTime {
         [SerializeField] private AudioMixer _mixer;
 
         private readonly HashSet<AudioSource> _sources = new();
-        private AudioSource _bgmSource;
-        private Object _bgmOwner;
         private string _bgmName;
+        private Object _bgmOwner;
+        private AudioSource _bgmSource;
+
+        private void OnDisable() {
+            StopAllCoroutines();
+            foreach (var source in _sources) {
+                if (source == null) continue;
+                source.Stop();
+                Destroy(source.gameObject);
+            }
+
+            _sources.Clear();
+            _bgmSource = null;
+            _bgmOwner = null;
+            _bgmName = null;
+        }
 
         public void PlaySound(string soundName) {
             PlayTrackedSound(soundName);
@@ -114,20 +128,6 @@ namespace csiimnida.CSILib.SoundManager.RunTime {
 
                 yield return null;
             }
-        }
-
-        private void OnDisable() {
-            StopAllCoroutines();
-            foreach (var source in _sources) {
-                if (source == null) continue;
-                source.Stop();
-                Destroy(source.gameObject);
-            }
-
-            _sources.Clear();
-            _bgmSource = null;
-            _bgmOwner = null;
-            _bgmName = null;
         }
     }
 

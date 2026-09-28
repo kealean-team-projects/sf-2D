@@ -1,6 +1,6 @@
 ﻿using System;
-using UnityEngine;
 using _02._Script._01_Players;
+using UnityEngine;
 
 namespace _02._Script.Boss {
     [RequireComponent(typeof(Collider2D))]

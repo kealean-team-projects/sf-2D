@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,7 +7,7 @@ namespace csiimnida.CSILib.SoundManager.RunTime {
     public class SoundListSo : ScriptableObject {
         [SerializeField] private List<SoundSo> Sounds = new();
 
-        [System.NonSerialized] public Dictionary<string, SoundSo> SoundsDictionary;
+        [NonSerialized] public Dictionary<string, SoundSo> SoundsDictionary;
 
         private void OnEnable() {
             SoundsDictionary = new Dictionary<string, SoundSo>();

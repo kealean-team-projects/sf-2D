@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading;
-using _02._Script._04_Interaction;
 using Cysharp.Threading.Tasks;
 using PrimeTween;
 using UnityEngine;
@@ -10,28 +9,28 @@ namespace _02._Script.Boss {
     public class BossFOV : MonoBehaviour {
         [SerializeField] private Color normalColor = Color.white;
         [SerializeField] private Color detectedColor = Color.red;
-        
+
         [SerializeField] [Min(0f)] private float viewDistance = 10f;
         [SerializeField] [Range(0f, 360f)] private float viewAngle = 90f;
         [SerializeField] private LayerMask whatIsBlock;
-        [SerializeField, Range(0f, 180f)] private float sweepAngle = 45f;
-        [SerializeField, Min(0.1f)] private float sweepDuration = 3f;
+        [SerializeField] [Range(0f, 180f)] private float sweepAngle = 45f;
+        [SerializeField] [Min(0.1f)] private float sweepDuration = 3f;
 
-        private float scanDir = 1f;
-        
-
-        private float _currentViewAngle;
-        private Tween _angleTween;
-        
         [SerializeField] private Light2D scanLight;
-        private bool _isScanning;
-        private bool _canSweep;
-        private Quaternion _scanRotation;
-        private float _sweepTime;
 
         [SerializeField] private Transform shadowRoot;
-        private ShadowCasterController[] _shadows;
+        private Tween _angleTween;
+        private bool _canSweep;
+
+
+        private float _currentViewAngle;
+        private bool _isScanning;
+        private Quaternion _scanRotation;
         private Collider2D[] _shadowColliders;
+        private ShadowCasterController[] _shadows;
+        private float _sweepTime;
+
+        private float scanDir = 1f;
 
         private void Awake() {
             _scanRotation = scanLight.transform.localRotation;
@@ -40,39 +39,32 @@ namespace _02._Script.Boss {
             SetViewAngle(0f);
         }
 
-        private void Start()
-        {
+        private void Start() {
             var root = shadowRoot != null ? shadowRoot : transform.root;
             _shadows = root.GetComponentsInChildren<ShadowCasterController>(true);
             _shadowColliders = new Collider2D[_shadows.Length];
-            for (int i = 0; i < _shadows.Length; i++)
+            for (var i = 0; i < _shadows.Length; i++)
                 _shadowColliders[i] = _shadows[i].GetComponent<Collider2D>();
         }
 
-
-        private void OnDestroy() {
-            _angleTween.Stop();
-        }
-
-        private void Update()
-        {
+        private void Update() {
             if (!_isScanning || !_canSweep || scanLight == null) return;
 
             _sweepTime += Time.deltaTime;
 
-            float progress = Mathf.PingPong(_sweepTime / sweepDuration, 1f);
-            float angle = Mathf.SmoothStep(0f, sweepAngle, progress);
+            var progress = Mathf.PingPong(_sweepTime / sweepDuration, 1f);
+            var angle = Mathf.SmoothStep(0f, sweepAngle, progress);
 
             scanLight.transform.rotation =
                 Quaternion.Euler(0f, 0f, 180f + angle * scanDir);
         }
-        
-        
+
+
         private void LateUpdate() {
             if (_shadows == null || scanLight == null) return;
 
 
-            for (int i = 0; i < _shadows.Length; i++) {
+            for (var i = 0; i < _shadows.Length; i++) {
                 var shadow = _shadows[i];
                 if (shadow == null || !shadow.isActiveAndEnabled) continue;
 
@@ -81,34 +73,14 @@ namespace _02._Script.Boss {
                              collider.compositeOperation == Collider2D.CompositeOperation.None
                     ? collider.bounds
                     : shadow.GetShadowBounds();
-                bool detected = scanLight.enabled
-                                && _currentViewAngle > 0f
-                                && OverlapsVision(bounds);
+                var detected = scanLight.enabled
+                               && _currentViewAngle > 0f
+                               && OverlapsVision(bounds);
 
                 shadow.SetShadowActive(detected);
             }
         }
 
-        private bool OverlapsVision(Bounds bounds)
-        {
-            Vector2 origin = scanLight.transform.position;
-            Vector2 closest = new Vector2(
-                Mathf.Clamp(origin.x, bounds.min.x, bounds.max.x),
-                Mathf.Clamp(origin.y, bounds.min.y, bounds.max.y));
-            if ((closest - origin).sqrMagnitude > viewDistance * viewDistance)
-                return false;
-
-            Vector2 direction = (Vector2)bounds.center - origin;
-            float distance = direction.magnitude;
-            float radius = ((Vector2)bounds.extents).magnitude;
-            if (distance <= radius) return true;
-
-            // Enclose the bounds in a circle so partially visible terrain is never missed.
-            float margin = Mathf.Asin(Mathf.Clamp01(radius / distance)) * Mathf.Rad2Deg;
-            return Vector2.Angle(scanLight.transform.up, direction)
-                   <= _currentViewAngle * 0.5f + margin;
-        }
-        
         private void OnDisable() {
             _angleTween.Stop();
             _isScanning = false;
@@ -121,31 +93,54 @@ namespace _02._Script.Boss {
 
             if (_shadows == null) return;
 
-            foreach (var shadow in _shadows) {
+            foreach (var shadow in _shadows)
                 if (shadow != null && shadow.isActiveAndEnabled)
                     shadow.SetShadowActive(false);
-            }
         }
-        
+
+
+        private void OnDestroy() {
+            _angleTween.Stop();
+        }
+
 
 #if UNITY_EDITOR
         private void OnDrawGizmosSelected() {
             if (scanLight == null) return;
 
-            Vector3 origin = scanLight.transform.position;
-            Vector3 forward = scanLight.transform.up;
-            float angle = Application.isPlaying ? _currentViewAngle : viewAngle;
+            var origin = scanLight.transform.position;
+            var forward = scanLight.transform.up;
+            var angle = Application.isPlaying ? _currentViewAngle : viewAngle;
 
             Gizmos.color = Color.yellow;
             Gizmos.DrawWireSphere(origin, viewDistance);
 
-            Vector3 left = Quaternion.Euler(0f, 0f, angle * 0.5f) * forward;
-            Vector3 right = Quaternion.Euler(0f, 0f, -angle * 0.5f) * forward;
+            var left = Quaternion.Euler(0f, 0f, angle * 0.5f) * forward;
+            var right = Quaternion.Euler(0f, 0f, -angle * 0.5f) * forward;
 
             Gizmos.DrawRay(origin, left * viewDistance);
             Gizmos.DrawRay(origin, right * viewDistance);
         }
 #endif
+
+        private bool OverlapsVision(Bounds bounds) {
+            Vector2 origin = scanLight.transform.position;
+            var closest = new Vector2(
+                Mathf.Clamp(origin.x, bounds.min.x, bounds.max.x),
+                Mathf.Clamp(origin.y, bounds.min.y, bounds.max.y));
+            if ((closest - origin).sqrMagnitude > viewDistance * viewDistance)
+                return false;
+
+            var direction = (Vector2)bounds.center - origin;
+            var distance = direction.magnitude;
+            var radius = ((Vector2)bounds.extents).magnitude;
+            if (distance <= radius) return true;
+
+            // Enclose the bounds in a circle so partially visible terrain is never missed.
+            var margin = Mathf.Asin(Mathf.Clamp01(radius / distance)) * Mathf.Rad2Deg;
+            return Vector2.Angle(scanLight.transform.up, direction)
+                   <= _currentViewAngle * 0.5f + margin;
+        }
 
         public bool CanSee(Transform target) {
             if (target == null || scanLight == null ||
@@ -153,20 +148,20 @@ namespace _02._Script.Boss {
                 return false;
 
             Vector2 origin = scanLight.transform.position;
-            Vector2 direction = (Vector2)target.position - origin;
-            float distance = direction.magnitude;
+            var direction = (Vector2)target.position - origin;
+            var distance = direction.magnitude;
 
             if (distance > viewDistance) return false;
             if (Vector2.Angle(scanLight.transform.up, direction) >
                 _currentViewAngle * 0.5f)
                 return false;
 
-            RaycastHit2D hit = Physics2D.Raycast(
+            var hit = Physics2D.Raycast(
                 origin, direction.normalized, distance, whatIsBlock);
 
-            bool visible = hit.collider == null || hit.transform == target ||
-                           hit.transform.IsChildOf(target);
-            Vector2 end = hit.collider != null ? hit.point : (Vector2)target.position;
+            var visible = hit.collider == null || hit.transform == target ||
+                          hit.transform.IsChildOf(target);
+            var end = hit.collider != null ? hit.point : (Vector2)target.position;
             Debug.DrawLine(origin, end, visible ? Color.green : Color.red);
 
             return visible;
@@ -193,26 +188,23 @@ namespace _02._Script.Boss {
                 scanLight.enabled = true;
             }
 
-            _angleTween = Tween.Custom(_currentViewAngle, visible ? 
-                        viewAngle : 0f, visible 
-                        ? 1.5f : 0.75f, SetViewAngle, Ease.InExpo).OnComplete(() => 
-                        {
-                            if (visible) _canSweep = true;
-                            if (!visible) {
-                                _isScanning = false;
-                                if (scanLight != null) scanLight.enabled = false;
-                            }
-                        });
+            _angleTween = Tween.Custom(_currentViewAngle, visible ? viewAngle : 0f, visible
+                ? 1.5f
+                : 0.75f, SetViewAngle, Ease.InExpo).OnComplete(() => {
+                if (visible) _canSweep = true;
+                if (!visible) {
+                    _isScanning = false;
+                    if (scanLight != null) scanLight.enabled = false;
+                }
+            });
         }
-        
-        public async UniTask Open(CancellationToken token)
-        {
+
+        public async UniTask Open(CancellationToken token) {
             Show(true);
             await UniTask.WaitUntil(() => !_angleTween.isAlive, cancellationToken: token);
         }
 
-        public async UniTask Close(CancellationToken token, Action scan = null)
-        {
+        public async UniTask Close(CancellationToken token, Action scan = null) {
             Show(false);
             try {
                 while (_angleTween.isAlive) {
@@ -228,17 +220,14 @@ namespace _02._Script.Boss {
                 if (scanLight != null) scanLight.enabled = false;
             }
         }
-        
 
-        public void SetDetected(bool detected)
-        {
+
+        public void SetDetected(bool detected) {
             scanLight.color = detected ? detectedColor : normalColor;
         }
 
-        public void SetScanDir(bool spawnedLeft)
-        {
+        public void SetScanDir(bool spawnedLeft) {
             scanDir = spawnedLeft ? 1f : -1f;
         }
-
     }
 }

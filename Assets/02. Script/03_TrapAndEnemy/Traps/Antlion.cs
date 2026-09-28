@@ -1,6 +1,4 @@
 ﻿using _02._Script._01_Players;
-using _02._Script._01_Players.Components.DamageCompo;
-using Cysharp.Threading.Tasks;
 using PrimeTween;
 using UnityEngine;
 
@@ -9,17 +7,17 @@ namespace _02._Script._03_TrapAndEnemy.Traps {
         [SerializeField] private Transform teleport;
         [SerializeField] private float durationIn;
         [SerializeField] private Ease InEase = Ease.OutExpo;
-        
+
         [SerializeField] private float durationOut;
         [SerializeField] private Ease OutEase = Ease.OutExpo;
-        
+
         private bool _isWorked;
-        
+
         private void OnTriggerEnter2D(Collider2D collision) {
             if (_isWorked) return;
             _isWorked = true;
-            Player player = collision.gameObject.GetComponent<Player>();
-            if(player == null) return;
+            var player = collision.gameObject.GetComponent<Player>();
+            if (player == null) return;
             Sequence.Create()
                 .ChainCallback(() => player.LockMovement())
                 .Group(Tween.Position(transform,

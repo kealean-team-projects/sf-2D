@@ -20,7 +20,9 @@ namespace _02._Script.UI {
             BindButtons();
         }
 
-        private static void OnSceneLoaded(Scene scene, LoadSceneMode mode) => BindButtons();
+        private static void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
+            BindButtons();
+        }
 
         public static void BindButtons() {
             BoundButtons.RemoveWhere(button => button == null);

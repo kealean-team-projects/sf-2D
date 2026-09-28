@@ -9,7 +9,7 @@ namespace _02._Script._03_TrapAndEnemy.Traps {
         [SerializeField] private Transform teleport;
         [SerializeField] private float durationIn;
         [SerializeField] private float durationOut;
-        
+
         protected override void OnPlayerEnter(Player player) {
             Sequence.Create()
                 .ChainDelay(1f)

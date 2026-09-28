@@ -15,30 +15,26 @@ namespace _02._Script._01_Players.Components {
         private float extraGravity = 15f;
 
         [SerializeField] private float gravityDelay = 0.15f;
+        private readonly RaycastHit2D[] _surfaceHits = new RaycastHit2D[8];
 
         private bool _isClimbCancelPending;
         private bool _isWallDashing;
 
         private float _originGravityScale;
 
-        private int _restoreVersion;
         private float _timeInAir;
-
-        public event Action GroundUpdated;
-        public int RestoreVersion => _restoreVersion;
+        public int RestoreVersion { get; private set; }
 
         // Audio observes the supporting surface without changing movement's ground check.
         public Collider2D GroundCollider { get; private set; }
         public Vector2 SoundSurfacePoint { get; private set; }
-        private readonly RaycastHit2D[] _surfaceHits = new RaycastHit2D[8];
 
         private void Awake() {
             rb = transform.root.GetComponent<Rigidbody2D>();
             _originGravityScale = rb.gravityScale;
         }
 
-        private void FixedUpdate()
-        {
+        private void FixedUpdate() {
             GroundCollider = FindSupportingSurface();
             IsGround = GroundCollider != null;
 
@@ -65,7 +61,7 @@ namespace _02._Script._01_Players.Components {
         public float VerticalSpeed => rb.linearVelocityY;
 
         public void RestorePosition(Vector2 position) {
-            _restoreVersion++;
+            RestoreVersion++;
 
             _isClimbCancelPending = false;
             _isWallDashing = false;
@@ -79,6 +75,8 @@ namespace _02._Script._01_Players.Components {
             GroundCollider = FindSupportingSurface();
             IsGround = GroundCollider != null;
         }
+
+        public event Action GroundUpdated;
 
         #region Apply_States
 
@@ -139,11 +137,11 @@ namespace _02._Script._01_Players.Components {
         }
 
         private async UniTaskVoid CancelClimbUniTask() {
-            var version = _restoreVersion;
+            var version = RestoreVersion;
 
             await UniTask.Delay(TimeSpan.FromSeconds(2f));
 
-            if (version != _restoreVersion) return;
+            if (version != RestoreVersion) return;
 
             _isClimbCancelPending = false;
         }
@@ -153,7 +151,6 @@ namespace _02._Script._01_Players.Components {
         #endregion
 
         #region Rigidbody
-
 
         public Collider2D FindSoundSurface(float extraDistance) {
             // Only extend the sound query; the movement ground check is unchanged.
@@ -183,8 +180,10 @@ namespace _02._Script._01_Players.Components {
                     closestDistance = hit.distance;
                     SoundSurfacePoint = hit.point;
                 }
+
                 if (closest != null) return closest;
             }
+
             return null;
         }
 

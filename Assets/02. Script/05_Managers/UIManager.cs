@@ -1,51 +1,67 @@
-﻿using System;
-using _02._Script._01_Players;
+﻿using _02._Script._01_Players;
 using _02._Script._01_Players.Interface;
 using _02._Script.UI;
 using _02._Script.UI.Forest;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
-namespace _02._Script._05_Managers
-{
-    public class UIManager : MonoBehaviour
-    {
-        public static UIManager Instance { get; private set; }
-        
+namespace _02._Script._05_Managers {
+    public class UIManager : MonoBehaviour {
         [SerializeField] private GameObject settingsPanel;
         [SerializeField] private StaminaUI staminaUI;
         [SerializeField] private ForestSettings forestSettings;
         [SerializeField] private AudioHighPassFilter settingsFilter;
-        
-        private IStats subscribedStats;
-
-        private void HandleStaminaChanged(float ratio)
-        {
-            staminaUI.SetStamina(ratio);
-        }
 
         private Player currentPlayer;
-        
-        private void Awake()
-        {
-            if (Instance == null)
-            {
+
+        private IStats subscribedStats;
+        public static UIManager Instance { get; private set; }
+
+        private void Awake() {
+            if (Instance == null) {
                 Instance = this;
                 DontDestroyOnLoad(gameObject);
             }
 
-            else
-            {
+            else {
                 Destroy(gameObject);
             }
         }
-        
-        private void Start()
-        {
+
+        private void Start() {
             if (Instance != this) return;
             ClearSettingsFilter();
             InitializeSettings();
             UIAudio.BindButtons();
+        }
+
+        private void Update() {
+            if (Instance == this && Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame) {
+                var isMainMenu = SceneManager.GetSceneByName("MainMenu").isLoaded;
+                if (!isMainMenu)
+                    UIAudio.Play("OptionSound");
+                if (forestSettings != null && forestSettings.IsOpen)
+                    forestSettings.Escape();
+                else if (isMainMenu)
+                    return;
+                else
+                    OpenSettings();
+            }
+        }
+
+        private void OnDestroy() {
+            if (Instance != this) return;
+            if (subscribedStats != null)
+                subscribedStats.OnStaminaChanged -= HandleStaminaChanged;
+
+            CloseMainMenuSettings();
+            if (forestSettings != null) forestSettings.Closed -= ClearSettingsFilter;
+            Instance = null;
+        }
+
+        private void HandleStaminaChanged(float ratio) {
+            staminaUI.SetStamina(ratio);
         }
 
         private void InitializeSettings() {
@@ -56,8 +72,7 @@ namespace _02._Script._05_Managers
             forestSettings.Closed += ClearSettingsFilter;
         }
 
-        public void RegisterPlayer(Player player)
-        {
+        public void RegisterPlayer(Player player) {
             if (player == null) return;
 
             if (subscribedStats != null)
@@ -71,15 +86,13 @@ namespace _02._Script._05_Managers
             staminaUI.SetTarget(player.transform);
             HandleStaminaChanged(subscribedStats.StaminaRatio);
         }
-        
-        public void OpenSettings()
-        {
+
+        public void OpenSettings() {
             forestSettings.Open();
             if (settingsFilter != null) settingsFilter.enabled = forestSettings.IsOpen;
         }
 
-        public void CloseSettings()
-        {
+        public void CloseSettings() {
             forestSettings.Cancel();
             ClearSettingsFilter();
         }
@@ -95,31 +108,6 @@ namespace _02._Script._05_Managers
 
         public void CloseMainMenuSettings() {
             if (forestSettings != null) forestSettings.Cancel();
-        }
-
-        private void OnDestroy() {
-            if (Instance != this) return;
-            if (subscribedStats != null)
-                subscribedStats.OnStaminaChanged -= HandleStaminaChanged;
-            
-            CloseMainMenuSettings();
-            if (forestSettings != null) forestSettings.Closed -= ClearSettingsFilter;
-            Instance = null;
-        }
-        
-        private void Update() {
-            if (Instance == this && Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
-            {
-                bool isMainMenu = UnityEngine.SceneManagement.SceneManager.GetSceneByName("MainMenu").isLoaded;
-                if (!isMainMenu)
-                    UIAudio.Play("OptionSound");
-                if (forestSettings != null && forestSettings.IsOpen)
-                    forestSettings.Escape();
-                else if (isMainMenu)
-                    return;
-                else
-                    OpenSettings();
-            }
         }
     }
 }

@@ -13,7 +13,7 @@ namespace _02._Script.Boss {
 
         public async UniTask PlayWarning(CancellationToken token) {
             token.ThrowIfCancellationRequested();
-            
+
             room.SetLightBrightness(1f);
 
             await UniTask.Delay(TimeSpan.FromSeconds(1f),

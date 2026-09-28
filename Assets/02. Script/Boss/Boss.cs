@@ -5,6 +5,7 @@ using _02._Script._04_Interaction;
 using _02._Script.Boss.BossPatterns;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace _02._Script.Boss {
     [RequireComponent(typeof(Rigidbody2D))]
@@ -28,11 +29,11 @@ namespace _02._Script.Boss {
         private void Awake() {
             RbCompo = GetComponent<Rigidbody2D>();
             // Rigidbody2D owns movement; NavMesh is used only to calculate routes.
-            if (TryGetComponent<UnityEngine.AI.NavMeshAgent>(out var agent)) agent.enabled = false;
-            
+            if (TryGetComponent<NavMeshAgent>(out var agent)) agent.enabled = false;
+
             if (playerRenderer != null)
                 originalMaterial = playerRenderer.sharedMaterial;
-            
+
             ShowDetection(false);
         }
 
@@ -51,6 +52,7 @@ namespace _02._Script.Boss {
                     light.Break();
                     attack.Finish();
                 }
+
                 return;
             }
 
@@ -105,11 +107,12 @@ namespace _02._Script.Boss {
             fov.Show(visible);
         }
 
-        public UniTask OpenVision(CancellationToken token) => fov.Open(token);
-        
+        public UniTask OpenVision(CancellationToken token) {
+            return fov.Open(token);
+        }
 
-        public void ShowDetection(bool detected)
-        {
+
+        public void ShowDetection(bool detected) {
             fov.SetDetected(detected);
             if (playerRenderer == null) return;
             if (detected && detectedMaterial == null) return;
@@ -123,8 +126,7 @@ namespace _02._Script.Boss {
             patternCts?.Cancel();
         }
 
-        public void ResetForRetry(Vector3 position, Quaternion rotation)
-        {
+        public void ResetForRetry(Vector3 position, Quaternion rotation) {
             SetTarget(null);
             ShowDetection(false);
             gameObject.SetActive(false);
@@ -136,13 +138,13 @@ namespace _02._Script.Boss {
             SetReturnPosition(position);
             Navigation.ResetPath();
         }
-        
-        public void SetScanDirection(bool spawnedLeft)
-            => fov.SetScanDir(spawnedLeft);
 
-        
-        public UniTask CloseVision(CancellationToken token, Action scan = null)
-        {
+        public void SetScanDirection(bool spawnedLeft) {
+            fov.SetScanDir(spawnedLeft);
+        }
+
+
+        public UniTask CloseVision(CancellationToken token, Action scan = null) {
             return fov.Close(token, scan);
         }
     }

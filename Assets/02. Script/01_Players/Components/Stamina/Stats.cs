@@ -5,11 +5,7 @@ using _02._Script._05_Managers;
 using UnityEngine;
 
 namespace _02._Script._01_Players.Components.Stamina {
-    public class Stats : MonoBehaviour, IAgentModule, IStats
-    {
-        public event Action<float> OnStaminaChanged;
-        public float StaminaRatio => maxStamina > 0f ? Mathf.Clamp01(Stamina / maxStamina) : 0f;
-        
+    public class Stats : MonoBehaviour, IAgentModule, IStats {
         [SerializeField] private float staminaHealSlow;
         [SerializeField] private float staminaHealBoost;
         [SerializeField] private float maxStamina;
@@ -18,12 +14,16 @@ namespace _02._Script._01_Players.Components.Stamina {
 
         private float _recoveryEligibleSince = -1f;
 
+        private float stamina;
+
         public void Initialize(Agent owner) {
             RestoreStamina(maxStamina);
             heatStroke = 0;
         }
 
         public Type Type => typeof(IStats);
+        public event Action<float> OnStaminaChanged;
+        public float StaminaRatio => maxStamina > 0f ? Mathf.Clamp01(Stamina / maxStamina) : 0f;
 
         public void HeatStrokeUpdate(int value, DamageModule damage) {
             heatStroke = Mathf.Clamp(heatStroke += value * Time.deltaTime, 0, 100);
@@ -40,13 +40,9 @@ namespace _02._Script._01_Players.Components.Stamina {
             }
         }
 
-        private float stamina;
-
-        public float Stamina
-        {
+        public float Stamina {
             get => stamina;
-            private set
-            {
+            private set {
                 if (Mathf.Approximately(stamina, value)) return;
 
                 stamina = value;

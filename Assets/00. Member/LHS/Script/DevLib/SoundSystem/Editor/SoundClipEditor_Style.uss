@@ -24,7 +24,7 @@
     width: 100px;
     height: 24px;
     background-color: rgb(44, 115, 165);
-    color:#ddd;
+    color: #ddd;
     -unity-font-style: bold;
-    border-color: rgb(34, 102,151);
+    border-color: rgb(34, 102, 151);
 }

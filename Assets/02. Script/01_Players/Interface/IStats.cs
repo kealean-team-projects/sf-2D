@@ -3,9 +3,9 @@ using _02._Script._01_Players.Components.DamageCompo;
 
 namespace _02._Script._01_Players.Interface {
     public interface IStats {
-        event Action<float> OnStaminaChanged;
         float StaminaRatio { get; }
         float Stamina { get; }
+        event Action<float> OnStaminaChanged;
 
         void StaminaUpdate(bool isGrounded, bool isWalking, bool isClimb, bool isSprinting);
         void UseStamina(float usedStamina, bool immediate);

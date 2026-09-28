@@ -3,26 +3,21 @@ using UnityEngine;
 using UnityEngine.Audio;
 using Random = UnityEngine.Random;
 
-namespace _00._Member.LHS.Script.DevLib.SoundSystem.Runtime
-{
+namespace _00._Member.LHS.Script.DevLib.SoundSystem.Runtime {
     [RequireComponent(typeof(AudioSource))]
-    public sealed class SoundPlayer : MonoBehaviour
-    {
+    public sealed class SoundPlayer : MonoBehaviour {
         [SerializeField] private AudioMixerGroup sfxGroup;
         [SerializeField] private AudioMixerGroup musicGroup;
 
         private AudioSource _audioSource;
         private SoundClipSO _currentClipData;
-
-        private float _startTime;
         private float _endTime;
 
         private bool _isPlaying;
 
-        public event Action<SoundPlayer> OnSoundFinished;
+        private float _startTime;
 
-        private void Awake()
-        {
+        private void Awake() {
             _audioSource = GetComponent<AudioSource>();
 
             _audioSource.playOnAwake = false;
@@ -32,13 +27,11 @@ namespace _00._Member.LHS.Script.DevLib.SoundSystem.Runtime
             _audioSource.loop = false;
         }
 
-        private void Update()
-        {
+        private void Update() {
             if (!_isPlaying || _currentClipData == null)
                 return;
 
-            if (_currentClipData.isLoop)
-            {
+            if (_currentClipData.isLoop) {
                 HandleLoop();
                 return;
             }
@@ -46,16 +39,15 @@ namespace _00._Member.LHS.Script.DevLib.SoundSystem.Runtime
             HandleFinish();
         }
 
-        public void PlaySound(SoundClipSO clipData)
-        {
-            if (clipData == null)
-            {
+        public event Action<SoundPlayer> OnSoundFinished;
+
+        public void PlaySound(SoundClipSO clipData) {
+            if (clipData == null) {
                 Debug.LogWarning("[SoundPlayer] SoundClipSO is null.", this);
                 return;
             }
 
-            if (clipData.clip == null)
-            {
+            if (clipData.clip == null) {
                 Debug.LogWarning(
                     $"[SoundPlayer] AudioClip is null : {clipData.name}",
                     clipData);
@@ -76,33 +68,28 @@ namespace _00._Member.LHS.Script.DevLib.SoundSystem.Runtime
             _audioSource.Play();
         }
 
-        private void ConfigureAudioSource(SoundClipSO clipData)
-        {
+        private void ConfigureAudioSource(SoundClipSO clipData) {
             _audioSource.clip = clipData.clip;
             _audioSource.volume = clipData.volume;
 
-            float pitch = clipData.pitch;
+            var pitch = clipData.pitch;
 
             if (clipData.randomizePitch)
-            {
                 pitch += Random.Range(
                     -clipData.randomPitchModifier,
                     clipData.randomPitchModifier);
-            }
 
             _audioSource.pitch = Mathf.Clamp(pitch, 0.1f, 3f);
 
-            _audioSource.outputAudioMixerGroup = clipData.audioType switch
-            {
+            _audioSource.outputAudioMixerGroup = clipData.audioType switch {
                 AudioType.Sfx => sfxGroup,
                 AudioType.Music => musicGroup,
                 _ => null
             };
         }
 
-        private void ConfigurePlayRange(SoundClipSO clipData)
-        {
-            float clipLength = clipData.clip.length;
+        private void ConfigurePlayRange(SoundClipSO clipData) {
+            var clipLength = clipData.clip.length;
 
             _startTime = Mathf.Clamp(
                 clipData.startTime,
@@ -120,25 +107,21 @@ namespace _00._Member.LHS.Script.DevLib.SoundSystem.Runtime
                 clipLength);
         }
 
-        private void HandleLoop()
-        {
+        private void HandleLoop() {
             if (_audioSource.isPlaying &&
                 _audioSource.time < _endTime)
-            {
                 return;
-            }
 
             SetPlaybackTime(_startTime);
             _audioSource.Play();
         }
 
-        private void HandleFinish()
-        {
-            bool reachedEnd =
+        private void HandleFinish() {
+            var reachedEnd =
                 _audioSource.isPlaying &&
                 _audioSource.time >= _endTime;
 
-            bool naturallyStopped =
+            var naturallyStopped =
                 !_audioSource.isPlaying;
 
             if (!reachedEnd && !naturallyStopped)
@@ -147,8 +130,7 @@ namespace _00._Member.LHS.Script.DevLib.SoundSystem.Runtime
             CompleteSound();
         }
 
-        private void CompleteSound()
-        {
+        private void CompleteSound() {
             _audioSource.Stop();
 
             _isPlaying = false;
@@ -157,8 +139,7 @@ namespace _00._Member.LHS.Script.DevLib.SoundSystem.Runtime
             OnSoundFinished?.Invoke(this);
         }
 
-        private void StopCurrentSound()
-        {
+        private void StopCurrentSound() {
             if (_audioSource != null)
                 _audioSource.Stop();
 
@@ -166,14 +147,13 @@ namespace _00._Member.LHS.Script.DevLib.SoundSystem.Runtime
             _currentClipData = null;
         }
 
-        private void SetPlaybackTime(float time)
-        {
-            AudioClip clip = _audioSource.clip;
+        private void SetPlaybackTime(float time) {
+            var clip = _audioSource.clip;
 
             if (clip == null || clip.samples <= 0)
                 return;
 
-            int sample =
+            var sample =
                 Mathf.RoundToInt(time * clip.frequency);
 
             sample = Mathf.Clamp(
@@ -184,8 +164,7 @@ namespace _00._Member.LHS.Script.DevLib.SoundSystem.Runtime
             _audioSource.timeSamples = sample;
         }
 
-        public void ForceStopSound()
-        {
+        public void ForceStopSound() {
             StopCurrentSound();
         }
     }

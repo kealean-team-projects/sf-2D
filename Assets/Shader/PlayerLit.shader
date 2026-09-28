@@ -16,7 +16,10 @@ Shader "SF2D/Player Lit"
 
     SubShader
     {
-        Tags {"Queue" = "Transparent" "RenderType" = "Transparent" "RenderPipeline" = "UniversalPipeline" }
+        Tags
+        {
+            "Queue" = "Transparent" "RenderType" = "Transparent" "RenderPipeline" = "UniversalPipeline"
+        }
 
         Blend SrcAlpha OneMinusSrcAlpha, One OneMinusSrcAlpha
         Cull Off
@@ -24,7 +27,10 @@ Shader "SF2D/Player Lit"
 
         Pass
         {
-            Tags { "LightMode" = "Universal2D" }
+            Tags
+            {
+                "LightMode" = "Universal2D"
+            }
 
             HLSLPROGRAM
             #include "Packages/com.unity.render-pipelines.universal/Shaders/2D/Include/Core2D.hlsl"
@@ -42,14 +48,14 @@ Shader "SF2D/Player Lit"
             struct Attributes
             {
                 COMMON_2D_INPUTS
-                half4 color        : COLOR;
+                half4 color : COLOR;
                 UNITY_SKINNED_VERTEX_INPUTS
             };
 
             struct Varyings
             {
                 COMMON_2D_LIT_OUTPUTS
-                half4 color        : COLOR;
+                half4 color : COLOR;
             };
 
             #include "Packages/com.unity.render-pipelines.universal/Shaders/2D/Include/Lit2DCommon.hlsl"
@@ -84,7 +90,10 @@ Shader "SF2D/Player Lit"
 
         Pass
         {
-            Tags { "LightMode" = "NormalsRendering"}
+            Tags
+            {
+                "LightMode" = "NormalsRendering"
+            }
 
             HLSLPROGRAM
             #include "Packages/com.unity.render-pipelines.universal/Shaders/2D/Include/Core2D.hlsl"
@@ -99,20 +108,20 @@ Shader "SF2D/Player Lit"
             struct Attributes
             {
                 COMMON_2D_NORMALS_INPUTS
-                float4 color        : COLOR;
+                float4 color : COLOR;
                 UNITY_SKINNED_VERTEX_INPUTS
             };
 
             struct Varyings
             {
                 COMMON_2D_NORMALS_OUTPUTS
-                half4   color           : COLOR;
+                half4 color : COLOR;
             };
 
             #include "Packages/com.unity.render-pipelines.universal/Shaders/2D/Include/Normals2DCommon.hlsl"
 
             // NOTE: Do not ifdef the properties here as SRP batcher can not handle different layouts.
-            CBUFFER_START( UnityPerMaterial )
+            CBUFFER_START(UnityPerMaterial)
                 half4 _Color;
             CBUFFER_END
 
@@ -140,7 +149,10 @@ Shader "SF2D/Player Lit"
 
         Pass
         {
-            Tags { "LightMode" = "UniversalForward" "Queue"="Transparent" "RenderType"="Transparent"}
+            Tags
+            {
+                "LightMode" = "UniversalForward" "Queue"="Transparent" "RenderType"="Transparent"
+            }
 
             HLSLPROGRAM
             #include "Packages/com.unity.render-pipelines.universal/Shaders/2D/Include/Core2D.hlsl"
@@ -162,7 +174,7 @@ Shader "SF2D/Player Lit"
             };
 
             #include "Packages/com.unity.render-pipelines.universal/Shaders/2D/Include/2DCommon.hlsl"
-          
+
             // GPU Instancing
             #pragma multi_compile_instancing
             #pragma multi_compile _ DEBUG_DISPLAY SKINNED_SPRITE
@@ -179,7 +191,7 @@ Shader "SF2D/Player Lit"
                 input.positionOS = UnityFlipSprite(input.positionOS, unity_SpriteProps.xy);
 
                 Varyings o = CommonUnlitVertex(input);
-                o.color = input.color *_Color * unity_SpriteColor;
+                o.color = input.color * _Color * unity_SpriteColor;
                 return o;
             }
 
@@ -191,4 +203,3 @@ Shader "SF2D/Player Lit"
         }
     }
 }
-

@@ -41,17 +41,48 @@ namespace _02._Script._01_Players {
 
         private bool _canSJ = true;
         private float jumpDir;
-        
-        public event Action<PlayerMoveState, PlayerMoveState> MoveStateChanged;
 
         public PlayerMoveState CurrentMoveState =>
             _moveStateMachine?.CurrentState;
-        
-        private void HandleMoveStateChanged(
-            PlayerMoveState previousState,
-            PlayerMoveState currentState)
-        {
-            MoveStateChanged?.Invoke(previousState, currentState);
+
+        private void Update() {
+            if (IsDead) return;
+            if (!IsClimb) _facingController.UpdateFacing(MoveInput);
+
+            Mover.CalculateAirTime(IsClimb);
+
+            Stats.StaminaUpdate(IsGrounded, IsMoving, IsClimb, IsSprinting);
+            SprintControl.Tick(IsMoving);
+
+            ClimbSpeed = ClimbInput > 0f ? climbUpSpeed : climbDownSpeed;
+            jumpDir = _facingController.IsFacingLeft ? 1f : -1f;
+            if (_isHeat)
+                Stats.HeatStrokeUpdate(10, _damage);
+            if (_isHighHeat)
+                Stats.HeatStrokeUpdate(20, _damage);
+            if (!_isHeat && !_isHighHeat)
+                Stats.HeatStrokeUpdate(-20, _damage);
+        }
+
+        private void FixedUpdate() {
+            if (IsDead) return;
+            _moveStateMachine.Tick();
+            if (CanMove && !IsClimb) Mover.ApplyManualMoveY(PushSpeed.y);
+        }
+
+        private void LateUpdate() {
+            staminaHUD?.UpdateStamina(Stats.Stamina);
+        }
+
+        private void OnTriggerEnter2D(Collider2D other) {
+            if (other.CompareTag("Heat")) _isHeat = true;
+
+            if (other.CompareTag("HighHeat")) _isHighHeat = true;
+        }
+
+        private void OnTriggerExit2D(Collider2D other) {
+            _isHeat = false;
+            _isHighHeat = false;
         }
 
         public void SetAnimationBool(int parameterHash, bool value) {
@@ -68,52 +99,20 @@ namespace _02._Script._01_Players {
             }
         }
 
-        private void Update() {
-            if (IsDead) return;
-            if (!IsClimb) _facingController.UpdateFacing(MoveInput);
-
-            Mover.CalculateAirTime(IsClimb);
-
-            _stats.StaminaUpdate(IsGrounded, IsMoving, IsClimb, IsSprinting);
-            SprintControl.Tick(IsMoving);
-
-            ClimbSpeed = ClimbInput > 0f ? climbUpSpeed : climbDownSpeed;
-            jumpDir = _facingController.IsFacingLeft ? 1f : -1f;
-            if (_isHeat)
-                _stats.HeatStrokeUpdate(10, _damage);
-            if (_isHighHeat)
-                _stats.HeatStrokeUpdate(20, _damage);
-            if (!_isHeat && !_isHighHeat)
-                _stats.HeatStrokeUpdate(-20, _damage);
-        }
-
-        private void FixedUpdate() {
-            if (IsDead) return;
-            _moveStateMachine.Tick();
-            if (CanMove && !IsClimb) Mover.ApplyManualMoveY(PushSpeed.y);
-        }
-
-        private void LateUpdate() {
-            staminaHUD?.UpdateStamina(_stats.Stamina);
-        }
-
-        private void OnTriggerEnter2D(Collider2D other) {
-            if (other.CompareTag("Heat")) _isHeat = true;
-
-            if (other.CompareTag("HighHeat")) _isHighHeat = true;
-        }
-
-        private void OnTriggerExit2D(Collider2D other) {
-            _isHeat = false;
-            _isHighHeat = false;
-        }
-
         public bool CanSJ {
             get => _canSJ;
             set {
                 _canSJ = value;
                 if (!_canSJ && SprintControl != null) SprintControl.StopSprint();
             }
+        }
+
+        public event Action<PlayerMoveState, PlayerMoveState> MoveStateChanged;
+
+        private void HandleMoveStateChanged(
+            PlayerMoveState previousState,
+            PlayerMoveState currentState) {
+            MoveStateChanged?.Invoke(previousState, currentState);
         }
 
         protected override void AfterInitialize() {
@@ -125,8 +124,8 @@ namespace _02._Script._01_Players {
             SubscribeInputEvents();
 
             _damage = GetComponent<DamageModule>();
-            SprintControl = new SprintController(_stats, staminaCosts.runPerSecond);
-            _moveStateMachine = PlayerMoveStateFactory.Create(this, _stats);
+            SprintControl = new SprintController(Stats, staminaCosts.runPerSecond);
+            _moveStateMachine = PlayerMoveStateFactory.Create(this, Stats);
             _moveStateMachine.StateChanged += HandleMoveStateChanged;
 
             var viewerObject = new GameObject("StateMachineViewer");
@@ -146,11 +145,8 @@ namespace _02._Script._01_Players {
 
             _damage.OnDamaged -= OnDead;
             progress.Shutdown();
-            
-            if (_moveStateMachine != null)
-            {
-                _moveStateMachine.StateChanged -= HandleMoveStateChanged;
-            }
+
+            if (_moveStateMachine != null) _moveStateMachine.StateChanged -= HandleMoveStateChanged;
         }
 
         #region ModulesGet
@@ -159,7 +155,7 @@ namespace _02._Script._01_Players {
             _inputReader = GetModule<IInputReader>();
             Mover = GetModule<IMover>();
             _interactor = GetModule<IInteractor>();
-            _stats = GetModule<IStats>();
+            Stats = GetModule<IStats>();
             _checkClimbWall = GetModule<ICheckClimbWall>();
             CrouchControl = GetModule<ICrouchController>();
             _facingController = GetModule<IFacingController>();
@@ -177,7 +173,6 @@ namespace _02._Script._01_Players {
         private IInteractor _interactor;
         private IFacingController _facingController;
 
-        private IStats _stats;
         private ICheckClimbWall _checkClimbWall;
         private DamageModule _damage;
 
@@ -217,7 +212,7 @@ namespace _02._Script._01_Players {
         public bool IsClimb => !IsGrounded
                                && _checkClimbWall.IsClimbed
                                && Mover.CanClimb
-                               && _stats.Stamina > 0f;
+                               && Stats.Stamina > 0f;
 
         public bool IsWallJump => _moveStateMachine.CurrentState is WallJumpState;
         public bool IsWallDash => _moveStateMachine.CurrentState is WallDashState;
@@ -227,8 +222,8 @@ namespace _02._Script._01_Players {
         public bool IsDead { get; private set; }
 
         // Stamina
-        public float CurrentStamina => _stats.Stamina;
-        public IStats Stats => _stats;
+        public float CurrentStamina => Stats.Stamina;
+        public IStats Stats { get; private set; }
 
         // spend amount
         public float ClimbStaminaCostPerSecond => staminaCosts.climbPerSecond;
@@ -251,7 +246,7 @@ namespace _02._Script._01_Players {
         public void SetPushSpeed(Vector2 speed) {
             PushSpeed = speed;
         }
-        
+
         public void SetHUD(StaminaHUD hud) {
             staminaHUD = hud;
         }
@@ -284,22 +279,20 @@ namespace _02._Script._01_Players {
 
         #region CheckMethod
 
-        public bool TryWallJump()
-        {
+        public bool TryWallJump() {
             if (!CanStartWallAction(staminaCosts.wallJump))
                 return false;
 
-            _stats.UseStamina(staminaCosts.wallJump, true);
+            Stats.UseStamina(staminaCosts.wallJump, true);
 
             return true;
         }
 
-        public bool TryWallDash()
-        {
+        public bool TryWallDash() {
             if (!CanStartWallAction(staminaCosts.wallDash))
                 return false;
 
-            _stats.UseStamina(staminaCosts.wallDash, true);
+            Stats.UseStamina(staminaCosts.wallDash, true);
 
             return true;
         }
@@ -307,7 +300,7 @@ namespace _02._Script._01_Players {
         private bool CanStartWallAction(float staminaCost) {
             return IsClimb && !IsWallJump
                            && !IsWallDash
-                           && _stats.Stamina >= staminaCost;
+                           && Stats.Stamina >= staminaCost;
         }
 
         #endregion
@@ -370,8 +363,7 @@ namespace _02._Script._01_Players {
             Mover.EndWallDash();
         }
 
-        public void Jump()
-        {
+        public void Jump() {
             if (!CanSJ) return;
 
             Mover.Jump();
@@ -393,8 +385,8 @@ namespace _02._Script._01_Players {
             SprintControl.StopSprint();
             Mover.RestorePosition(position);
             CrouchControl.Stand();
-            _stats.RestoreStamina(stamina);
-            staminaHUD?.UpdateStamina(_stats.Stamina);
+            Stats.RestoreStamina(stamina);
+            staminaHUD?.UpdateStamina(Stats.Stamina);
 
             PushSpeed = Vector2.zero;
             CanMove = true;

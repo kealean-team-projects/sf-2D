@@ -6,15 +6,13 @@ namespace _02._Script._05_Managers {
         [SerializeField] private Transform savePos;
         [SerializeField] private Transform[] checkPoints = Array.Empty<Transform>();
         private int saveNum = -1;
-        
+
         public static CheckPointManager Instance { get; private set; }
 
         // 아직 체크포인트를 저장하지 않은 상태
-        public int SaveNum
-        {
+        public int SaveNum {
             get => saveNum;
-            private set
-            {
+            private set {
                 if (value <= saveNum || value > MaxSaveNum) return;
                 saveNum = value;
             }
@@ -37,9 +35,8 @@ namespace _02._Script._05_Managers {
             if (Instance == this) Instance = null;
         }
 
-        public bool SaveCheckpoint(int index)
-        {
-            int previous = SaveNum;
+        public bool SaveCheckpoint(int index) {
+            var previous = SaveNum;
             SaveNum = index;
 
             if (SaveNum == previous) return false;

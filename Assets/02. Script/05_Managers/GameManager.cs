@@ -14,7 +14,6 @@ namespace _02._Script._05_Managers {
         private float _defaultFixedDeltaTime;
 
         public bool IsRestarting { get; private set; }
-        public static event Func<UniTask> OnRespawnReset;
 
         private void Awake() {
             if (Instance != null && Instance != this) {
@@ -29,6 +28,8 @@ namespace _02._Script._05_Managers {
         private void OnDestroy() {
             if (Instance == this) Instance = null;
         }
+
+        public static event Func<UniTask> OnRespawnReset;
 
         public void SlowMotion(float slowTime) {
             Time.timeScale = slowTime;

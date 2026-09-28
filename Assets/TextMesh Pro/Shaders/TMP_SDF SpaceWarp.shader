@@ -308,7 +308,7 @@ Shader "TextMeshPro/Distance Field - SpaceWarp"
 
                 fixed4 reflcol = texCUBE(_Cube, reflect(input.viewDir, -n));
                 faceColor.rgb += reflcol.rgb * lerp(_ReflectFaceColor.rgb, _ReflectOutlineColor.rgb,
-                                  saturate(sd + outline * 0.5)) * faceColor.a;
+                                                    saturate(sd + outline * 0.5)) * faceColor.a;
                 #endif
 
                 #if UNDERLAY_ON

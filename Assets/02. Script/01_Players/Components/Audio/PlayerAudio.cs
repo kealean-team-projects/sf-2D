@@ -8,41 +8,58 @@ namespace _02._Script._01_Players.Components.Audio {
         [SerializeField] private Player player;
         [SerializeField] private Mover mover;
         [SerializeField] private Rigidbody2D body;
-        [Header("Footsteps")]
-        [SerializeField, Min(0.01f)] private float minimumMoveSpeed = 0.1f;
-        [Tooltip("걷기·달리기 소리 전용으로 발밑 감지 범위를 아래로 늘리는 거리(Unity 단위). 0이면 기존 접지 판정을 사용합니다.")]
-        [SerializeField, Min(0f)] private float footstepDetectionDistance = 0.1f;
-        [Tooltip("좌우 전환 등으로 잠깐 멈춘 뒤 같은 발소리를 이어 재생할 수 있는 시간(초). 0이면 매번 처음부터 재생합니다.")]
-        [SerializeField, Min(0f)] private float footstepResumeWindow = 0.12f;
+
+        [Header("Footsteps")] [SerializeField] [Min(0.01f)]
+        private float minimumMoveSpeed = 0.1f;
+
+        [Tooltip("걷기·달리기 소리 전용으로 발밑 감지 범위를 아래로 늘리는 거리(Unity 단위). 0이면 기존 접지 판정을 사용합니다.")] [SerializeField] [Min(0f)]
+        private float footstepDetectionDistance = 0.1f;
+
+        [Tooltip("좌우 전환 등으로 잠깐 멈춘 뒤 같은 발소리를 이어 재생할 수 있는 시간(초). 0이면 매번 처음부터 재생합니다.")] [SerializeField] [Min(0f)]
+        private float footstepResumeWindow = 0.12f;
+
         [Header("Landing")]
         [Tooltip("착지음에 필요한 최소 연속 추락 시간(초). 상승·등반 시간은 제외하며, 0이면 모든 착지에서 재생합니다.")]
-        [SerializeField, Min(0f)] private float minimumFallTime = 0.08f;
-        private string walkSound = "Walk";
-        private string runSound = "Run";
-        private string landingSound = "Landing";
-        
-        private string stoneWalkSound = "Walk_2";
-        private string stoneRunSound = "Run_2";
-        private string stoneLandingSound = "Landing_2";
+        [SerializeField]
+        [Min(0f)]
+        private float minimumFallTime = 0.08f;
 
-        private SoundManager _manager;
+        private string _currentSound;
+        private float _fallTime;
         private AudioSource _footsteps;
-        private AudioSource _landing;
         private bool _footstepsPaused;
         private float _footstepsPausedAt;
-        private string _currentSound;
+        private AudioSource _landing;
+        private bool _landingPlayed;
+        private Vector2 _lastPosition;
+
+        private SoundManager _manager;
+        private int _restoreVersion;
         private bool _sampled;
         private bool _wasGrounded;
-        private int _restoreVersion;
-        private Vector2 _lastPosition;
-        private float _fallTime;
-        private bool _landingPlayed;
+        private readonly string landingSound = "Landing";
+        private readonly string runSound = "Run";
+        private readonly string stoneLandingSound = "Landing_2";
+        private readonly string stoneRunSound = "Run_2";
+
+        private readonly string stoneWalkSound = "Walk_2";
+        private readonly string walkSound = "Walk";
 
 
         private void Awake() {
             if (player == null) player = GetComponent<Player>();
             if (mover == null) mover = GetComponentInChildren<Mover>();
             if (body == null) body = GetComponent<Rigidbody2D>();
+        }
+
+        private void LateUpdate() {
+            // Physics stops while paused; silence loops without waiting for another physics tick.
+            if (player == null || player.IsDead || !player.CanMove)
+                StopMovementSounds();
+            else if (Time.timeScale == 0f)
+                StopFootsteps();
+            else if (_footstepsPaused && Time.unscaledTime - _footstepsPausedAt >= footstepResumeWindow)
+                StopFootsteps();
         }
 
         private void OnEnable() {
@@ -58,16 +75,6 @@ namespace _02._Script._01_Players.Components.Audio {
             _sampled = false;
             _fallTime = 0f;
             _landingPlayed = false;
-        }
-
-        private void LateUpdate() {
-            // Physics stops while paused; silence loops without waiting for another physics tick.
-            if (player == null || player.IsDead || !player.CanMove)
-                StopMovementSounds();
-            else if (Time.timeScale == 0f)
-                StopFootsteps();
-            else if (_footstepsPaused && Time.unscaledTime - _footstepsPausedAt >= footstepResumeWindow)
-                StopFootsteps();
         }
 
         private void OnGroundUpdated() {
@@ -99,11 +106,14 @@ namespace _02._Script._01_Players.Components.Audio {
             if (!grounded && (player.IsClimb || position.y > _lastPosition.y + 0.0001f))
                 _landingPlayed = false;
             _lastPosition = position;
-            var footstepGround = grounded ? mover.GroundCollider
+            var footstepGround = grounded
+                ? mover.GroundCollider
                 : !rising && !player.IsClimb && footstepDetectionDistance > 0f
-                    ? mover.FindSoundSurface(footstepDetectionDistance) : null;
+                    ? mover.FindSoundSurface(footstepDetectionDistance)
+                    : null;
             var surface = footstepGround != null
-                ? footstepGround.GetComponentInParent<FootstepSurface>() : null;
+                ? footstepGround.GetComponentInParent<FootstepSurface>()
+                : null;
             var stone = surface != null && surface.MaterialAt(mover.SoundSurfacePoint) == FootstepMaterial.Stone;
 
             if (_manager == null) _manager = FindAnyObjectByType<SoundManager>();
@@ -112,16 +122,19 @@ namespace _02._Script._01_Players.Components.Audio {
                 var landingSurface = mover.GroundCollider;
                 if (landingSurface != null) {
                     var material = landingSurface.GetComponentInParent<FootstepSurface>();
-                    var landingOnStone = material != null && material.MaterialAt(mover.SoundSurfacePoint) == FootstepMaterial.Stone;
+                    var landingOnStone = material != null &&
+                                         material.MaterialAt(mover.SoundSurfacePoint) == FootstepMaterial.Stone;
                     StopMovementSounds();
                     _landing = _manager.PlayTrackedSound(landingOnStone ? stoneLandingSound : landingSound);
                     _landingPlayed = true;
                 }
             }
+
             if (grounded) {
                 _fallTime = 0f;
                 _landingPlayed = false;
             }
+
             _wasGrounded = grounded;
 
             // Landing and footsteps share one audible movement voice per player.
@@ -130,14 +143,17 @@ namespace _02._Script._01_Players.Components.Audio {
                 StopFootsteps();
                 return;
             }
+
             if (!player.IsMoving || speed < minimumMoveSpeed) {
                 PauseFootsteps();
                 return;
             }
 
             var sound = player.SprintControl.IsSprinting
-                ? (stone ? stoneRunSound : runSound)
-                : (stone ? stoneWalkSound : walkSound);
+                ? stone ? stoneRunSound : runSound
+                : stone
+                    ? stoneWalkSound
+                    : walkSound;
             if (_currentSound == sound && _footsteps != null) {
                 if (!_footstepsPaused) return;
                 if (Time.unscaledTime - _footstepsPausedAt < footstepResumeWindow) {
@@ -146,6 +162,7 @@ namespace _02._Script._01_Players.Components.Audio {
                     return;
                 }
             }
+
             StopFootsteps();
             if (_manager == null) return;
             _footsteps = _manager.PlayTrackedSound(sound);
@@ -166,6 +183,7 @@ namespace _02._Script._01_Players.Components.Audio {
                 StopFootsteps();
                 return;
             }
+
             if (_footstepsPaused) return;
             _footsteps.Pause();
             _footstepsPaused = true;

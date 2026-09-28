@@ -6,10 +6,10 @@ namespace _02._Script._05_Managers {
     public sealed class StageAudio : MonoBehaviour {
         [SerializeField] private string backgroundMusic = "BG_1";
         private SoundManager _manager;
-        private bool _started;
-        private Object _overrideOwner;
         private string _overrideMusic;
+        private Object _overrideOwner;
         private Object _pauseOwner;
+        private bool _started;
 
         private void Start() {
             _started = true;
@@ -18,6 +18,13 @@ namespace _02._Script._05_Managers {
 
         private void OnEnable() {
             if (_started) PlayMusic();
+        }
+
+        private void OnDisable() {
+            if (_manager != null) _manager.StopBgm(this);
+            _overrideOwner = null;
+            _overrideMusic = null;
+            _pauseOwner = null;
         }
 
         private void PlayMusic() {
@@ -63,14 +70,8 @@ namespace _02._Script._05_Managers {
                 Debug.LogWarning("StageAudio requires the shared SoundManager in CoreScene.", this);
                 return false;
             }
-            return true;
-        }
 
-        private void OnDisable() {
-            if (_manager != null) _manager.StopBgm(this);
-            _overrideOwner = null;
-            _overrideMusic = null;
-            _pauseOwner = null;
+            return true;
         }
     }
 }

@@ -4,10 +4,10 @@ using UnityEngine.UIElements;
 
 namespace csiimnida.CSILib.SoundManager.Editor {
     public class SoundItemUI {
-        public SoundSo SoundItem;
         private readonly Button _deleteBtn;
         private readonly Label _nameLabel;
         private readonly VisualElement _rootElement;
+        public SoundSo SoundItem;
 
         public SoundItemUI(VisualElement root, SoundSo item) {
             SoundItem = item;
