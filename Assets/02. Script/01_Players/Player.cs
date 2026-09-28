@@ -228,6 +228,7 @@ namespace _02._Script._01_Players {
 
         // Stamina
         public float CurrentStamina => _stats.Stamina;
+        public IStats Stats => _stats;
 
         // spend amount
         public float ClimbStaminaCostPerSecond => staminaCosts.climbPerSecond;

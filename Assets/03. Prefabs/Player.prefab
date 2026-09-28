@@ -203,6 +203,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ab589e11f2f4e739c843f1972fea1c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_02._Script.Player.Components.ControllerCompo.FacingController
+--- !u!114 &8125477302181944201
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1680997780196192073}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f15b72a1d0c74c2f9d61693e5ad7341b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  material: {fileID: 2100000, guid: 451d6b44a0474bcb95fb763613958ba1, type: 2}
 --- !u!1 &2327042566820510680
 GameObject:
   m_ObjectHideFlags: 0
@@ -478,8 +491,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_01.Script.Player.Player
   staminaCosts:
-    runPerSecond: 5
-    climbPerSecond: 5
+    runPerSecond: 10
+    climbPerSecond: 8
     wallDash: 10
     wallJump: 0
   staminaHUD: {fileID: 0}
@@ -718,17 +731,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::_02._Script._01_Players.PlayerAnimationController
   player: {fileID: 7646778522885899942}
   animator: {fileID: 6018314773775398805}
-
---- !u!114 &8125477302181944201
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1680997780196192073}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f15b72a1d0c74c2f9d61693e5ad7341b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  material: {fileID: 2100000, guid: 451d6b44a0474bcb95fb763613958ba1, type: 2}

@@ -10,6 +10,8 @@ namespace _02._Script.UI.Forest {
     [Serializable]
     public struct ForestSettingsValues {
         public float volume;
+        public float bgmVolume;
+        public float sfxVolume;
         public float brightness;
         public int width;
         public int height;
@@ -22,10 +24,17 @@ namespace _02._Script.UI.Forest {
         }
     }
 
-    // Main-menu modal. Gameplay ESC UI remains owned by UIManager's existing settingsPanel.
+    // Shared settings modal for the main menu and gameplay ESC.
     public sealed class ForestSettings : MonoBehaviour {
         public GameObject modal;
         public Slider volume;
+        public Slider bgmVolume;
+        public Slider sfxVolume;
+        public TMP_Text bgmValue;
+        public TMP_Text sfxValue;
+        public Button[] tabs;
+        public GameObject[] tabPages;
+        public Image[] tabIndicators;
         public Slider brightness;
         public TMP_Text volumeValue;
         public TMP_Text brightnessValue;
@@ -61,10 +70,16 @@ namespace _02._Script.UI.Forest {
             previewMode=preview;
             mixer=audioMixer;
             applied=preview
-                ? new ForestSettingsValues { volume=.75f, brightness=.5f, width=1920, height=1080, fullscreen=true }
+                ? new ForestSettingsValues { volume=.75f, bgmVolume=1f, sfxVolume=1f, brightness=.5f, width=1920, height=1080, fullscreen=true }
                 : ForestSettingsStore.Load();
             BuildModes();
             volume.onValueChanged.AddListener(ChangeVolume);
+            if(bgmVolume!=null) bgmVolume.onValueChanged.AddListener(ChangeBgm);
+            if(sfxVolume!=null) sfxVolume.onValueChanged.AddListener(ChangeSfx);
+            if(tabs!=null) for(int i=0;i<tabs.Length;i++) {
+                int index=i;
+                tabs[i].onClick.AddListener(()=>ShowTab(index));
+            }
             brightness.onValueChanged.AddListener(ChangeBrightness);
             resolution.onValueChanged.AddListener(ChangeResolution);
             fullscreen.onValueChanged.AddListener(ChangeFullscreen);
@@ -111,11 +126,13 @@ namespace _02._Script.UI.Forest {
                 backgroundMenu.blocksRaycasts=false;
                 backgroundMenu.alpha=0f;
             }
-            // The separate gameplay ESC panel may have changed Master since this panel last opened.
+            // Respect Master changes made elsewhere before opening the shared modal.
             if(!previewMode && mixer!=null && mixer.GetFloat("Master",out float db))
                 applied.volume=db<=-80f?0f:Mathf.Clamp01(Mathf.Pow(10f,db/20f));
             draft=applied;
             volume.SetValueWithoutNotify(draft.volume);
+            if(bgmVolume!=null) bgmVolume.SetValueWithoutNotify(draft.bgmVolume);
+            if(sfxVolume!=null) sfxVolume.SetValueWithoutNotify(draft.sfxVolume);
             brightness.SetValueWithoutNotify(draft.brightness);
             fullscreen.SetIsOnWithoutNotify(draft.fullscreen);
             resolution.SetValueWithoutNotify(Mathf.Max(0,modes.IndexOf(new Vector2Int(draft.width,draft.height))));
@@ -127,6 +144,7 @@ namespace _02._Script.UI.Forest {
                 Cursor.lockState=CursorLockMode.None; Cursor.visible=true;
             }
             modal.SetActive(true);
+            ShowTab(0);
             openedAt=Time.unscaledTime;
             if(panelFade!=null) panelFade.alpha=previewMode?1f:0f;
             if(EventSystem.current!=null) EventSystem.current.SetSelectedGameObject(closeButton.gameObject);
@@ -142,7 +160,19 @@ namespace _02._Script.UI.Forest {
             Cancel();
         }
 
+        public void ShowTab(int index) {
+            if(tabPages==null || index<0 || index>=tabPages.Length) return;
+            resolution.Hide();
+            for(int i=0;i<tabPages.Length;i++) {
+                tabPages[i].SetActive(i==index);
+                if(tabIndicators!=null && i<tabIndicators.Length)
+                    tabIndicators[i].enabled=i==index;
+            }
+        }
+
         private void ChangeVolume(float v) { draft.volume=v; Preview(draft); RefreshLabels(); }
+        private void ChangeBgm(float v) { draft.bgmVolume=v; Preview(draft); RefreshLabels(); }
+        private void ChangeSfx(float v) { draft.sfxVolume=v; Preview(draft); RefreshLabels(); }
         private void ChangeBrightness(float v) { draft.brightness=v; Preview(draft); RefreshLabels(); }
         private void ChangeFullscreen(bool v) { draft.fullscreen=v; RefreshLabels(); }
         private void ChangeResolution(int index) {
@@ -151,6 +181,8 @@ namespace _02._Script.UI.Forest {
         }
         private void RefreshLabels() {
             volumeValue.text=$"{Mathf.RoundToInt(draft.volume*100)}%";
+            if(bgmValue!=null) bgmValue.text=$"{Mathf.RoundToInt(draft.bgmVolume*100)}%";
+            if(sfxValue!=null) sfxValue.text=$"{Mathf.RoundToInt(draft.sfxVolume*100)}%";
             brightnessValue.text=$"{Mathf.RoundToInt(draft.brightness*100)}%";
             fullscreenValue.text=draft.fullscreen?"Enabled":"Disabled";
         }
@@ -158,6 +190,10 @@ namespace _02._Script.UI.Forest {
         private void Preview(ForestSettingsValues values) {
             if(!previewMode && mixer!=null && !mixer.SetFloat("Master",ForestSettingsValues.VolumeToDecibels(values.volume)))
                 Debug.LogWarning("AudioMixer에 노출된 Master 파라미터가 없습니다.",this);
+            if(!previewMode && mixer!=null) {
+                mixer.SetFloat("BGM",ForestSettingsValues.VolumeToDecibels(values.bgmVolume));
+                mixer.SetFloat("SFX",ForestSettingsValues.VolumeToDecibels(values.sfxVolume));
+            }
             if(brightnessOverlay!=null) brightnessOverlay.color=ForestSettingsValues.BrightnessTint(values.brightness);
         }
 

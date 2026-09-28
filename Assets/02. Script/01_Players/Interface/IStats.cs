@@ -1,7 +1,10 @@
-﻿using _02._Script._01_Players.Components.DamageCompo;
+﻿using System;
+using _02._Script._01_Players.Components.DamageCompo;
 
 namespace _02._Script._01_Players.Interface {
     public interface IStats {
+        event Action<float> OnStaminaChanged;
+        float StaminaRatio { get; }
         float Stamina { get; }
 
         void StaminaUpdate(bool isGrounded, bool isWalking, bool isClimb);
