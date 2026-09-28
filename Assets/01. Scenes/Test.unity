@@ -150,6 +150,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5df740177363438e9ef71618a195945f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_01.Script.Player.TestInteract
+  targetRenderer: {fileID: 0}
+  outlineMaterial: {fileID: 0}
 --- !u!61 &35520395
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -487,7 +489,7 @@ TilemapRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 176463193
-  m_SortingLayer: 1
+  m_SortingLayer: -1
   m_SortingOrder: -10
   m_MaskInteraction: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
@@ -3324,7 +3326,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_01.Script.Player.Components.Mover
   rb: {fileID: 1999535680}
-  speed: 10
   jumpForce: 20
   checker: {x: 0, y: 0, z: 0}
   checkerSize: {x: 1, y: 0.3}
@@ -3563,7 +3564,7 @@ TilemapRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 176463193
-  m_SortingLayer: 1
+  m_SortingLayer: -1
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
@@ -14538,7 +14539,6 @@ MonoBehaviour:
   targetCollider: {fileID: 1999535681}
   crouchingSize: {x: 1, y: 1}
   crouchingOffset: {x: 0, y: -0.5}
-  crouchingSpeedMultiplier: 0.5
 --- !u!1 &1054725750
 GameObject:
   m_ObjectHideFlags: 0
@@ -15050,7 +15050,7 @@ TilemapRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 176463193
-  m_SortingLayer: 1
+  m_SortingLayer: -1
   m_SortingOrder: 5
   m_MaskInteraction: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
@@ -16829,7 +16829,7 @@ TilemapRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -1589426609
-  m_SortingLayer: 5
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
@@ -19113,11 +19113,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 038d06262ebbea544995a5acb3d140fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_01.Script.Player.Player
-  useStaminaInRun: 0
-  useStaminaInWall: 0
-  useStaminaInWallDash: 0
-  useStaminaInWallJump: 0
+  staminaCosts:
+    runPerSecond: 0
+    climbPerSecond: 0
+    wallDash: 0
+    wallJump: 0
   staminaHUD: {fileID: 0}
+  fade: {fileID: 0}
+  animator: {fileID: 0}
+  moveSpeed: 10
+  moveSpeedMultiplier: 0
+  climbUpSpeed: 10
+  climbDownSpeed: 20
+  jumpXSpeed: 8
+  jumpYSpeed: 12
+  jumpDuration: 0.2
+  jumpDashImpulse: 3
+  crouchSpeedMultiplier: 0.5
+  progress: {fileID: 0}
 --- !u!50 &1999535680
 Rigidbody2D:
   serializedVersion: 5
