@@ -1,10 +1,10 @@
 ﻿using System;
 using Cysharp.Threading.Tasks;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
-using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace _00._Member.LHS.Script {
     public class ChapterLoader : MonoBehaviour {
@@ -12,10 +12,10 @@ namespace _00._Member.LHS.Script {
         [SerializeField] private SceneAsset[] chapterSceneLists;
 #endif
 
-        [SerializeField, HideInInspector] private string[] chapterSceneNames = Array.Empty<string>();
+        [SerializeField] [HideInInspector] private string[] chapterSceneNames = Array.Empty<string>();
 
-        private bool isLoading;
-        public bool IsLoading => isLoading;
+        public bool IsLoading { get; private set; }
+
         public static ChapterLoader Instance { get; private set; }
 
         public Scene CurrentScene { get; private set; }
@@ -34,6 +34,7 @@ namespace _00._Member.LHS.Script {
                 SceneManager.SetActiveScene(menu);
                 return;
             }
+
             SwitchScene("MainMenu").Forget();
         }
 
@@ -60,12 +61,13 @@ namespace _00._Member.LHS.Script {
 #endif
 
         private async UniTask SwitchScene(string sceneName) {
-            if (isLoading) return;
+            if (IsLoading) return;
             if (string.IsNullOrEmpty(sceneName) || !Application.CanStreamedLevelBeLoaded(sceneName)) {
                 Debug.LogWarning($"챕터 씬 '{sceneName}'을 불러올 수 없습니다. Build Profiles의 Scene List를 확인해주세요.", this);
                 return;
             }
-            isLoading = true;
+
+            IsLoading = true;
             try {
                 if (CurrentScene.IsValid() && CurrentScene.isLoaded)
                     await SceneManager.UnloadSceneAsync(CurrentScene);
@@ -75,12 +77,12 @@ namespace _00._Member.LHS.Script {
                 SceneManager.SetActiveScene(CurrentScene);
             }
             finally {
-                isLoading = false;
+                IsLoading = false;
             }
         }
 
         public bool TryLoadChapter(int chapterNumber) {
-            if (isLoading) return false;
+            if (IsLoading) return false;
             if (!TryGetChapterName(chapterNumber, out var sceneName)) return false;
             SwitchScene(sceneName).Forget();
             return true;
@@ -92,6 +94,7 @@ namespace _00._Member.LHS.Script {
                 Debug.LogWarning($"등록되지 않은 챕터 번호입니다: {chapterNumber}", this);
                 return false;
             }
+
             sceneName = chapterSceneNames[chapterNumber - 1];
             if (!string.IsNullOrEmpty(sceneName) && Application.CanStreamedLevelBeLoaded(sceneName)) return true;
             Debug.LogWarning($"챕터 {chapterNumber}의 씬이 비어 있거나 Scene List에 등록되지 않았습니다.", this);
@@ -99,7 +102,7 @@ namespace _00._Member.LHS.Script {
         }
 
         public async UniTaskVoid LoadChapter(int chapterNumber) {
-            if (isLoading || !TryGetChapterName(chapterNumber, out var sceneName)) return;
+            if (IsLoading || !TryGetChapterName(chapterNumber, out var sceneName)) return;
             await SwitchScene(sceneName);
         }
     }

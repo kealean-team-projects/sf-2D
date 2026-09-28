@@ -35,12 +35,11 @@ namespace _02._Script._01_Players.FSM {
             return false;
         }
 
-        public void ChangeState(PlayerMoveState nextState)
-        {
+        public void ChangeState(PlayerMoveState nextState) {
             if (nextState == null || CurrentState == nextState)
                 return;
 
-            PlayerMoveState previousState = CurrentState;
+            var previousState = CurrentState;
 
             CurrentState?.Exit();
 
@@ -60,22 +59,27 @@ namespace _02._Script._01_Players.FSM {
         }
 
         public void ReturnToMovement(IPlayerMoveContext context) {
-            if (context.IsClimb)
+            if (context.IsClimb) {
                 ChangeState<ClimbState>();
+            }
             else if (!context.IsGrounded) {
                 if (IsRising(context.VerticalSpeed))
                     ChangeState<JumpState>();
                 else
                     ChangeState<AirState>();
             }
-            else if (context.IsCrouching)
+            else if (context.IsCrouching) {
                 ChangeState<CrouchState>();
-            else if (context.MoveInput == 0f)
+            }
+            else if (context.MoveInput == 0f) {
                 ChangeState<IdleState>();
-            else if (context.IsSprinting)
+            }
+            else if (context.IsSprinting) {
                 ChangeState<RunState>();
-            else
+            }
+            else {
                 ChangeState<WalkState>();
+            }
         }
     }
 }

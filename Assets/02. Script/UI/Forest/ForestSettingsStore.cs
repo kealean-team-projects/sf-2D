@@ -9,6 +9,8 @@ namespace _02._Script.UI.Forest {
         public static ForestSettingsValues Load() {
             return new ForestSettingsValues {
                 volume = Mathf.Clamp01(PlayerPrefs.GetFloat(Prefix + "Volume", 1f)),
+                bgmVolume = Mathf.Clamp01(PlayerPrefs.GetFloat(Prefix + "BGM", 1f)),
+                sfxVolume = Mathf.Clamp01(PlayerPrefs.GetFloat(Prefix + "SFX", 1f)),
                 brightness = Mathf.Clamp01(PlayerPrefs.GetFloat(Prefix + "Brightness", .5f)),
                 width = Mathf.Max(640, PlayerPrefs.GetInt(Prefix + "Width", Screen.width)),
                 height = Mathf.Max(480, PlayerPrefs.GetInt(Prefix + "Height", Screen.height)),
@@ -18,6 +20,8 @@ namespace _02._Script.UI.Forest {
 
         public static void Save(ForestSettingsValues values) {
             PlayerPrefs.SetFloat(Prefix + "Volume", values.volume);
+            PlayerPrefs.SetFloat(Prefix + "BGM", values.bgmVolume);
+            PlayerPrefs.SetFloat(Prefix + "SFX", values.sfxVolume);
             PlayerPrefs.SetFloat(Prefix + "Brightness", values.brightness);
             PlayerPrefs.SetInt(Prefix + "Width", values.width);
             PlayerPrefs.SetInt(Prefix + "Height", values.height);

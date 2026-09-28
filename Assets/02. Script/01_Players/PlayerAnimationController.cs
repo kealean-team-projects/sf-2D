@@ -2,13 +2,8 @@
 using _02._Script._01_Players.FSM.MoveState;
 using UnityEngine;
 
-namespace _02._Script._01_Players
-{
-    public sealed class PlayerAnimationController : MonoBehaviour
-    {
-        [SerializeField] private Player player;
-        [SerializeField] private Animator animator;
-
+namespace _02._Script._01_Players {
+    public sealed class PlayerAnimationController : MonoBehaviour {
         private static readonly int MoveSpeedHash =
             Animator.StringToHash("MoveSpeed");
 
@@ -36,49 +31,24 @@ namespace _02._Script._01_Players
         private static readonly int WallDashHash =
             Animator.StringToHash("WallDash");
 
-        private void OnEnable()
-        {
-            if (player != null)
-                player.MoveStateChanged += HandleStateChanged;
+        [SerializeField] private Player player;
+        [SerializeField] private Animator animator;
+
+
+#if UNITY_EDITOR
+        private void Reset() {
+            player = transform.root.GetComponent<Player>();
+            animator = GetComponent<Animator>();
         }
+#endif
 
-        private void OnDisable()
-        {
-            if (player != null)
-                player.MoveStateChanged -= HandleStateChanged;
-        }
-        
-        private void HandleStateChanged( PlayerMoveState previousState, PlayerMoveState currentState)
-        {
-            if (animator == null)
-                return;
-
-            if (currentState is JumpState &&
-                previousState is GroundState)
-            {
-                animator.SetTrigger(JumpHash);
-            }
-
-            if (currentState is WallJumpState)
-            {
-                animator.SetTrigger(WallJumpHash);
-            }
-
-            if (currentState is WallDashState)
-            {
-                animator.SetTrigger(WallDashHash);
-            }
-        }
-
-        private void Update()
-        {
+        private void Update() {
             if (player == null || animator == null)
                 return;
 
-            PlayerMoveState state = player.CurrentMoveState;
+            var state = player.CurrentMoveState;
 
-            float moveSpeed = state switch
-            {
+            var moveSpeed = state switch {
                 RunState => 2f,
                 WalkState => 1f,
 
@@ -106,13 +76,27 @@ namespace _02._Script._01_Players
                 state is CrouchState);
         }
 
-
-#if UNITY_EDITOR
-        private void Reset()
-        {
-            player = transform.root.GetComponent<Player>();
-            animator = GetComponent<Animator>();
+        private void OnEnable() {
+            if (player != null)
+                player.MoveStateChanged += HandleStateChanged;
         }
-#endif
+
+        private void OnDisable() {
+            if (player != null)
+                player.MoveStateChanged -= HandleStateChanged;
+        }
+
+        private void HandleStateChanged(PlayerMoveState previousState, PlayerMoveState currentState) {
+            if (animator == null)
+                return;
+
+            if (currentState is JumpState &&
+                previousState is GroundState)
+                animator.SetTrigger(JumpHash);
+
+            if (currentState is WallJumpState) animator.SetTrigger(WallJumpHash);
+
+            if (currentState is WallDashState) animator.SetTrigger(WallDashHash);
+        }
     }
 }

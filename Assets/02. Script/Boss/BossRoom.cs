@@ -4,23 +4,25 @@ using _02._Script._04_Interaction;
 using _02._Script._05_Managers;
 using _02._Script.Boss.BossPatterns;
 using _02._Script.Boss.BossZones;
-using Cysharp.Threading.Tasks;
 using csiimnida.CSILib.SoundManager.RunTime;
+using Cysharp.Threading.Tasks;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
 namespace _02._Script.Boss {
-    public class BossRoom : MonoBehaviour
-    {
+    public class BossRoom : MonoBehaviour {
         [SerializeField] private float startDelay = 1f;
-        [SerializeField, Min(0.01f)] private float cameraDistance = 127f;
+        [SerializeField] [Min(0.01f)] private float cameraDistance = 127f;
         [SerializeField] private CinemachineCamera bossCamera;
-        [SerializeField, Min(0f)] private float zoomDuration = 0.7f;
-        [Header("Room Audio")]
-        [SerializeField] private StageAudio stageAudio;
-        [Tooltip("비워 두면 스테이지 배경음을 유지합니다.")]
-        [SerializeField] private string bossBackgroundMusic;
+        [SerializeField] [Min(0f)] private float zoomDuration = 0.7f;
+
+        [Header("Room Audio")] [SerializeField]
+        private StageAudio stageAudio;
+
+        [Tooltip("비워 두면 스테이지 배경음을 유지합니다.")] [SerializeField]
+        private string bossBackgroundMusic;
+
         [SerializeField] private string roomEnterSound = "BossRoomEnter";
         [SerializeField] private string lightsOnSound = "TurnOn";
         [SerializeField] private BossTrigger trigger;
@@ -33,34 +35,33 @@ namespace _02._Script.Boss {
 
         [SerializeField] private Transform light;
 
-        private InteractLight[] lights;
-        private CancellationTokenSource roomCts;
-        
         [SerializeField] private Light2D globalLight;
         private float _normalGlobalIntensity;
+        private AudioSource entryAudio;
+        private float entryCameraDistance;
         private Vector3 initialBossPosition;
         private Quaternion initialBossRotation;
-        private CinemachinePositionComposer positionComposer;
-        private float entryCameraDistance;
-        private bool presentationActive;
-        private bool waitingForScan;
-        private SoundManager soundManager;
-        private AudioSource entryAudio;
         private AudioSource lightAudio;
 
-        public InteractLight[] Lights => lights;
+        private CinemachinePositionComposer positionComposer;
+        private bool presentationActive;
+        private CancellationTokenSource roomCts;
+        private SoundManager soundManager;
+        private bool waitingForScan;
+
+        public InteractLight[] Lights { get; private set; }
 
         public bool IsStarted { get; private set; }
 
         private void Awake() {
             initialBossPosition = boss.transform.position;
             initialBossRotation = boss.transform.rotation;
-            lights = light.GetComponentsInChildren<InteractLight>();
+            Lights = light.GetComponentsInChildren<InteractLight>();
 
-            foreach (var roomLight in lights)
+            foreach (var roomLight in Lights)
                 if (roomLight != null)
                     roomLight.TurnOff();
-            
+
             _normalGlobalIntensity = globalLight.intensity;
         }
 
@@ -82,6 +83,7 @@ namespace _02._Script.Boss {
                 Debug.LogError("BossRoom의 Boss와 Light Cycle을 연결하세요.", this);
                 return;
             }
+
             if (navigation == null || !navigation.IsReady) {
                 Debug.LogError("보스방 NavMesh를 먼저 Bake하세요: Tools > Boss > Bake SecondMap Navigation", this);
                 return;
@@ -91,19 +93,20 @@ namespace _02._Script.Boss {
             waitingForScan = true;
             boss.Navigation = navigation;
             positionComposer = bossCamera != null
-                ? bossCamera.GetComponent<CinemachinePositionComposer>() : null;
+                ? bossCamera.GetComponent<CinemachinePositionComposer>()
+                : null;
             if (positionComposer != null)
                 entryCameraDistance = positionComposer.CameraDistance;
             else
                 Debug.LogWarning("Boss Camera에 CinemachinePositionComposer를 연결하세요.", this);
             presentationActive = true;
             soundManager = FindAnyObjectByType<SoundManager>();
-            if (stageAudio == null) {
+            if (stageAudio == null)
                 foreach (var root in gameObject.scene.GetRootGameObjects()) {
                     stageAudio = root.GetComponentInChildren<StageAudio>();
                     if (stageAudio != null) break;
                 }
-            }
+
             if (soundManager != null && !string.IsNullOrWhiteSpace(roomEnterSound))
                 entryAudio = soundManager.PlayTrackedSound(roomEnterSound);
             if (stageAudio != null) stageAudio.PauseMusic(this);
@@ -117,9 +120,9 @@ namespace _02._Script.Boss {
             try {
                 await ZoomOut(token);
                 token.ThrowIfCancellationRequested();
-                foreach (var roomLight in lights)
+                foreach (var roomLight in Lights)
                     roomLight?.TurnOn();
-                
+
                 SetLightBrightness(1f);
                 PlayLightsOnSound();
                 await UniTask.Delay(TimeSpan.FromSeconds(Mathf.Max(0f, startDelay)), cancellationToken: token);
@@ -128,13 +131,13 @@ namespace _02._Script.Boss {
                 while (true) {
                     token.ThrowIfCancellationRequested();
                     SetLightBrightness(1f);
-                    
+
                     await lightCycle.Wait(token);
                     token.ThrowIfCancellationRequested();
                     waitingForScan = true;
                     if (stageAudio != null) stageAudio.PauseMusic(this);
                     await lightCycle.Dim(this, token);
-                    
+
                     var darkUntil = Time.time + lightCycle.DarkHoldDuration;
 
                     if (firstCycle && timeLine != null)
@@ -170,6 +173,7 @@ namespace _02._Script.Boss {
                 var progress = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(elapsed / zoomDuration));
                 positionComposer.CameraDistance = Mathf.Lerp(entryCameraDistance, cameraDistance, progress);
             }
+
             token.ThrowIfCancellationRequested();
             if (positionComposer != null) positionComposer.CameraDistance = cameraDistance;
         }
@@ -205,6 +209,7 @@ namespace _02._Script.Boss {
                 soundManager.StopSound(entryAudio);
                 soundManager.StopSound(lightAudio);
             }
+
             entryAudio = null;
             lightAudio = null;
         }
@@ -214,8 +219,7 @@ namespace _02._Script.Boss {
             RestorePresentation();
         }
 
-        private async UniTask ResetRoom()
-        {
+        private async UniTask ResetRoom() {
             if (!IsStarted) return;
             Stop();
             boss.Stop();
@@ -225,10 +229,11 @@ namespace _02._Script.Boss {
 
             boss.ResetForRetry(initialBossPosition, initialBossRotation);
 
-            foreach (var roomLight in lights) {
+            foreach (var roomLight in Lights) {
                 if (roomLight == null) continue;
                 roomLight.ResetForRetry();
             }
+
             if (globalLight != null) globalLight.intensity = _normalGlobalIntensity;
             IsStarted = false;
         }
@@ -239,17 +244,16 @@ namespace _02._Script.Boss {
             if (globalLight != null)
                 globalLight.intensity = _normalGlobalIntensity * ratio;
 
-            foreach (var roomLight in lights) {
+            foreach (var roomLight in Lights)
                 if (roomLight != null)
                     roomLight.SetBrightness(ratio);
-            }
         }
 
         public InteractLight GetClosestLight(Vector2 position) {
             InteractLight closest = null;
             var closestDistance = float.MaxValue;
 
-            foreach (var roomLight in lights) {
+            foreach (var roomLight in Lights) {
                 if (roomLight == null || !roomLight.IsActive) continue;
                 if (!roomLight.isActiveAndEnabled || !boss.CanSee(roomLight.transform)) continue;
 
@@ -263,7 +267,9 @@ namespace _02._Script.Boss {
 
             return closest;
         }
-        
-        public BossZone GetZone(Vector2 position) => zones;
+
+        public BossZone GetZone(Vector2 position) {
+            return zones;
+        }
     }
 }

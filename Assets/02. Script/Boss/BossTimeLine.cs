@@ -13,7 +13,7 @@ namespace _02._Script.Boss {
 
         public async UniTask PlayWarning(CancellationToken token) {
             token.ThrowIfCancellationRequested();
-            
+
             room.SetLightBrightness(1f);
 
             await UniTask.Delay(TimeSpan.FromSeconds(1f),
@@ -30,10 +30,11 @@ namespace _02._Script.Boss {
 
                 elapsed += Time.fixedDeltaTime;
                 boss.RbCompo.MovePosition(
-                    Vector2.Lerp(start, end, elapsed / descendDuration));
+                    boss.Navigation.GetClearDestination(boss.RbCompo,
+                        Vector2.Lerp(start, end, elapsed / descendDuration)));
             }
 
-            boss.RbCompo.MovePosition(end);
+            boss.RbCompo.MovePosition(boss.Navigation.GetClearDestination(boss.RbCompo, end));
         }
     }
 }

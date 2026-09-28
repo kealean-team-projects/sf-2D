@@ -1,10 +1,13 @@
-﻿using _02._Script._01_Players.Components.DamageCompo;
+﻿using System;
+using _02._Script._01_Players.Components.DamageCompo;
 
 namespace _02._Script._01_Players.Interface {
     public interface IStats {
+        float StaminaRatio { get; }
         float Stamina { get; }
+        event Action<float> OnStaminaChanged;
 
-        void StaminaUpdate(bool isGrounded, bool isWalking, bool isClimb);
+        void StaminaUpdate(bool isGrounded, bool isWalking, bool isClimb, bool isSprinting);
         void UseStamina(float usedStamina, bool immediate);
         void RestoreStamina(float savedStamina);
         void HeatStrokeUpdate(int value, DamageModule damage);

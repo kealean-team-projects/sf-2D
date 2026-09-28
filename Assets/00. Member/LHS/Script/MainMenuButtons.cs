@@ -1,20 +1,18 @@
-﻿using System;
+﻿using System.Collections;
 using _02._Script._05_Managers;
+using UnityEditor;
 using UnityEngine;
-using UnityEngine.UI;
-using System.Collections;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace _00._Member.LHS.Script {
-    public class MainMenuButtons : MonoBehaviour
-    {
+    public class MainMenuButtons : MonoBehaviour {
         [SerializeField] private Button startBtn;
         [SerializeField] private Button settingBtn;
         [SerializeField] private Button exitBtn;
         [SerializeField] private CanvasGroup menuGroup;
 
-        private IEnumerator Start()
-        {
+        private IEnumerator Start() {
             // UI layout and Button.onClick bindings are authored in MainMenu.
             // Allow Play directly in MainMenu without duplicating it when CoreScene starts.
             if (ChapterLoader.Instance == null) {
@@ -25,6 +23,7 @@ namespace _00._Member.LHS.Script {
                 else
                     Debug.LogError("CoreScene을 Build Profiles의 Scene List에 등록하세요.", this);
             }
+
             startBtn.interactable = ChapterLoader.Instance != null;
             settingBtn.interactable = UIManager.Instance != null;
         }
@@ -47,11 +46,14 @@ namespace _00._Member.LHS.Script {
 
             ChapterLoader.Instance.LoadChapter(2).Forget();
         }
-        
-        public void OnClickSettings() => UIManager.Instance.OpenMainMenuSettings(menuGroup);
+
+        public void OnClickSettings() {
+            UIManager.Instance.OpenMainMenuSettings(menuGroup);
+        }
+
         public void OnExitGame() {
 #if UNITY_EDITOR
-            UnityEditor.EditorApplication.isPlaying = false;
+            EditorApplication.isPlaying = false;
 #else
             Application.Quit();
 #endif

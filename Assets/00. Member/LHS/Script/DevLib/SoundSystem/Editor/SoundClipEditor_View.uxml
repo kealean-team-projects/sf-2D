@@ -1,7 +1,9 @@
-<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements"
+         noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
     <Style src="project://database/Assets/00.%20Member/LHS/Script/DevLib/SoundSystem/Editor/SoundClipEditor_Style.uss?fileID=7433441132597879392&amp;guid=bb967ae67188be84891cf8763f0a1661&amp;type=3#SoundClipEditor_Style"/>
     <ui:VisualElement name="container">
-        <uie:PropertyField binding-path="audioType" label="Audio Type" name="audio-type-field" data-source-type="DevLib.SoundSystem.Runtime.AudioType, SoundSystem_Assembly"/>
+        <uie:PropertyField binding-path="audioType" label="Audio Type" name="audio-type-field"
+                           data-source-type="DevLib.SoundSystem.Runtime.AudioType, SoundSystem_Assembly"/>
         <uie:PropertyField binding-path="clip" label="Audio Clip" name="clip-field"/>
         <uie:PropertyField binding-path="isLoop" label="Is Loop" name="is-loop-field"/>
         <uie:PropertyField binding-path="randomizePitch" label="Random Pitch" name="random-pitch-field"/>

@@ -12,7 +12,7 @@ namespace _02._Script.UI {
 
         public void SliderChange() {
             float value = volumeSlider.value;
-            float decibels = value <= 0f
+            var decibels = value <= 0f
                 ? -80f
                 : Mathf.Log10(value) * 20f;
 

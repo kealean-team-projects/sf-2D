@@ -1,8 +1,8 @@
 ﻿using System.Threading;
-using Cysharp.Threading.Tasks;
-using _02._Script._04_Interaction;
 using _02._Script._01_Players;
 using _02._Script._01_Players.Components.DamageCompo;
+using _02._Script._04_Interaction;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace _02._Script.Boss.BossPatterns {
@@ -24,8 +24,7 @@ namespace _02._Script.Boss.BossPatterns {
             await Return(owner, token);
         }
 
-        private async UniTask Dash(Boss owner, CancellationToken token)
-        {
+        private async UniTask Dash(Boss owner, CancellationToken token) {
             IsAttacking = true;
             owner.Navigation.ResetPath();
             var targetPlayer = owner.Target.GetComponentInParent<Player>();
@@ -33,21 +32,33 @@ namespace _02._Script.Boss.BossPatterns {
             var targetLight = owner.Target.GetComponent<InteractLight>();
             var targetColliders = owner.Target.GetComponentsInChildren<Collider2D>();
             var bodyCollider = owner.GetComponent<Collider2D>();
+            var progressPosition = owner.RbCompo.position;
+            var lastProgressTime = Time.time;
+            var dashDeadline = Time.time + 20f;
 
-            while (IsAttacking)
-            {
+            while (IsAttacking) {
                 await UniTask.Yield(PlayerLoopTiming.FixedUpdate, token, cancelImmediately: true);
                 token.ThrowIfCancellationRequested();
 
                 if (!IsAttacking || owner.Target == null) break;
                 if (targetPlayer != null && targetPlayer.IsDead) break;
+                if (Vector2.Distance(progressPosition, owner.RbCompo.position) > 0.05f) {
+                    progressPosition = owner.RbCompo.position;
+                    lastProgressTime = Time.time;
+                }
 
-                bool touching = false;
+                if (Time.time - lastProgressTime > 2f || Time.time >= dashDeadline) break;
+
+                var touching = false;
                 foreach (var collider in targetColliders) {
                     if (collider == null || !collider.enabled || collider.isTrigger) continue;
                     var contact = bodyCollider.Distance(collider);
-                    if (contact.isValid && contact.distance <= 0.02f) { touching = true; break; }
+                    if (contact.isValid && contact.distance <= 0.02f) {
+                        touching = true;
+                        break;
+                    }
                 }
+
                 if (touching || Vector2.Distance(owner.RbCompo.position, owner.Target.position) <= 0.1f) {
                     if (targetLight != null) targetLight.Break();
                     if (targetDamage != null) targetDamage.TakeDamage();
@@ -59,22 +70,40 @@ namespace _02._Script.Boss.BossPatterns {
             }
         }
 
-        private async UniTask Return(Boss owner, CancellationToken token)
-        {
-            Vector2 target = new Vector2(
-                owner.RbCompo.position.x,
-                owner.ReturnPosition.y);
+        private async UniTask Return(Boss owner, CancellationToken token) {
+            // Return to the validated spawn point, not an arbitrary point above the target.
+            var target = owner.ReturnPosition;
             owner.Navigation.ResetPath();
+            var progressPosition = owner.RbCompo.position;
+            var lastProgressTime = Time.time;
+            var returnDeadline = Time.time + 20f;
 
-            while (Vector2.Distance(owner.RbCompo.position, target) > 0.01f)
-            {
+            while (Vector2.Distance(owner.RbCompo.position, target) > 0.01f) {
                 await UniTask.Yield(PlayerLoopTiming.FixedUpdate, token, cancelImmediately: true);
                 token.ThrowIfCancellationRequested();
+
+                if (Vector2.Distance(progressPosition, owner.RbCompo.position) > 0.05f) {
+                    progressPosition = owner.RbCompo.position;
+                    lastProgressTime = Time.time;
+                }
+
+                if (Time.time - lastProgressTime > 2f || Time.time >= returnDeadline) {
+                    // Recover only into a collision-checked navigation position.
+                    if (owner.Navigation.TryGetClearPosition(target, out var safePosition)) {
+                        owner.RbCompo.position = safePosition;
+                        owner.RbCompo.linearVelocity = Vector2.zero;
+                        Physics2D.SyncTransforms();
+                    }
+
+                    break;
+                }
 
                 owner.Navigation.MoveTowards(owner.RbCompo, target, Mathf.Max(0.1f, returnSpeed));
             }
         }
 
-        public void Finish() => IsAttacking = false;
+        public void Finish() {
+            IsAttacking = false;
+        }
     }
 }

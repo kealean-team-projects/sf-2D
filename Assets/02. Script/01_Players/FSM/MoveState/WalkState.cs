@@ -8,7 +8,5 @@ namespace _02._Script._01_Players.FSM.MoveState {
 
         public WalkState(IPlayerMoveContext context, MoveStateMachine stateMachine, string animBoolName) :
             base(context, stateMachine, animBoolName) { }
-
-
     }
 }

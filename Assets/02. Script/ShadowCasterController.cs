@@ -1,20 +1,24 @@
 ﻿using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
-namespace _02._Script
-{
-    using UnityEngine;
-    using UnityEngine.Rendering.Universal;
-
+namespace _02._Script {
     [RequireComponent(typeof(ShadowCaster2D))]
-    public class ShadowCasterController : MonoBehaviour
-    {
-        private ShadowCaster2D shadowCaster;
-        private Bounds cachedBounds;
+    public class ShadowCasterController : MonoBehaviour {
         private Matrix4x4 boundsMatrix;
+        private Bounds cachedBounds;
         private bool hasBounds;
+        private ShadowCaster2D shadowCaster;
 
-        public Bounds GetShadowBounds()
-        {
+        private void Awake() {
+            shadowCaster = GetComponent<ShadowCaster2D>();
+            shadowCaster.enabled = false;
+        }
+
+        private void OnDisable() {
+            if (shadowCaster != null) shadowCaster.enabled = false;
+        }
+
+        public Bounds GetShadowBounds() {
             if (shadowCaster == null) shadowCaster = GetComponent<ShadowCaster2D>();
             var matrix = transform.localToWorldMatrix;
             if (hasBounds && matrix == boundsMatrix) return cachedBounds;
@@ -29,20 +33,8 @@ namespace _02._Script
             return bounds;
         }
 
-        private void Awake()
-        {
-            shadowCaster = GetComponent<ShadowCaster2D>();
-            shadowCaster.enabled = false;
-        }
-
-        public void SetShadowActive(bool active)
-        {
+        public void SetShadowActive(bool active) {
             shadowCaster.enabled = active;
-        }
-
-        private void OnDisable()
-        {
-            if (shadowCaster != null) shadowCaster.enabled = false;
         }
     }
 }

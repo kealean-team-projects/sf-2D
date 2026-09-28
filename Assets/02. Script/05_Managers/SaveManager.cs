@@ -1,7 +1,6 @@
 ﻿using System;
 using _02._Script._02_Core;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace _02._Script._05_Managers {
     [Serializable]
@@ -30,8 +29,7 @@ namespace _02._Script._05_Managers {
         public static event Action OnCaptureRequested;
         public static event Action<UserData> OnRestoreRequested;
 
-        public void RequestCapture()
-        {
+        public void RequestCapture() {
             OnCaptureRequested?.Invoke();
         }
 

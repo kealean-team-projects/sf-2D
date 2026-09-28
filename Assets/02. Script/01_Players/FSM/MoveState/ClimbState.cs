@@ -12,7 +12,8 @@ namespace _02._Script._01_Players.FSM.MoveState {
             _stats = stats;
         }
 
-        public ClimbState(IPlayerMoveContext context, MoveStateMachine stateMachine, IStats stats, string animBoolName) :
+        public ClimbState(IPlayerMoveContext context, MoveStateMachine stateMachine, IStats stats,
+            string animBoolName) :
             base(context, stateMachine, animBoolName) {
             _stats = stats;
         }
