@@ -11,6 +11,8 @@ namespace LHS_CATest {
     /// </summary>
     [RequireComponent(typeof(Collider2D))]
     public sealed class CATestCrumblingPlatform : MonoBehaviour {
+        [Tooltip("무너지기 시작할 때 효과음 Key (CATestAudioLibrary)")]
+        [SerializeField] private string sfxKey = "crumble";
         [SerializeField] private Transform visual;
         [SerializeField] private float shakeTime = 0.55f;
         [SerializeField] private float fallTime = 0.8f;
@@ -51,6 +53,7 @@ namespace LHS_CATest {
             _triggered = true;
             var v = ++_version;
             if (dust != null) dust.Play(true);
+            CATestAudio.PlaySfx(sfxKey, transform.position);
             var t = 0f;
             while (t < shakeTime) {
                 await UniTask.Yield(PlayerLoopTiming.Update);

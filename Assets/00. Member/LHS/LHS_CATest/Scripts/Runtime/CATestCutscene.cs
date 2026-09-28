@@ -68,6 +68,11 @@ namespace LHS_CATest {
             if (CATestCutsceneCamera.Instance != null) CATestCutsceneCamera.Instance.Focus(worldPoint, blend, distance);
         }
 
+        /// <summary>이미 Focus 중일 때 목표만 옮긴다(카메라가 부드럽게 따라감).</summary>
+        public static void MoveFocus(Vector3 worldPoint) {
+            if (CATestCutsceneCamera.Instance != null) CATestCutsceneCamera.Instance.MoveTarget(worldPoint);
+        }
+
         public static void Release(float blend = 1.2f) {
             if (CATestCutsceneCamera.Instance != null) CATestCutsceneCamera.Instance.Release(blend);
         }

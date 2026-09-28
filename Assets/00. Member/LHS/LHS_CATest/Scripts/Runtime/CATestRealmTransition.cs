@@ -38,6 +38,7 @@ namespace LHS_CATest {
             CATestCutscene.Begin();
             await CATestHUD.SayLines(CATestLines.Get(lineKey), 0.2f);
             CATestHUD.SetFadeColor(new Color(1f, 0.97f, 0.94f));
+            CATestAudio.PlaySfx("realm_transition");
             CATestCutscene.Shake(0.15f, 1.6f);
             await CATestHUD.FadeTo(1f, 2.2f);
             if (p == null) return;

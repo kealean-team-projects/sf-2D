@@ -115,6 +115,7 @@ namespace LHS_CATest {
 
             // 2) 화면이 걷히며 틈을 따라 굴러 내려감
             CATestHUD.FadeTo(0f, revealTime).Forget();
+            CATestAudio.PlaySfx("crevice_roll");
             var said = false;
             var t = 0f;
             var seg = 0;
@@ -179,6 +180,7 @@ namespace LHS_CATest {
             if (visual != null) { visual.localPosition = visPos; visual.localRotation = visRot; }
             if (rb != null) { rb.simulated = true; rb.linearVelocity = Vector2.zero; }
             CATestCutscene.Shake(0.4f, 0.35f);
+            CATestAudio.PlaySfx("crevice_land", c);
             // 첫 부활 위치를 착지 지점으로 저장. (저장 안 하면 게임 시작 위치 = 틈 꼭대기에서 부활해 틈에 끼인다)
             await UniTask.DelayFrame(2);
             CATestSave.SaveHere("화창한 숲");

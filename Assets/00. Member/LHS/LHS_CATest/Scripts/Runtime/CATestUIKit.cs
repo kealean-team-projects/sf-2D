@@ -99,6 +99,7 @@ namespace LHS_CATest {
             var hit = rt.gameObject.AddComponent<Image>();
             hit.color = new Color(1, 1, 1, 0f); // 투명 클릭 영역
             var btn = rt.gameObject.AddComponent<Button>();
+            rt.gameObject.AddComponent<CATestUISound>();
             btn.transition = Selectable.Transition.None;
             var txt = Txt(rt, "Label", label, fontSize, TextColor, align);
             var trt = txt.rectTransform;
@@ -133,6 +134,7 @@ namespace LHS_CATest {
             handle.rectTransform.sizeDelta = new Vector2(28f, -12f); // 세로는 슬라이더 높이(40)에 맞춰 늘어나므로 -12 → 28×28 원
             handle.raycastTarget = true;
             var s = rt.gameObject.AddComponent<Slider>();
+            rt.gameObject.AddComponent<CATestUISound>().playSelect = false;
             s.fillRect = fill.rectTransform;
             s.handleRect = handle.rectTransform;
             s.targetGraphic = handle;
@@ -155,6 +157,7 @@ namespace LHS_CATest {
             img.type = Image.Type.Sliced;
             img.color = Color.white;
             var btn = rt.gameObject.AddComponent<Button>();
+            rt.gameObject.AddComponent<CATestUISound>();
             // 버튼 색 = 이미지 색(흰색) × 상태 색. 평소엔 옅은 반투명, 선택/마우스오버 시 주황빛으로 진해짐.
             var cb = btn.colors;
             cb.normalColor = new Color(1f, 1f, 1f, 0.14f);

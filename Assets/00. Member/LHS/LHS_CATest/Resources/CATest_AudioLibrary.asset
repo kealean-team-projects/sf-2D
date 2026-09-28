@@ -1,0 +1,333 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1113be477b225474ca2ced46f76434f1, type: 3}
+  m_Name: CATest_AudioLibrary
+  m_EditorClassIdentifier: Assembly-CSharp::LHS_CATest.CATestAudioLibrary
+  bgm:
+  - key: title
+    note: "\uBA54\uC778 \uD0C0\uC774\uD2C0"
+    clips: []
+    volume: 0.8
+    pitchJitter: 0
+  - key: prologue_room
+    note: "\uD504\uB864\uB85C\uADF8 \u2014 \uD604\uC2E4\uC758 \uBC29(\uC0C8\uBCBD, \uC870\uC6A9\uD568)"
+    clips: []
+    volume: 0.8
+    pitchJitter: 0
+  - key: forest_sunny
+    note: "\uD654\uCC3D\uD55C \uC232(\uD29C\uD1A0\uB9AC\uC5BC)"
+    clips: []
+    volume: 0.8
+    pitchJitter: 0
+  - key: forest_lush
+    note: "\uC6B8\uCC3D\uD55C \uC232"
+    clips: []
+    volume: 0.8
+    pitchJitter: 0
+  - key: forest_fog
+    note: "\uC548\uAC1C \uACE8\uC9DC\uAE30"
+    clips: []
+    volume: 0.8
+    pitchJitter: 0
+  - key: forest_dream
+    note: "\uBABD\uD658\uC758 \uC232"
+    clips: []
+    volume: 0.8
+    pitchJitter: 0
+  - key: mountain
+    note: "\uBC14\uB78C\uC758 \uC0B0"
+    clips: []
+    volume: 0.8
+    pitchJitter: 0
+  - key: deepsea
+    note: "\uC2EC\uD574"
+    clips: []
+    volume: 0.8
+    pitchJitter: 0
+  - key: boss_hunt
+    note: "\uBCF4\uC2A4 \u2014 \uC2EC\uC5F0\uC758 \uB208\uC774 \uC218\uC0C9 \uC911"
+    clips: []
+    volume: 0.8
+    pitchJitter: 0
+  - key: boss_chase
+    note: "\uBCF4\uC2A4 \u2014 \uBD84\uB178 \uCD94\uACA9"
+    clips: []
+    volume: 0.8
+    pitchJitter: 0
+  - key: twilight_canyon
+    note: "\uBC31\uC0C9 \uD611\uACE1"
+    clips: []
+    volume: 0.8
+    pitchJitter: 0
+  - key: twilight_sanctum
+    note: "\uBC31\uC0C9 \uC131\uC5ED"
+    clips: []
+    volume: 0.8
+    pitchJitter: 0
+  - key: dragon_nest
+    note: "\uC6A9\uC758 \uB465\uC9C0(\uB3C4\uCC29)"
+    clips: []
+    volume: 0.8
+    pitchJitter: 0
+  - key: dragon_encounter
+    note: "\uC218\uD638\uB8E1 \uB4F1\uC7A5~\uC120\uD0DD"
+    clips: []
+    volume: 0.8
+    pitchJitter: 0
+  - key: ending_a
+    note: "\uC5D4\uB529 A \uADC0\uD658"
+    clips: []
+    volume: 0.8
+    pitchJitter: 0
+  - key: ending_b
+    note: "\uC5D4\uB529 B \uC794\uB958"
+    clips: []
+    volume: 0.8
+    pitchJitter: 0
+  - key: ending_c
+    note: "\uC5D4\uB529 C \uB3C4\uC804(\uBC30\uB4DC)"
+    clips: []
+    volume: 0.8
+    pitchJitter: 0
+  ambience:
+  - key: amb_room
+    note: "\uBC29 \u2014 \uC2DC\uACC4 \uCD08\uCE68, \uCC3D\uBC16 \uC0C8\uC18C\uB9AC"
+    clips: []
+    volume: 0.6
+    pitchJitter: 0
+  - key: amb_forest
+    note: "\uC232 \u2014 \uC0C8\uC18C\uB9AC, \uC78E \uC2A4\uCE58\uB294 \uC18C\uB9AC"
+    clips: []
+    volume: 0.6
+    pitchJitter: 0
+  - key: amb_river
+    note: "\uAC15\uBB3C \uD750\uB974\uB294 \uC18C\uB9AC"
+    clips: []
+    volume: 0.6
+    pitchJitter: 0
+  - key: amb_fog
+    note: "\uC548\uAC1C \u2014 \uB0AE\uC740 \uBC14\uB78C"
+    clips: []
+    volume: 0.6
+    pitchJitter: 0
+  - key: amb_wind
+    note: "\uC0B0 \u2014 \uAC15\uD55C \uBC14\uB78C"
+    clips: []
+    volume: 0.6
+    pitchJitter: 0
+  - key: amb_underwater
+    note: "\uC2EC\uD574 \u2014 \uBB3C\uC18D \uC6C5\uC6C5\uAC70\uB9BC"
+    clips: []
+    volume: 0.6
+    pitchJitter: 0
+  - key: amb_twilight
+    note: "\uD669\uD63C \u2014 \uBA40\uB9AC\uC11C \uBD80\uB294 \uBC14\uB78C, \uBAA8\uB798"
+    clips: []
+    volume: 0.6
+    pitchJitter: 0
+  sfx:
+  - key: ui_move
+    note: "UI \uBA54\uB274 \uC774\uB3D9(\uBC29\uD5A5\uD0A4/\uB9C8\uC6B0\uC2A4 \uC624\uBC84)"
+    clips: []
+    volume: 1
+    pitchJitter: 0.05
+  - key: ui_select
+    note: "UI \uD655\uC778/\uD074\uB9AD"
+    clips: []
+    volume: 1
+    pitchJitter: 0.05
+  - key: ui_back
+    note: "UI \uB2EB\uAE30/\uCDE8\uC18C"
+    clips: []
+    volume: 1
+    pitchJitter: 0.05
+  - key: ui_toggle
+    note: "\uC124\uC815 \uCF1C\uC9D0/\uAEBC\uC9D0 \uC804\uD658"
+    clips: []
+    volume: 1
+    pitchJitter: 0.05
+  - key: ui_pause
+    note: "ESC \uBA54\uB274 \uC5F4\uAE30"
+    clips: []
+    volume: 1
+    pitchJitter: 0.05
+  - key: player_footstep
+    note: "\uBC1C\uC18C\uB9AC(\uAC78\uC744 \uB54C \uBC18\uBCF5)"
+    clips: []
+    volume: 1
+    pitchJitter: 0.05
+  - key: player_jump
+    note: "\uC810\uD504"
+    clips: []
+    volume: 1
+    pitchJitter: 0.05
+  - key: player_land
+    note: "\uCC29\uC9C0"
+    clips: []
+    volume: 1
+    pitchJitter: 0.05
+  - key: death
+    note: "\uC0AC\uB9DD"
+    clips: []
+    volume: 1
+    pitchJitter: 0.05
+  - key: save
+    note: "\uC138\uC774\uBE0C \uC9C0\uC810 \uC800\uC7A5"
+    clips: []
+    volume: 1
+    pitchJitter: 0.05
+  - key: room_wake
+    note: "\uCE68\uB300\uC5D0\uC11C \uC77C\uC5B4\uB0A8(\uC774\uBD88 \uC18C\uB9AC)"
+    clips: []
+    volume: 1
+    pitchJitter: 0.05
+  - key: door_open
+    note: "\uBC29\uBB38 \uC5EC\uB294 \uC18C\uB9AC"
+    clips: []
+    volume: 1
+    pitchJitter: 0.05
+  - key: realm_whoosh
+    note: "\uBB38 \uB108\uBA38\uB85C \uBE68\uB824 \uB4E4\uC5B4\uAC10"
+    clips: []
+    volume: 1
+    pitchJitter: 0.05
+  - key: crevice_roll
+    note: "\uD2C8\uC744 \uAD74\uB7EC \uB0B4\uB824\uC634"
+    clips: []
+    volume: 1
+    pitchJitter: 0.05
+  - key: crevice_land
+    note: "\uC232\uC5D0 \uB5A8\uC5B4\uC9D0"
+    clips: []
+    volume: 1
+    pitchJitter: 0.05
+  - key: lever
+    note: "\uB808\uBC84 \uB2F9\uAE40"
+    clips: []
+    volume: 1
+    pitchJitter: 0.05
+  - key: gate_open
+    note: "\uBB38/\uB369\uAD74\uBB38 \uC5F4\uB9BC"
+    clips: []
+    volume: 1
+    pitchJitter: 0.05
+  - key: plate_press
+    note: "\uC555\uB825\uD310 \uB20C\uB9BC"
+    clips: []
+    volume: 1
+    pitchJitter: 0.05
+  - key: crumble
+    note: "\uBB34\uB108\uC9C0\uB294 \uBC1C\uD310"
+    clips: []
+    volume: 1
+    pitchJitter: 0.05
+  - key: wall_break
+    note: "\uBD80\uC11C\uC9C0\uB294 \uBCBD"
+    clips: []
+    volume: 1
+    pitchJitter: 0.05
+  - key: collectible
+    note: "\uC218\uC9D1\uD488 \uD68D\uB4DD"
+    clips: []
+    volume: 1
+    pitchJitter: 0.05
+  - key: water_splash
+    note: "\uBB3C\uC5D0 \uBE60\uC9D0"
+    clips: []
+    volume: 1
+    pitchJitter: 0.05
+  - key: clam_close
+    note: "\uC870\uAC1C\uAC00 \uC785\uC744 \uB2E4\uBB3E"
+    clips: []
+    volume: 1
+    pitchJitter: 0.05
+  - key: boss_wake
+    note: "\uC2EC\uC5F0\uC758 \uB208\uC774 \uB738"
+    clips: []
+    volume: 1
+    pitchJitter: 0.05
+  - key: boss_alert
+    note: "\uBC1C\uAC01(\uACBD\uACE0)"
+    clips: []
+    volume: 1
+    pitchJitter: 0.05
+  - key: boss_roar
+    note: "\uBD84\uB178"
+    clips: []
+    volume: 1
+    pitchJitter: 0.05
+  - key: boss_hit
+    note: "\uAD74 \uC785\uAD6C \uB4E4\uC774\uBC1B\uAE30"
+    clips: []
+    volume: 1
+    pitchJitter: 0.05
+  - key: realm_transition
+    note: "\uC2EC\uD574 \u2192 \uD669\uD63C \uCC28\uC6D0 \uC774\uB3D9"
+    clips: []
+    volume: 1
+    pitchJitter: 0.05
+  - key: tile_crack
+    note: "\uAE08 \uAC04 \uD0C0\uC77C \uBB34\uB108\uC9D0"
+    clips: []
+    volume: 1
+    pitchJitter: 0.05
+  - key: icicle_fall
+    note: "\uACE0\uB4DC\uB984 \uB099\uD558"
+    clips: []
+    volume: 1
+    pitchJitter: 0.05
+  - key: rune_press
+    note: "\uB8EC \uBC1C\uD310 \uBC1F\uC74C"
+    clips: []
+    volume: 1
+    pitchJitter: 0.05
+  - key: rune_wrong
+    note: "\uB8EC \uC21C\uC11C \uD2C0\uB9BC"
+    clips: []
+    volume: 1
+    pitchJitter: 0.05
+  - key: rune_solved
+    note: "\uB8EC \uD37C\uC990 \uD574\uACB0 / \uBB38 \uC5F4\uB9BC"
+    clips: []
+    volume: 1
+    pitchJitter: 0.05
+  - key: beam_warn
+    note: "\uC2EC\uD310\uC758 \uBE5B \uACBD\uACE0"
+    clips: []
+    volume: 1
+    pitchJitter: 0.05
+  - key: beam_fire
+    note: "\uC2EC\uD310\uC758 \uBE5B \uBC1C\uC0AC"
+    clips: []
+    volume: 1
+    pitchJitter: 0.05
+  - key: dragon_fly
+    note: "\uC6A9 \uB0A0\uAC2F\uC9D3/\uBE44\uD589"
+    clips: []
+    volume: 1
+    pitchJitter: 0.05
+  - key: dragon_roar
+    note: "\uC6A9 \uD3EC\uD6A8"
+    clips: []
+    volume: 1
+    pitchJitter: 0.05
+  - key: dragon_strike
+    note: "\uC6A9\uC758 \uC77C\uACA9"
+    clips: []
+    volume: 1
+    pitchJitter: 0.05
+  - key: ending_card
+    note: "\uC5D4\uB529 \uCE74\uB4DC \uB4F1\uC7A5"
+    clips: []
+    volume: 1
+    pitchJitter: 0.05
+  bgmFade: 1.6

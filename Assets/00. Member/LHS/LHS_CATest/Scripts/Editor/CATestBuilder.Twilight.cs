@@ -102,6 +102,7 @@ namespace LHS_CATest.EditorTools {
             Set(crumble, "visual", vis.transform);
             Set(crumble, "dust", dust);
             Set(crumble, "shakeTime", 0.5f);
+            Set(crumble, "sfxKey", "tile_crack");
             _ = tile;
             return root;
         }

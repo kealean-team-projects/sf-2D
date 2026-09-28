@@ -14,7 +14,7 @@ using Random = System.Random;
 namespace LHS_CATest.EditorTools {
     /// <summary>
     /// UGUI 화면들을 만든다.
-    ///  - 타이틀 씬(CATest_Title): 황혼 하늘 배경 + 메뉴(이어하기/새로 시작/설정/진행도 초기화/게임 종료) + 엔딩 수집 + 설정 창 + 확인 창
+    ///  - 타이틀 씬(CATest_Title): 황혼 하늘 배경 + 메뉴(이어하기/새로 시작/설정/게임 종료) + 설정 창(엔딩 기록, 데이터 초기화 포함) + 확인 창
     ///  - CoreScene 게임 UI: ESC 메뉴 + 설정 창 + 확인 창 + 용 대화창/선택지 + 엔딩 화면
     /// 모두 1920×1080 기준 Canvas(Scale With Screen Size). 한글 폰트는 실행 시 CATestUIFont 가 OS 폰트로 바꿔 끼운다.
     /// </summary>
@@ -48,80 +48,119 @@ namespace LHS_CATest.EditorTools {
         }
 
         // ───────────────────────── 공통: 설정 창 / 확인 창 ─────────────────────────
-        private static CATestSettingsPanel BuildSettingsPanel(Transform canvas) {
+        /// <summary>
+        /// 설정 창. titleMode = 타이틀 화면용(오른쪽 아래 [데이터 초기화] 표시). 게임 중 ESC 설정 창에서는 숨김.
+        /// confirm = 데이터 초기화 확인에 쓸 확인 창(같은 Canvas 에 BuildConfirm 으로 만든 것).
+        /// 배치(1920×1080 기준, 창 900×900):
+        ///   제목 y395 · 선 355 · 항목 8줄 y295 부터 62 간격 · 아래 선 -182 · 엔딩 기록 -214/-250 · [기본값][닫기] -318 · [데이터 초기화] 오른쪽 아래
+        /// </summary>
+        private static CATestSettingsPanel BuildSettingsPanel(Transform canvas, bool titleMode, CATestConfirmDialog confirm) {
             var root = CATestUIKit.Stretch(canvas, "SettingsPanel");
             var group = CATestUIKit.Group(root.gameObject, false);
             var dim = CATestUIKit.Img(root, "Dim", new Color(0.02f, 0.01f, 0.05f, 0.7f));
             Fill(dim.rectTransform);
             dim.raycastTarget = true;
             var win = CATestUIKit.Img(root, "Window", Color.white, UiPanel, true).rectTransform;
-            win.sizeDelta = new Vector2(900f, 780f);
-            CATestUIKit.Txt(win, "Title", "설정", 44, CATestUIKit.TextColor, TextAnchor.MiddleCenter, true).rectTransform.anchoredPosition = new Vector2(0f, 322f);
+            win.sizeDelta = new Vector2(900f, 900f);
+            CATestUIKit.Txt(win, "Title", "설정", 42, CATestUIKit.TextColor, TextAnchor.MiddleCenter, true).rectTransform.anchoredPosition = new Vector2(0f, 395f);
             var line = CATestUIKit.Img(win, "Line", new Color(1f, 0.85f, 0.75f, 0.6f), UiLine).rectTransform;
-            line.sizeDelta = new Vector2(620f, 6f); line.anchoredPosition = new Vector2(0f, 280f);
+            line.sizeDelta = new Vector2(620f, 6f); line.anchoredPosition = new Vector2(0f, 355f);
 
-            var rows = new[] { "전체 볼륨", "화면 밝기", "해상도", "전체 화면", "머리 위 대사 표시", "화면 흔들림" };
-            var y0 = 210f;
-            Text Label(int i) {
-                var t = CATestUIKit.Txt(win, "Label_" + i, rows[i], 30, CATestUIKit.TextColor, TextAnchor.MiddleLeft);
-                t.rectTransform.sizeDelta = new Vector2(340f, 50f);
-                t.rectTransform.anchoredPosition = new Vector2(-230f, y0 - i * 76f);
-                return t;
+            var rows = new[] { "전체 볼륨", "배경음", "효과음", "화면 밝기", "해상도", "전체 화면", "머리 위 대사 표시", "화면 흔들림" };
+            const float y0 = 295f, dy = 62f;
+            float Y(int i) => y0 - i * dy;
+            for (var i = 0; i < rows.Length; i++) {
+                var t = CATestUIKit.Txt(win, "Label_" + i, rows[i], 28, CATestUIKit.TextColor, TextAnchor.MiddleLeft);
+                t.rectTransform.sizeDelta = new Vector2(340f, 48f);
+                t.rectTransform.anchoredPosition = new Vector2(-230f, Y(i));
             }
-            for (var i = 0; i < rows.Length; i++) Label(i);
 
-            var vol = CATestUIKit.Slider(win, "VolumeSlider", new Vector2(330f, 40f), UiKnob, UiPill);
-            vol.GetComponent<RectTransform>().anchoredPosition = new Vector2(130f, y0);
-            var volText = CATestUIKit.Txt(win, "VolumeValue", "100%", 26, CATestUIKit.DimText, TextAnchor.MiddleLeft);
-            volText.rectTransform.sizeDelta = new Vector2(100f, 40f); volText.rectTransform.anchoredPosition = new Vector2(355f, y0);
-            var bri = CATestUIKit.Slider(win, "BrightnessSlider", new Vector2(330f, 40f), UiKnob, UiPill);
-            bri.GetComponent<RectTransform>().anchoredPosition = new Vector2(130f, y0 - 76f);
-            var briText = CATestUIKit.Txt(win, "BrightnessValue", "기본", 26, CATestUIKit.DimText, TextAnchor.MiddleLeft);
-            briText.rectTransform.sizeDelta = new Vector2(100f, 40f); briText.rectTransform.anchoredPosition = new Vector2(355f, y0 - 76f);
+            Slider SliderRow(string n, int row, string init, out Text value) {
+                var sl = CATestUIKit.Slider(win, n, new Vector2(330f, 40f), UiKnob, UiPill);
+                sl.GetComponent<RectTransform>().anchoredPosition = new Vector2(130f, Y(row));
+                value = CATestUIKit.Txt(win, n + "Value", init, 24, CATestUIKit.DimText, TextAnchor.MiddleLeft);
+                value.rectTransform.sizeDelta = new Vector2(100f, 40f); value.rectTransform.anchoredPosition = new Vector2(355f, Y(row));
+                return sl;
+            }
+            var vol = SliderRow("VolumeSlider", 0, "100%", out var volText);
+            var bgm = SliderRow("BgmSlider", 1, "80%", out var bgmText);
+            var sfx = SliderRow("SfxSlider", 2, "100%", out var sfxText);
+            var bri = SliderRow("BrightnessSlider", 3, "기본", out var briText);
 
-            var prev = CATestUIKit.PillButton(win, "ResPrev", "◀", new Vector2(60f, 46f), 22, UiPill);
-            prev.GetComponent<RectTransform>().anchoredPosition = new Vector2(-10f, y0 - 152f);
-            var resText = CATestUIKit.Txt(win, "ResValue", "1920 × 1080", 28, CATestUIKit.TextColor, TextAnchor.MiddleCenter);
-            resText.rectTransform.sizeDelta = new Vector2(220f, 46f); resText.rectTransform.anchoredPosition = new Vector2(130f, y0 - 152f);
-            var next = CATestUIKit.PillButton(win, "ResNext", "▶", new Vector2(60f, 46f), 22, UiPill);
-            next.GetComponent<RectTransform>().anchoredPosition = new Vector2(270f, y0 - 152f);
+            var prev = CATestUIKit.PillButton(win, "ResPrev", "◀", new Vector2(60f, 44f), 22, UiPill);
+            prev.GetComponent<RectTransform>().anchoredPosition = new Vector2(-10f, Y(4));
+            var resText = CATestUIKit.Txt(win, "ResValue", "1920 × 1080", 26, CATestUIKit.TextColor, TextAnchor.MiddleCenter);
+            resText.rectTransform.sizeDelta = new Vector2(220f, 44f); resText.rectTransform.anchoredPosition = new Vector2(130f, Y(4));
+            var next = CATestUIKit.PillButton(win, "ResNext", "▶", new Vector2(60f, 44f), 22, UiPill);
+            next.GetComponent<RectTransform>().anchoredPosition = new Vector2(270f, Y(4));
 
             Button Toggle(string n, int row, out Text label) {
-                var b = CATestUIKit.PillButton(win, n, "켜짐", new Vector2(200f, 46f), 26, UiPill);
-                b.GetComponent<RectTransform>().anchoredPosition = new Vector2(130f, y0 - row * 76f);
+                var b = CATestUIKit.PillButton(win, n, "켜짐", new Vector2(200f, 44f), 24, UiPill);
+                b.GetComponent<RectTransform>().anchoredPosition = new Vector2(130f, Y(row));
                 label = b.GetComponentInChildren<Text>();
                 return b;
             }
-            var full = Toggle("Fullscreen", 3, out var fullText);
-            var lines = Toggle("PlayerLines", 4, out var linesText);
-            var shake = Toggle("Shake", 5, out var shakeText);
+            var full = Toggle("Fullscreen", 5, out var fullText);
+            var lines = Toggle("PlayerLines", 6, out var linesText);
+            var shake = Toggle("Shake", 7, out var shakeText);
 
-            var def = CATestUIKit.PillButton(win, "Defaults", "기본값", new Vector2(210f, 54f), 28, UiPill);
-            def.GetComponent<RectTransform>().anchoredPosition = new Vector2(-125f, -305f);
-            var close = CATestUIKit.PillButton(win, "Close", "닫기", new Vector2(210f, 54f), 28, UiPill);
-            close.GetComponent<RectTransform>().anchoredPosition = new Vector2(125f, -305f);
+            // 아래 구분선 + 엔딩 기록(작게)
             var line2 = CATestUIKit.Img(win, "LineBottom", new Color(1f, 0.85f, 0.75f, 0.35f), UiLine).rectTransform;
-            line2.sizeDelta = new Vector2(620f, 4f); line2.anchoredPosition = new Vector2(0f, -240f);
+            line2.sizeDelta = new Vector2(620f, 4f); line2.anchoredPosition = new Vector2(0f, -182f);
+            var ecount = CATestUIKit.Txt(win, "EndingCount", "엔딩 기록  0 / 3", 20, CATestUIKit.DimText, TextAnchor.MiddleLeft);
+            ecount.rectTransform.sizeDelta = new Vector2(400f, 30f); ecount.rectTransform.anchoredPosition = new Vector2(-190f, -214f);
+            var marks = new List<Image>();
+            var names = new List<Text>();
+            for (var i = 0; i < 3; i++) {
+                var x = -370f + i * 245f;
+                var m = CATestUIKit.Img(win, "EndingMark_" + i, Color.white, UiRing);
+                m.rectTransform.sizeDelta = new Vector2(20f, 20f); m.rectTransform.anchoredPosition = new Vector2(x, -250f);
+                marks.Add(m);
+                var n = CATestUIKit.Txt(win, "EndingName_" + i, "???", 20, CATestUIKit.DimText, TextAnchor.MiddleLeft);
+                n.rectTransform.pivot = new Vector2(0f, 0.5f);
+                n.rectTransform.sizeDelta = new Vector2(210f, 30f); n.rectTransform.anchoredPosition = new Vector2(x + 18f, -250f);
+                names.Add(n);
+            }
 
-            // 키보드 내비게이션: 위/아래로 줄 이동
-            var order = new Selectable[] { vol, bri, next, full, lines, shake, close };
-            for (var i = 0; i < order.Length; i++) {
+            var def = CATestUIKit.PillButton(win, "Defaults", "기본값", new Vector2(210f, 54f), 26, UiPill);
+            def.GetComponent<RectTransform>().anchoredPosition = new Vector2(-125f, -318f);
+            var close = CATestUIKit.PillButton(win, "Close", "닫기", new Vector2(210f, 54f), 26, UiPill);
+            close.GetComponent<RectTransform>().anchoredPosition = new Vector2(125f, -318f);
+            close.GetComponent<CATestUISound>().playSelect = false; // 닫기는 ui_back 소리
+
+            // 오른쪽 아래 작은 [데이터 초기화] (타이틀에서만 보임 — CATestSettingsPanel.allowDataReset)
+            var reset = CATestUIKit.PillButton(win, "DataReset", "데이터 초기화", new Vector2(170f, 38f), 19, UiPill);
+            var rrt = reset.GetComponent<RectTransform>();
+            rrt.anchorMin = rrt.anchorMax = new Vector2(1f, 0f); rrt.pivot = new Vector2(1f, 0f);
+            rrt.anchoredPosition = new Vector2(-34f, 30f);
+            reset.GetComponentInChildren<Text>().color = new Color(1f, 0.62f, 0.55f, 0.95f);
+            reset.gameObject.SetActive(titleMode);
+
+            // 키보드 내비게이션: 위/아래로 줄 이동, 해상도 줄은 ◀ ▶ 좌우
+            var order = new List<Selectable> { vol, bgm, sfx, bri, next, full, lines, shake, close };
+            for (var i = 0; i < order.Count; i++) {
                 var nav = new Navigation { mode = Navigation.Mode.Explicit };
-                nav.selectOnUp = order[(i - 1 + order.Length) % order.Length];
-                nav.selectOnDown = order[(i + 1) % order.Length];
+                nav.selectOnUp = order[(i - 1 + order.Count) % order.Count];
+                nav.selectOnDown = order[(i + 1) % order.Count];
                 if (order[i] == next) nav.selectOnLeft = prev;
-                if (order[i] == close) nav.selectOnLeft = def;
+                if (order[i] == close) {
+                    nav.selectOnLeft = def;
+                    if (titleMode) nav.selectOnRight = reset;
+                }
                 order[i].navigation = nav;
             }
-            var pn = new Navigation { mode = Navigation.Mode.Explicit, selectOnRight = next, selectOnUp = bri, selectOnDown = full };
-            prev.navigation = pn;
-            var dn = new Navigation { mode = Navigation.Mode.Explicit, selectOnRight = close, selectOnUp = shake, selectOnDown = vol };
-            def.navigation = dn;
+            prev.navigation = new Navigation { mode = Navigation.Mode.Explicit, selectOnRight = next, selectOnUp = bri, selectOnDown = full };
+            def.navigation = new Navigation { mode = Navigation.Mode.Explicit, selectOnRight = close, selectOnUp = shake, selectOnDown = vol };
+            reset.navigation = new Navigation { mode = Navigation.Mode.Explicit, selectOnLeft = close, selectOnUp = shake, selectOnDown = vol };
 
             var panel = root.gameObject.AddComponent<CATestSettingsPanel>();
             Set(panel, "group", group);
             Set(panel, "volume", vol);
             Set(panel, "volumeValue", volText);
+            Set(panel, "bgm", bgm);
+            Set(panel, "bgmValue", bgmText);
+            Set(panel, "sfx", sfx);
+            Set(panel, "sfxValue", sfxText);
             Set(panel, "brightness", bri);
             Set(panel, "brightnessValue", briText);
             Set(panel, "resPrev", prev);
@@ -135,7 +174,29 @@ namespace LHS_CATest.EditorTools {
             Set(panel, "shakeText", shakeText);
             Set(panel, "defaults", def);
             Set(panel, "close", close);
+            Set(panel, "endingCount", ecount);
+            Set(panel, "endingMarks", marks.Cast<Object>().ToArray());
+            Set(panel, "endingNames", names.Cast<Object>().ToArray());
+            Set(panel, "markSeen", UiDiamond);
+            Set(panel, "markUnseen", UiRing);
+            Set(panel, "dataReset", reset);
+            Set(panel, "allowDataReset", titleMode);
+            Set(panel, "confirm", confirm);
             return panel;
+        }
+
+        /// <summary>
+        /// 게임(ESC) 설정 창을 프리팹으로 저장 → Resources/CATestUI/SettingsPanel_Game.prefab.
+        /// CoreScene 을 다시 빌드하지 않아도 CATestPauseMenu 가 실행 중에 이 프리팹으로 설정 창을 바꿔 끼운다(씬 파일 보존).
+        /// </summary>
+        public static void BuildSettingsPanelPrefab() {
+            EnsureFolder(Root + "/Resources");
+            EnsureFolder(Root + "/Resources/CATestUI");
+            var tmp = CATestUIKit.Canvas(null, "TmpCanvas", 0);
+            var panel = BuildSettingsPanel(tmp.transform, false, null);
+            PrefabUtility.SaveAsPrefabAsset(panel.gameObject, Root + "/Resources/CATestUI/SettingsPanel_Game.prefab");
+            Object.DestroyImmediate(tmp.gameObject);
+            AssetDatabase.SaveAssets();
         }
 
         private static CATestConfirmDialog BuildConfirm(Transform canvas) {
@@ -286,7 +347,7 @@ namespace LHS_CATest.EditorTools {
             var hr = hint.rectTransform;
             hr.anchorMin = hr.anchorMax = new Vector2(1f, 0f); hr.pivot = new Vector2(1f, 0f);
             hr.sizeDelta = new Vector2(700f, 40f); hr.anchoredPosition = new Vector2(-80f, 90f);
-            var settingsPanel = BuildSettingsPanel(pCanvas);
+            var settingsPanel = BuildSettingsPanel(pCanvas, false, null);
             var confirm = BuildConfirm(pCanvas);
             var pm = menu.gameObject.AddComponent<CATestPauseMenu>();
             Set(pm, "group", mg);
@@ -407,35 +468,18 @@ namespace LHS_CATest.EditorTools {
             contSub.rectTransform.sizeDelta = new Vector2(400f, 30f); contSub.rectTransform.anchoredPosition = new Vector2(230f, -2f);
             var newG = LeftMenuButton(menuRt, "NewGame", "새로 시작", 20f);
             var setB = LeftMenuButton(menuRt, "Settings", "설정", -50f);
-            var resetB = LeftMenuButton(menuRt, "ResetProgress", "진행도 초기화", -120f);
-            var quitB = LeftMenuButton(menuRt, "Quit", "게임 종료", -190f);
-            CATestUIKit.ChainVertical(new List<Button> { cont, newG, setB, resetB, quitB });
+            var quitB = LeftMenuButton(menuRt, "Quit", "게임 종료", -120f);
+            // 데이터 초기화 · 엔딩 기록은 설정 창 안으로 옮김(BuildSettingsPanel titleMode)
+            CATestUIKit.ChainVertical(new List<Button> { cont, newG, setB, quitB });
 
-            var ecount = CATestUIKit.Txt(menuRt, "EndingCount", "엔딩 기록  0 / 3", 24, CATestUIKit.DimText, TextAnchor.MiddleLeft);
-            var ecr = ecount.rectTransform;
-            ecr.anchorMin = ecr.anchorMax = new Vector2(0f, 0f); ecr.pivot = new Vector2(0f, 0f);
-            ecr.sizeDelta = new Vector2(500f, 34f); ecr.anchoredPosition = new Vector2(156f, 150f);
-            var marks = new List<Image>();
-            var names = new List<Text>();
-            for (var i = 0; i < 3; i++) {
-                var m = CATestUIKit.Img(menuRt, "EndingMark_" + i, Color.white, UiRing);
-                var mr = m.rectTransform;
-                mr.anchorMin = mr.anchorMax = new Vector2(0f, 0f);
-                mr.sizeDelta = new Vector2(26f, 26f); mr.anchoredPosition = new Vector2(170f + i * 250f, 115f);
-                marks.Add(m);
-                var n = CATestUIKit.Txt(menuRt, "EndingName_" + i, "???", 22, CATestUIKit.DimText, TextAnchor.MiddleLeft);
-                var nr = n.rectTransform;
-                nr.anchorMin = nr.anchorMax = new Vector2(0f, 0f); nr.pivot = new Vector2(0f, 0.5f);
-                nr.sizeDelta = new Vector2(220f, 30f); nr.anchoredPosition = new Vector2(192f + i * 250f, 115f);
-                names.Add(n);
-            }
             var ver = CATestUIKit.Txt(canvas, "Version", "LHS_CATest", 20, new Color(1f, 1f, 1f, 0.35f), TextAnchor.LowerRight);
             var vr = ver.rectTransform;
             vr.anchorMin = vr.anchorMax = new Vector2(1f, 0f); vr.pivot = new Vector2(1f, 0f);
             vr.sizeDelta = new Vector2(400f, 30f); vr.anchoredPosition = new Vector2(-40f, 30f);
 
-            var settingsPanel = BuildSettingsPanel(canvas);
             var confirm = BuildConfirm(canvas);
+            var settingsPanel = BuildSettingsPanel(canvas, true, confirm);
+            confirm.transform.SetAsLastSibling(); // 확인 창이 설정 창 위에
             var black = CATestUIKit.Img(canvas, "BlackCover", Color.black);
             Fill(black.rectTransform);
 
@@ -447,13 +491,7 @@ namespace LHS_CATest.EditorTools {
             Set(ts, "continueSub", contSub);
             Set(ts, "newGameBtn", newG);
             Set(ts, "settingsBtn", setB);
-            Set(ts, "resetBtn", resetB);
             Set(ts, "quitBtn", quitB);
-            Set(ts, "endingMarks", marks.Cast<Object>().ToArray());
-            Set(ts, "endingNames", names.Cast<Object>().ToArray());
-            Set(ts, "endingCount", ecount);
-            Set(ts, "markSeen", UiDiamond);
-            Set(ts, "markUnseen", UiRing);
             Set(ts, "settingsPanel", settingsPanel);
             Set(ts, "confirm", confirm);
 

@@ -35,6 +35,7 @@ namespace LHS_CATest {
                 _progress = 0;
                 foreach (var p in plates) { if (p == null) continue; p.SetLit(false); p.FlashWrong(); }
                 CATestCutscene.Shake(0.2f, 0.25f);
+                CATestAudio.PlaySfx("rune_wrong", plate.transform.position);
                 if (!_wrongSpoken) { _wrongSpoken = true; CATestHUD.SayLines(CATestLines.Get(wrongLineKey)).Forget(); }
             }
         }
@@ -43,6 +44,7 @@ namespace LHS_CATest {
             IsOn = true;
             foreach (var p in plates) if (p != null) p.SetSolved();
             CATestCutscene.Shake(0.35f, 0.8f);
+            CATestAudio.PlaySfx("rune_solved", transform.position);
             CATestHUD.SayLines(CATestLines.Get(solvedLineKey)).Forget();
         }
 

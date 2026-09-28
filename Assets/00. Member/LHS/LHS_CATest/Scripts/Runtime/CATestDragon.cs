@@ -35,6 +35,7 @@ namespace LHS_CATest {
 
         public void Play(string state, float fade = 0.3f) {
             if (animator != null && animator.isActiveAndEnabled) animator.CrossFadeInFixedTime(state, fade);
+            if (state == "Roar") CATestAudio.PlaySfx("dragon_roar", Head.position);
         }
 
         public void SetEye(Color c, float intensity) {
@@ -52,6 +53,7 @@ namespace LHS_CATest {
         public async UniTask FlyTo(Vector3 target, float duration, float arcHeight = 6f) {
             _hover = false;
             Play("Fly", 0.2f);
+            CATestAudio.PlaySfx("dragon_fly", Head.position);
             var start = transform.position;
             var mid = (start + target) * 0.5f + Vector3.up * arcHeight;
             for (var t = 0f; t < duration; t += Time.deltaTime) {
@@ -98,6 +100,7 @@ namespace LHS_CATest {
                 transform.position = Vector3.Lerp(start, back, 1f - (1f - k) * (1f - k));
                 await UniTask.Yield();
             }
+            CATestAudio.PlaySfx("dragon_strike", Head.position);
             for (var t = 0f; t < StrikeTime; t += Time.deltaTime) {
                 if (this == null) return;
                 var k = t / StrikeTime;
@@ -123,6 +126,7 @@ namespace LHS_CATest {
         public async UniTask FlyAway(Vector3 target, float duration) {
             _hover = false;
             Play("Fly", 0.3f);
+            CATestAudio.PlaySfx("dragon_fly", Head.position);
             var start = transform.position;
             for (var t = 0f; t < duration; t += Time.deltaTime) {
                 if (this == null) return;

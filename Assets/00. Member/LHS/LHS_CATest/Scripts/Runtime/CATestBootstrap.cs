@@ -30,6 +30,9 @@ namespace LHS_CATest {
         [SerializeField] private StartPoint[] startPoints = Array.Empty<StartPoint>();
         [Tooltip("0번 지점(화창한 숲 굴 위)에서 시작할 때 오프닝 컷신을 재생")]
         [SerializeField] private bool playIntro = true;
+        [Tooltip("새로 시작할 때 오프닝 전에 프롤로그(현실의 방)부터 시작")]
+        [SerializeField] private bool playPrologue = true;
+        private static Vector2 prologueStart => CATestWorld.PrologueStart; // 방 위치는 CATestWorld 한 곳에서 관리
 
         public static Vector2? StartPosition { get; private set; }
 
@@ -54,6 +57,8 @@ namespace LHS_CATest {
                 ? startPoints[Mathf.Clamp(index, 0, startPoints.Length - 1)].position
                 : (Vector2)playerRoot.transform.position;
             if (cont != null) pos = new Vector2(cont.positionX, cont.positionY);
+            var prologue = cont == null && playIntro && playPrologue && index == 0;
+            if (prologue) pos = prologueStart;
             StartPosition = pos;
             playerRoot.transform.position = new Vector3(pos.x, pos.y, playerRoot.transform.position.z);
             if (cont != null) {
@@ -61,7 +66,8 @@ namespace LHS_CATest {
             }
             else if (playIntro && index == 0) {
                 // 첫 프레임부터 검은 화면 + 영화 모드 띠 (굴 꼭대기가 잠깐 보이지 않게)
-                CATestIntroCutscene.Pending = true;
+                if (prologue) CATestPrologue.Pending = true; // 프롤로그(방) → 끝나면 프롤로그가 오프닝을 이어서 켬
+                else CATestIntroCutscene.Pending = true;
                 CATestHUD.FadeTo(1f, 0f).Forget();
                 CATestHUD.SetLetterbox(true, 0.01f);
             }
@@ -99,11 +105,28 @@ namespace LHS_CATest {
             // F1~F12 → 0~11번, Shift + F1~F12 → 12~23번, Ctrl + F1~F12 → 24~35번 시작 지점
             var shift = kb.leftShiftKey.isPressed || kb.rightShiftKey.isPressed;
             var ctrl = kb.leftCtrlKey.isPressed || kb.rightCtrlKey.isPressed;
+            var alt = kb.leftAltKey.isPressed || kb.rightAltKey.isPressed;
+            // Alt+F1 = 프롤로그(현실의 방)부터 다시
+            if (alt && kb.f1Key.wasPressedThisFrame) { ReplayPrologue().Forget(); return; }
             for (var i = 0; i < 12; i++) {
                 if (!kb[Key.F1 + i].wasPressedThisFrame) continue;
                 var index = i + (ctrl ? 24 : shift ? 12 : 0);
                 if (index < startPoints.Length) Teleport(index).Forget();
             }
+        }
+
+        private async UniTaskVoid ReplayPrologue() {
+            CATestIntroCutscene.Cancel();
+            if (streamer != null) await streamer.EnsureLoadedAt(prologueStart);
+            if (this == null) return;
+            var player = playerRoot.GetComponent<Player>();
+            if (player == null || player.IsDead) return;
+            if (CATestCutscene.IsPlaying) CATestCutscene.ForceUnlock();
+            var body = player.GetComponent<Rigidbody2D>();
+            if (body != null && !body.simulated) body.simulated = true;
+            player.RestoreState(prologueStart, player.CurrentStamina);
+            CATestPrologue.Pending = true;
+            Debug.Log("[CATest] 프롤로그 다시 재생 (Alt+F1)");
         }
 
         private async UniTaskVoid Teleport(int i) {

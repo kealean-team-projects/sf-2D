@@ -89,6 +89,13 @@ namespace LHS_CATest {
         public Mode CurrentMode { get; private set; } = Mode.Dormant;
         public int AnchorIndex => _anchor;
         public Vector3 EyeWorldPosition => eyeRoot != null ? eyeRoot.position : transform.position;
+
+        /// <summary>
+        /// 눈이 "화면에서 보이는 위치"를 플레이 평면(z=0)으로 옮긴 점. 컷신 카메라는 이 점을 봐야 한다.
+        /// eyeRoot 의 실제 월드 위치는 카메라 위치에 따라 매 프레임 시차 보정으로 바뀌는 값이라(카메라가 왼쪽으로 가면
+        /// 눈의 월드 x 는 더 왼쪽으로 밀림), 그 점을 카메라 목표로 주면 카메라가 움직일수록 목표가 더 멀어져 보스를 지나쳐 버린다.
+        /// </summary>
+        public Vector3 EyePlanePosition => new(_pos.x, _pos.y + Mathf.Lerp(visualLift, visualLift * 0.5f, _rage), 0f);
         public Vector2 OriginPosition => _pos;
 
         private Player _player;
@@ -274,7 +281,7 @@ namespace LHS_CATest {
                 if (_player.IsSprinting) rate *= 1.3f;
                 _suspicion += Time.deltaTime * rate;
                 _lastSeen = _player.transform.position;
-                if (_suspicion >= 1f) SetMode(Mode.Alert);
+                if (_suspicion >= 1f) { SetMode(Mode.Alert); CATestAudio.PlaySfx("boss_alert"); }
             }
             else _suspicion = Mathf.Max(0f, _suspicion - Time.deltaTime * forgetSpeed);
         }
