@@ -2,7 +2,6 @@
 using _02._Script._01_Players.Components.DamageCompo;
 using _02._Script._01_Players.Interface;
 using _02._Script._05_Managers;
-using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace _02._Script._01_Players.Components.Stamina {
@@ -17,9 +16,7 @@ namespace _02._Script._01_Players.Components.Stamina {
         [SerializeField] private float staminaHealWaitTime;
         [SerializeField] private float heatStroke;
 
-        private bool _canCharge = true;
-        private bool _uniTaskIsRunning;
-        private int _chargeVersion;
+        private float _recoveryEligibleSince = -1f;
 
         public void Initialize(Agent owner) {
             RestoreStamina(maxStamina);
@@ -57,21 +54,22 @@ namespace _02._Script._01_Players.Components.Stamina {
             }
         }
 
-        public void StaminaUpdate(bool isGrounded, bool isWalking, bool isClimb) {
-            if (!_canCharge) {
-                if (!_uniTaskIsRunning) WaitCharge().Forget();
+        public void StaminaUpdate(bool isGrounded, bool isWalking, bool isClimb, bool isSprinting) {
+            if (!isGrounded || isClimb || isSprinting) {
+                _recoveryEligibleSince = -1f;
                 return;
             }
 
-            if (!isGrounded) return;
-            if (isClimb) return;
+            if (_recoveryEligibleSince < 0f)
+                _recoveryEligibleSince = Time.time;
+            if (Time.time - _recoveryEligibleSince < staminaHealWaitTime) return;
+
             var healRate = isWalking ? staminaHealSlow : staminaHealBoost;
             Stamina = Mathf.Clamp(Stamina + healRate * Time.deltaTime, 0, maxStamina);
         }
 
         public void UseStamina(float usedStamina, bool immediate) {
             if (Stamina == 0f) return;
-            _canCharge = false;
             Stamina = !immediate
                 ? Mathf.Clamp(Stamina - usedStamina * Time.deltaTime, 0, maxStamina)
                 : Mathf.Clamp(Stamina - usedStamina, 0, maxStamina);
@@ -79,19 +77,7 @@ namespace _02._Script._01_Players.Components.Stamina {
 
         public void RestoreStamina(float savedStamina) {
             Stamina = Mathf.Clamp(savedStamina, 0f, maxStamina);
-            // A pending delay belongs to the previous life, not the restored state.
-            _chargeVersion++;
-            _canCharge = true;
-            _uniTaskIsRunning = false;
-        }
-
-        private async UniTask WaitCharge() {
-            _uniTaskIsRunning = true;
-            int version = _chargeVersion;
-            await UniTask.Delay(TimeSpan.FromSeconds(staminaHealWaitTime));
-            if (version != _chargeVersion) return;
-            _canCharge = true;
-            _uniTaskIsRunning = false;
+            _recoveryEligibleSince = -1f;
         }
     }
 }

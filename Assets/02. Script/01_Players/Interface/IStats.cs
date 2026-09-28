@@ -7,7 +7,7 @@ namespace _02._Script._01_Players.Interface {
         float StaminaRatio { get; }
         float Stamina { get; }
 
-        void StaminaUpdate(bool isGrounded, bool isWalking, bool isClimb);
+        void StaminaUpdate(bool isGrounded, bool isWalking, bool isClimb, bool isSprinting);
         void UseStamina(float usedStamina, bool immediate);
         void RestoreStamina(float savedStamina);
         void HeatStrokeUpdate(int value, DamageModule damage);

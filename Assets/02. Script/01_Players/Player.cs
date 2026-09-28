@@ -74,7 +74,7 @@ namespace _02._Script._01_Players {
 
             Mover.CalculateAirTime(IsClimb);
 
-            _stats.StaminaUpdate(IsGrounded, IsMoving, IsClimb);
+            _stats.StaminaUpdate(IsGrounded, IsMoving, IsClimb, IsSprinting);
             SprintControl.Tick(IsMoving);
 
             ClimbSpeed = ClimbInput > 0f ? climbUpSpeed : climbDownSpeed;

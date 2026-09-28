@@ -260,10 +260,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 152545c8eb9b05345a9e815cab42e036, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_02._Script._01_Players.Components.Stamina.Stats
-  staminaHealSlow: 20
+  staminaHealSlow: 10
   staminaHealBoost: 20
   maxStamina: 100
-  staminaHealWaitTime: 5
+  staminaHealWaitTime: 1
   heatStroke: 0
 --- !u!1 &2333632224885885106
 GameObject:
