@@ -31,7 +31,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3781685517648521019}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -77}
 --- !u!212 &6860706257032421705
 SpriteRenderer:
   serializedVersion: 3
@@ -301,6 +301,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c74fefa86a943f2a5a74c0b3e8a6502, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_02._Script._03_TrapAndEnemy.Traps.Clamp
+  animator: {fileID: 6937953065649129585}
 --- !u!1 &7075158764174237371
 GameObject:
   m_ObjectHideFlags: 0
@@ -332,7 +333,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3781685517648521019}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 77}
 --- !u!212 &777386363084746275
 SpriteRenderer:
   serializedVersion: 3

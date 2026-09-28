@@ -1,5 +1,5 @@
 using UnityEngine;
-using _02._Script._01_Players.Components.DamageCompo;
+using _02._Script._01_Players;
 
 namespace NavyMorayAnimatorOnly
 {
@@ -19,8 +19,20 @@ namespace NavyMorayAnimatorOnly
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if (attackCycle != null && other.GetComponentInParent<DamageModule>() != null)
+            if (attackCycle != null && TryGetPlayer(other, out _))
                 attackCycle.Activate();
+        }
+
+        private static bool TryGetPlayer(Collider2D other, out Player player)
+        {
+            for (Transform current = other.transform; current != null; current = current.parent)
+            {
+                if (current.TryGetComponent(out player))
+                    return true;
+            }
+
+            player = null;
+            return false;
         }
     }
 }

@@ -5162,6 +5162,75 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 453552444}
   m_CullTransparentMesh: 1
+--- !u!1001 &513733804
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 390010000000008, guid: d72c82a43a9d5f24b8a29970e6acaff8, type: 3}
+      propertyPath: m_Size.y
+      value: 1.6227221
+      objectReference: {fileID: 0}
+    - target: {fileID: 390010000000008, guid: d72c82a43a9d5f24b8a29970e6acaff8, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 390010000000008, guid: d72c82a43a9d5f24b8a29970e6acaff8, type: 3}
+      propertyPath: m_Offset.y
+      value: -0.11653325
+      objectReference: {fileID: 0}
+    - target: {fileID: 2281056397494406322, guid: d72c82a43a9d5f24b8a29970e6acaff8, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 8.806969
+      objectReference: {fileID: 0}
+    - target: {fileID: 2281056397494406322, guid: d72c82a43a9d5f24b8a29970e6acaff8, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.20653468
+      objectReference: {fileID: 0}
+    - target: {fileID: 2281056397494406322, guid: d72c82a43a9d5f24b8a29970e6acaff8, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2281056397494406322, guid: d72c82a43a9d5f24b8a29970e6acaff8, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 2281056397494406322, guid: d72c82a43a9d5f24b8a29970e6acaff8, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2281056397494406322, guid: d72c82a43a9d5f24b8a29970e6acaff8, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2281056397494406322, guid: d72c82a43a9d5f24b8a29970e6acaff8, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 2281056397494406322, guid: d72c82a43a9d5f24b8a29970e6acaff8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2281056397494406322, guid: d72c82a43a9d5f24b8a29970e6acaff8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2281056397494406322, guid: d72c82a43a9d5f24b8a29970e6acaff8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: 7502995058490375177, guid: d72c82a43a9d5f24b8a29970e6acaff8, type: 3}
+      propertyPath: m_Name
+      value: NavyMorayAnimatorOnly
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d72c82a43a9d5f24b8a29970e6acaff8, type: 3}
 --- !u!1 &533029933
 GameObject:
   m_ObjectHideFlags: 0
@@ -5281,10 +5350,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59169ac76f134b8590a70db67ef65f9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::_02._Script.Player.Components.Stats
-  staminaHealSlow: 10
-  staminaHealBoost: 10
-  maxStamina: 100
-  staminaHealWaitTime: 3
 --- !u!1 &643258404
 GameObject:
   m_ObjectHideFlags: 0
@@ -19129,6 +19194,11 @@ MonoBehaviour:
   jumpYSpeed: 12
   jumpDuration: 0.2
   jumpDashImpulse: 3
+  wallJumpMinTime: 0.08
+  wallJumpMaxTime: 0.8
+  wallDashSpeed: 22
+  wallDashDuration: 0.22
+  wallDashExitSpeed: 8
   crouchSpeedMultiplier: 0.5
   progress: {fileID: 0}
 --- !u!50 &1999535680
@@ -19739,3 +19809,4 @@ SceneRoots:
   - {fileID: 35520397}
   - {fileID: 1652027471}
   - {fileID: 2037751306}
+  - {fileID: 513733804}

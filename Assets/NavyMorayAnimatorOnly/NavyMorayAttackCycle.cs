@@ -35,22 +35,7 @@ namespace NavyMorayAnimatorOnly
             }
 
             animator.speed = 0f;
-            SpriteRenderer[] renderers = GetComponentsInChildren<SpriteRenderer>(true);
-            foreach (SpriteRenderer spriteRenderer in renderers)
-            {
-                PolygonCollider2D hitbox = spriteRenderer.GetComponent<PolygonCollider2D>();
-                if (hitbox == null)
-                    hitbox = spriteRenderer.gameObject.AddComponent<PolygonCollider2D>();
-
-                hitbox.isTrigger = true;
-                BuildSpriteShape(hitbox, spriteRenderer);
-                hitbox.enabled = false;
-
-                NavyMorayContactHitbox relay = spriteRenderer.GetComponent<NavyMorayContactHitbox>();
-                if (relay == null)
-                    relay = spriteRenderer.gameObject.AddComponent<NavyMorayContactHitbox>();
-                relay.Initialize(this);
-            }
+            SetContactColliders(false);
         }
 
         public void Activate()
@@ -120,46 +105,6 @@ namespace NavyMorayAnimatorOnly
                 if (collider != null)
                     collider.enabled = active;
             }
-        }
-
-        private static void BuildSpriteShape(PolygonCollider2D collider, SpriteRenderer spriteRenderer)
-        {
-            Sprite sprite = spriteRenderer.sprite;
-            if (sprite == null)
-            {
-                collider.enabled = false;
-                return;
-            }
-
-            int shapeCount = sprite.GetPhysicsShapeCount();
-            if (shapeCount > 0)
-            {
-                collider.pathCount = shapeCount;
-                var points = new List<Vector2>();
-                for (int path = 0; path < shapeCount; path++)
-                {
-                    points.Clear();
-                    sprite.GetPhysicsShape(path, points);
-                    if (spriteRenderer.flipX || spriteRenderer.flipY)
-                    {
-                        for (int i = 0; i < points.Count; i++)
-                            points[i] = new Vector2(spriteRenderer.flipX ? -points[i].x : points[i].x,
-                                                    spriteRenderer.flipY ? -points[i].y : points[i].y);
-                    }
-                    collider.SetPath(path, points);
-                }
-                return;
-            }
-
-            Bounds bounds = sprite.bounds;
-            Vector2 min = bounds.min;
-            Vector2 max = bounds.max;
-            collider.pathCount = 1;
-            collider.SetPath(0, new[]
-            {
-                new Vector2(min.x, min.y), new Vector2(max.x, min.y),
-                new Vector2(max.x, max.y), new Vector2(min.x, max.y)
-            });
         }
     }
 }
