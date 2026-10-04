@@ -137,12 +137,13 @@ namespace LHS_CATest.EditorTools {
             var so = new SerializedObject(streamer);
             so.FindProperty("target").objectReferenceValue = player.transform;
             var zones = so.FindProperty("zones");
-            zones.arraySize = 5;
+            zones.arraySize = 6;
             FillZone(zones.GetArrayElementAtIndex(0), "CATest_Forest0_Sunny", Forest0ScenePath, new Rect(-1965, -45, 705, 190), 40f, 80f);
             FillZone(zones.GetArrayElementAtIndex(1), "CATest_Forest1_LushFog", Forest1ScenePath, new Rect(-1290, -45, 830, 150), 40f, 80f);
             FillZone(zones.GetArrayElementAtIndex(2), "CATest_Forest2_DreamMountain", Forest2ScenePath, new Rect(-480, -35, 400, 190), 40f, 80f);
             FillZone(zones.GetArrayElementAtIndex(3), "CATest_DeepSea", DeepSeaScenePath, new Rect(225, -132, 875, 150), 52f, 95f);
             FillZone(zones.GetArrayElementAtIndex(4), "CATest_Twilight", TwilightScenePath, new Rect(1360, -40, 690, 150), 40f, 90f);
+            FillZone(zones.GetArrayElementAtIndex(5), "CATest_Prologue", PrologueScenePath, new Rect(RoomX0 - 8f, -10f, RoomX1 - RoomX0 + 16f, 30f), 30f, 60f);
             so.ApplyModifiedPropertiesWithoutUndo();
 
             // 분위기 디렉터

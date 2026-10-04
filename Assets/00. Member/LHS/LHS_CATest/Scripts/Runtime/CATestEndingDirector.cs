@@ -68,6 +68,7 @@ namespace LHS_CATest {
 
             // 용 등장 — 플레이어는 오른쪽(용이 나타나는 쪽)을 바라본다
             if (p != null) p.FaceDirection(1f);
+            CATestAudio.SetOverrideBgm("dragon_encounter");
             if (dragon != null) {
                 dragon.gameObject.SetActive(true);
                 dragon.Teleport(dragonStart);
@@ -91,9 +92,9 @@ namespace LHS_CATest {
             // 선택
             var choice = box != null ? await box.Choose(CATestLines.Get("dragon_choices")) : 0;
             switch (choice) {
-                case 0: await EndingReturn(p, box, card); break;
-                case 1: await EndingStay(p, box, card); break;
-                default: await EndingFight(p, box, card); break;
+                case 0: CATestAudio.SetOverrideBgm("ending_a"); await EndingReturn(p, box, card); break;
+                case 1: CATestAudio.SetOverrideBgm("ending_b"); await EndingStay(p, box, card); break;
+                default: CATestAudio.SetOverrideBgm("ending_c"); await EndingFight(p, box, card); break;
             }
             CATestHUD.SetFadeColor(Color.black);
             CATestSceneFlow.GoToTitle();

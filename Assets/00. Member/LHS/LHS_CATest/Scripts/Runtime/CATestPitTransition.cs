@@ -31,6 +31,7 @@ namespace LHS_CATest {
 
         private async UniTaskVoid Run(Player player) {
             _running = true;
+            CATestAudio.PlaySfx("dive");
             try {
                 await CATestHUD.FadeTo(1f, fadeOut);
                 var streamer = CATestSceneStreamer.Instance;

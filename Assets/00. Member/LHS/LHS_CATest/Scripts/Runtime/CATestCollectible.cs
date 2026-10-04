@@ -24,6 +24,7 @@ namespace LHS_CATest {
             if (_taken || other.GetComponentInParent<Player>() == null) return;
             _taken = true;
             Collected++;
+            CATestAudio.PlaySfx("collectible", transform.position);
             if (pickupBurst != null) {
                 pickupBurst.transform.SetParent(null, true);
                 pickupBurst.Play(true);

@@ -29,6 +29,7 @@ namespace LHS_CATest {
             var p = other.GetComponentInParent<Player>();
             if (p == null || p.IsDead) return;
             _inside = true;
+            CATestAudio.PlaySfx("rune_press", transform.position);
             if (sequence != null) sequence.Stepped(this);
         }
 

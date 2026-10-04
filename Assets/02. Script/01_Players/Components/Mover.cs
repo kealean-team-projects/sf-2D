@@ -62,7 +62,9 @@ namespace _02._Script._01_Players.Components {
         {
             GroundCollider = FindSupportingSurface();
             IsGround = GroundCollider != null;
-
+            
+            ApplyExtraGravity();
+            
             GroundUpdated?.Invoke();
         }
 
@@ -107,7 +109,7 @@ namespace _02._Script._01_Players.Components {
             rb.gravityScale = _originGravityScale;
             if (!IsGround && moveSpeed != 0f && IsPressingIntoWall(Mathf.Sign(moveSpeed))) moveSpeed = 0f;
             rb.linearVelocityX = moveSpeed;
-            ApplyExtraGravity();
+            //ApplyExtraGravity();
         }
 
         public void ApplyManualMoveY(float moveSpeed) {
@@ -230,8 +232,10 @@ namespace _02._Script._01_Players.Components {
         }
 
         private void ApplyExtraGravity() {
-            if (_timeInAir > gravityDelay)
-                rb.AddForceY(-extraGravity);
+            if (IsGround || _isWallDashing)
+                return;
+
+            rb.AddForceY(-extraGravity, ForceMode2D.Force);
         }
 
         private void StopImmediately(bool isXStop, bool isYStop) {

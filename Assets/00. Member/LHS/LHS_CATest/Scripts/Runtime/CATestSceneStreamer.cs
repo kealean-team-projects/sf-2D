@@ -46,11 +46,24 @@ namespace LHS_CATest {
         [SerializeField] private bool drawGizmos = true;
 
         private float _nextCheck;
+        // "고정점": EnsureLoadedAt 으로 불러 둔 곳은 잠시 동안 언로드하지 않는다.
+        // (플레이어가 아직 멀리 있는 상태에서 목적지 맵을 먼저 불러 두면, 순간이동 직전에
+        //  주기 검사가 '플레이어와 멀다'고 판단해 방금 불러온 맵을 내려 버리는 문제 방지 — 프롤로그 → 숲, 심해 → 황혼)
+        private Vector2 _pin;
+        private float _pinUntil = -1f;
         public static CATestSceneStreamer Instance { get; private set; }
         public IReadOnlyList<StreamZone> Zones => zones;
 
         private void Awake() {
             Instance = this;
+            // 프롤로그 방(CATest_Prologue)은 CoreScene 을 다시 빌드하지 않아도 되도록 실행 중에 스트리밍 목록에 추가한다.
+            AddZoneIfMissing("CATest_Prologue", CATestSceneFlow.PrologueScenePath, CATestWorld.PrologueBounds, 30f, 60f);
+        }
+
+        /// <summary>같은 이름의 구역이 없을 때만 스트리밍 구역을 추가(실행 중 전용 — 씬 파일은 바뀌지 않음).</summary>
+        public void AddZoneIfMissing(string sceneName, string scenePath, Rect bounds, float load, float unload) {
+            if (zones.Exists(z => z.sceneName == sceneName)) return;
+            zones.Add(new StreamZone { sceneName = sceneName, scenePath = scenePath, bounds = bounds, loadPadding = load, unloadPadding = unload });
         }
 
         private void OnEnable() {
@@ -78,13 +91,16 @@ namespace LHS_CATest {
                 if (zone.busy) continue;
                 var d = zone.Distance(p);
                 var loaded = IsLoaded(zone);
+                var pinned = Time.unscaledTime < _pinUntil && zone.Distance(_pin) <= zone.unloadPadding;
                 if (!loaded && d <= zone.loadPadding) LoadZone(zone).Forget();
-                else if (loaded && d > zone.unloadPadding) UnloadZone(zone).Forget();
+                else if (loaded && d > zone.unloadPadding && !pinned) UnloadZone(zone).Forget();
             }
         }
 
         /// <summary>위치 p 주변에 필요한 씬을 모두 로드하고 끝날 때까지 기다린다.</summary>
         public async UniTask EnsureLoadedAt(Vector2 p) {
+            _pin = p;
+            _pinUntil = float.PositiveInfinity; // 로드가 끝날 때까지 고정
             var tasks = new List<UniTask>();
             foreach (var zone in zones)
                 if (zone.Distance(p) <= zone.loadPadding)
@@ -92,6 +108,8 @@ namespace LHS_CATest {
             await UniTask.WhenAll(tasks);
             // 로드 중이던 다른 작업이 있으면 끝날 때까지 대기
             await UniTask.WaitUntil(() => !zones.Exists(z => z.busy && z.Distance(p) <= z.loadPadding));
+            // 로드가 끝난 뒤에도 몇 초 더 고정 → 호출한 쪽이 플레이어를 옮길 시간
+            if (_pin == p) _pinUntil = Time.unscaledTime + 4f;
         }
 
         private async UniTask HandleRespawn() {

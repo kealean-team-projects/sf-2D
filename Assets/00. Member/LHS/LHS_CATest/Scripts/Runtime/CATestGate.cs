@@ -50,6 +50,7 @@ namespace LHS_CATest {
 
         private void FixedUpdate() {
             var target = SignalOn() ? 1f : 0f;
+            if (target > 0.5f && _t <= 0.001f) CATestAudio.PlaySfx("gate_open", transform.position); // 닫힌 상태에서 열리기 시작하는 순간
             var speed = target > _t ? openSpeed : closeSpeed;
             var prev = _t;
             _t = Mathf.MoveTowards(_t, target, Time.fixedDeltaTime * speed / Mathf.Max(0.1f, openOffset.magnitude + Mathf.Abs(openAngle) * 0.05f));

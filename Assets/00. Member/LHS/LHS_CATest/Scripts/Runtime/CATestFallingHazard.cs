@@ -60,6 +60,7 @@ namespace LHS_CATest {
                 await UniTask.Yield();
             }
             var v = 0f;
+            if (hazard != null) CATestAudio.PlaySfx(hazard.position.x > 1360f ? "icicle_fall" : "rock_fall", hazard.position); // 황혼=고드름, 그 외=돌
             // 주의: await 뒤에는 씬이 언로드(사망 → 다른 씬 체크포인트로 부활)되어 이 오브젝트가 파괴됐을 수 있다.
             // while 조건에서 hazard.position 을 먼저 읽으면 MissingReferenceException 이 나므로 파괴 여부부터 확인한다.
             while (this != null && hazard != null && hazard.position.y > groundY) {

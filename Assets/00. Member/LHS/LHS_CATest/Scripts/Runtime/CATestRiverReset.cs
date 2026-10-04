@@ -26,6 +26,7 @@ namespace LHS_CATest {
         private async UniTaskVoid Run(_02._Script._01_Players.Player p) {
             _busy = true;
             CATestCutscene.LockInput(true);
+            if (p != null) CATestAudio.PlaySfx("water_splash", p.transform.position);
             await CATestHUD.FadeTo(1f, 0.35f);
             if (p != null) p.RestoreState(safePoint, p.CurrentStamina);
             await UniTask.Delay(System.TimeSpan.FromSeconds(0.25f), true);

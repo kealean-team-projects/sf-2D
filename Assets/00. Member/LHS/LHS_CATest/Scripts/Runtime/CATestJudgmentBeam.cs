@@ -28,6 +28,7 @@ namespace LHS_CATest {
         [SerializeField] private Color activeColor = new(1f, 0.93f, 0.85f, 1f);
 
         private readonly Collider2D[] _hits = new Collider2D[4];
+        private int _phase = -1;
 
         private void Update() {
             var cycle = offTime + warnTime + activeTime;
@@ -40,6 +41,13 @@ namespace LHS_CATest {
                 activeK = Mathf.Clamp01(Mathf.Min(a * 6f, (1f - a) * 4f)); // 빠르게 켜지고 조금 천천히 꺼짐
             }
             var lethal = t >= offTime + warnTime + 0.05f && t < cycle - 0.08f;
+            // 효과음: 경고가 시작되는 순간 / 빛이 떨어지는 순간 (단계가 바뀌는 프레임에 한 번)
+            var phase = t < offTime ? 0 : t < offTime + warnTime ? 1 : 2;
+            if (phase != _phase) {
+                if (phase == 1) CATestAudio.PlaySfx("beam_warn", transform.position);
+                else if (phase == 2) CATestAudio.PlaySfx("beam_fire", transform.position);
+                _phase = phase;
+            }
 
             if (runeCircle != null) {
                 var c = Color.Lerp(warnColor, activeColor, activeK);

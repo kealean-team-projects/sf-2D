@@ -58,6 +58,7 @@ namespace LHS_CATest {
             if (SaveManager.Instance != null) CATestSave.SaveHere(placeName); // 원본 저장 + 장소 이름(타이틀 이어하기 표시용)
             else Debug.LogWarning("[CATestSavePoint] SaveManager가 없어 저장하지 못했습니다.", this);
             if (activateBurst != null) activateBurst.Play(true);
+            CATestAudio.PlaySfx("save", transform.position);
             if (loopParticles != null) loopParticles.Play(true);
             _pulse = 1f;
         }

@@ -10,6 +10,8 @@ namespace LHS_CATest {
         public Rect area = new(0, 0, 40, 30);
         public string title = "지역 이름";
         public string subtitle = "";
+        [Tooltip("끄면 이 구역에 들어가도 타이틀이 뜨지 않는다(장소 이름 기록만 함). 전체를 끄려면 CATest_HUD 의 Show Area Titles.")]
+        public bool showTitle = true;
 
         private bool _inside;
 
@@ -17,7 +19,10 @@ namespace LHS_CATest {
             var p = CATestHUD.PlayerTransform;
             if (p == null) return;
             var inside = area.Contains(p.position);
-            if (inside && !_inside && CATestHUD.LastTitle != title) CATestHUD.ShowTitle(title, subtitle);
+            if (inside && !_inside && CATestHUD.LastTitle != title) {
+                if (showTitle) CATestHUD.ShowTitle(title, subtitle);
+                else CATestHUD.RecordPlace(title);
+            }
             _inside = inside;
         }
 

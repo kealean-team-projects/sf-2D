@@ -46,6 +46,7 @@ namespace LHS_CATest {
             if (_player != null || player.IsDead) return;
             _player = player;
             _timer = 0f;
+            CATestAudio.PlaySfx("seaweed_grab", transform.position);
             if (_slowCount++ == 0 && MoveSpeedField != null) {
                 _baseSpeed = (float)MoveSpeedField.GetValue(player);
                 player.ChangeSpeed(_baseSpeed * slowMultiplier);

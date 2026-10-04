@@ -24,6 +24,7 @@ namespace LHS_CATest {
     public static class CATestSceneFlow {
         public const string TitleScenePath = "Assets/00. Member/LHS/LHS_CATest/Scenes/CATest_Title.unity";
         public const string CoreScenePath = "Assets/00. Member/LHS/LHS_CATest/Scenes/CATest_CoreScene.unity";
+        public const string PrologueScenePath = "Assets/00. Member/LHS/LHS_CATest/Scenes/CATest_Prologue.unity";
 
         public static CATestStartMode Mode { get; private set; } = CATestStartMode.Default;
         public static bool IsLoading { get; private set; }

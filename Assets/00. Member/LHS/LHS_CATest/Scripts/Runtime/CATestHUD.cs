@@ -30,6 +30,10 @@ namespace LHS_CATest {
         [SerializeField] private Sprite softSprite;
 
         [Header("Area Title")]
+        [Tooltip("끄면 구역 이름 타이틀(화창한 숲, 안개 갈림길, 몽환의 숲 …)이 화면에 뜨지 않는다.\n" +
+                 "끈 상태에서도 '마지막 장소 이름'은 기록되므로 타이틀 화면의 '이어하기 · 장소' 표시는 그대로 동작한다.\n" +
+                 "구역 하나만 끄려면 그 구역의 CATestAreaZone.showTitle 을 끈다.")]
+        [SerializeField] private bool showAreaTitles = true;
         [SerializeField] private float titleFadeIn = 0.9f;
         [SerializeField] private float titleHold = 2.6f;
         [SerializeField] private float titleFadeOut = 1.3f;
@@ -121,9 +125,21 @@ namespace LHS_CATest {
         }
 
         // ───────────────────────── Title ─────────────────────────
+        /// <summary>구역 이름 타이틀 전체 켜기/끄기(인스펙터 CATest_HUD > Show Area Titles 와 같은 값). 코드에서 바꿀 때 사용.</summary>
+        public static bool AreaTitlesEnabled {
+            get => Instance == null || Instance.showAreaTitles;
+            set { if (Instance != null) Instance.showAreaTitles = value; }
+        }
+
+        /// <summary>타이틀은 띄우지 않고 "지금 장소 이름"만 기록.</summary>
+        public static void RecordPlace(string title) {
+            if (!string.IsNullOrEmpty(title)) LastTitle = title;
+        }
+
         public static void ShowTitle(string title, string subtitle = null) {
             if (Instance == null || string.IsNullOrEmpty(title)) return;
-            LastTitle = title;
+            LastTitle = title; // 표시를 꺼도 장소 이름은 기록(세이브 장소 표시용)
+            if (!Instance.showAreaTitles) return;
             Instance.TitleRoutine(title, subtitle).Forget();
         }
 

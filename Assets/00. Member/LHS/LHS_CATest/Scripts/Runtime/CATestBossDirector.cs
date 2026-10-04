@@ -54,6 +54,7 @@ namespace LHS_CATest {
         private UniTask OnRespawn() {
             if (hunter != null && !_escaped) {
                 _raging = false;
+                CATestAudio.ClearOverrideBgm(); // 추격 중 죽으면 추격 곡 해제
                 _busy = false;
                 hunter.ResetToStart(_introDone);
             }
@@ -80,9 +81,10 @@ namespace LHS_CATest {
             _introDone = true;
             CATestCutscene.Begin();
             await CATestCutscene.Wait(0.6f);
-            CATestCutscene.Focus(hunter.EyeWorldPosition + new Vector3(0f, -6f, 0f), 1.8f, 105f);
+            CATestCutscene.Focus(hunter.EyePlanePosition + new Vector3(0f, -6f, 0f), 1.8f, 105f);
             await CATestCutscene.Wait(1.6f);
             hunter.Wake();
+            CATestAudio.PlaySfx("boss_wake");
             CATestCutscene.Shake(0.2f, 0.8f);
             await CATestCutscene.Wait(3.0f);
             CATestCutscene.Release(1.5f);
@@ -99,10 +101,17 @@ namespace LHS_CATest {
             _rageCount++;
             CATestCutscene.Begin();
             hunter.EnterRage();
+            CATestAudio.PlaySfx("boss_roar");
+            CATestAudio.SetOverrideBgm("deepsea_boss_chase"); // 추격 곡(굴로 탈출하면 해제)
             CATestCutscene.Shake(0.6f, 1.2f);
             if (_rageCount == 1) {
-                CATestCutscene.Focus(hunter.EyeWorldPosition + new Vector3(0f, -4f, 0f), 1.2f, 95f);
-                await CATestCutscene.Wait(2.2f);
+                // 눈의 "화면상 위치"(플레이 평면)를 비춘다. 분노하면서 눈 높이(시각적 lift)가 조금 내려오므로 2.2초 동안 목표를 계속 갱신.
+                CATestCutscene.Focus(hunter.EyePlanePosition + new Vector3(0f, -4f, 0f), 1.2f, 95f);
+                for (var t = 0f; t < 2.2f; t += Time.unscaledDeltaTime) {
+                    if (hunter == null) break;
+                    CATestCutscene.MoveFocus(hunter.EyePlanePosition + new Vector3(0f, -4f, 0f));
+                    await UniTask.Yield();
+                }
                 CATestCutscene.Release(0.9f);
                 await CATestCutscene.Wait(0.8f);
                 await CATestHUD.Say(CATestLines.Get("boss_rage")[0], 0.6f);
@@ -124,12 +133,14 @@ namespace LHS_CATest {
             await CATestCutscene.Wait(1.0f);
             for (var i = 0; i < 3; i++) {
                 await hunter.Lunge();
+                CATestAudio.PlaySfx("boss_hit", tunnelMouth);
                 await CATestCutscene.Wait(0.35f + i * 0.2f);
             }
             CATestCutscene.Release(1.2f);
             await CATestCutscene.Wait(1.0f);
             await CATestHUD.SayLines(CATestLines.Get("boss_escape"), 0.2f);
             hunter.Leave();
+            CATestAudio.ClearOverrideBgm();
             await CATestCutscene.Wait(2.2f);
             await CATestHUD.SayLines(CATestLines.Get("boss_gone"), 0.2f);
             CATestCutscene.End();

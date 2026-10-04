@@ -38,6 +38,7 @@ namespace LHS_CATest {
             var baseAlpha = new List<float>(renderers.Length);
             foreach (var r in renderers) baseAlpha.Add(r != null ? r.color.a : 1f);
             var deathPos = p.transform.position;
+            CATestAudio.PlaySfx("death", deathPos);
 
             // 컷신 도중 죽었다면 잠금/띠를 푼다(부활 후 조작 불가 방지)
             if (CATestCutscene.IsPlaying) CATestCutscene.ForceUnlock();

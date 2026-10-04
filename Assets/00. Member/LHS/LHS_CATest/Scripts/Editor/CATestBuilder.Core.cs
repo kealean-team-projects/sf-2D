@@ -45,15 +45,19 @@ namespace LHS_CATest.EditorTools {
         public const int LayerClimbWall = 9;
 
         // ───────────────────────── Menu ─────────────────────────
-        [MenuItem("Tools/LHS_CATest/1. Build ALL (Core + Forest0~2 + DeepSea + Twilight + Title)", priority = 1)]
+        [MenuItem("Tools/LHS_CATest/1. Build ALL (Core + Prologue + Forest0~2 + DeepSea + Twilight + Title)", priority = 1)]
         public static void BuildAll() {
+            if (!ConfirmOverwrite("CoreScene · 숲 0/1/2 · 심해 · 황혼 · 프롤로그 · 타이틀")) return;
             if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;
             try {
                 EditorUtility.DisplayProgressBar("LHS_CATest", "Assets", 0.05f);
                 CATestAnimatorFix.Fix(); // 플레이어 Animator 등반 전환 보정(이미 되어 있으면 아무것도 안 함)
                 PrepareAssets();
+                EnsureAudioLibrary();
                 EditorUtility.DisplayProgressBar("LHS_CATest", "Prefabs", 0.2f);
                 BuildPrefabs();
+                BuildBeautyPrefabs();
+                BuildSettingsPanelPrefab();
                 EditorUtility.DisplayProgressBar("LHS_CATest", "Forest 0 (화창한 숲)", 0.25f);
                 BuildForest0Scene();
                 EditorUtility.DisplayProgressBar("LHS_CATest", "Forest 1 (울창한 숲 + 안개 골짜기)", 0.35f);
@@ -64,6 +68,8 @@ namespace LHS_CATest.EditorTools {
                 BuildDeepSeaScene();
                 EditorUtility.DisplayProgressBar("LHS_CATest", "Twilight (황혼의 성역)", 0.75f);
                 BuildTwilightScene();
+                EditorUtility.DisplayProgressBar("LHS_CATest", "Prologue (현실의 방)", 0.8f);
+                BuildPrologueScene();
                 EditorUtility.DisplayProgressBar("LHS_CATest", "Core", 0.85f);
                 BuildCoreScene();
                 EditorUtility.DisplayProgressBar("LHS_CATest", "Title", 0.95f);
@@ -78,32 +84,72 @@ namespace LHS_CATest.EditorTools {
 
         [MenuItem("Tools/LHS_CATest/2. Rebuild Forest (0+1+2) only", priority = 20)]
         public static void MenuForest() {
+            if (!ConfirmOverwrite("숲 0/1/2")) return;
             if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;
             PrepareAssets(); BuildPrefabs(); BuildForest0Scene(); BuildForest1Scene(); BuildForest2Scene(); OpenEditSetup();
         }
 
         [MenuItem("Tools/LHS_CATest/3. Rebuild DeepSea only", priority = 21)]
         public static void MenuDeepSea() {
+            if (!ConfirmOverwrite("심해")) return;
             if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;
             PrepareAssets(); BuildPrefabs(); BuildDeepSeaScene(); OpenEditSetup();
         }
 
         [MenuItem("Tools/LHS_CATest/4. Rebuild Core only", priority = 22)]
         public static void MenuCore() {
+            if (!ConfirmOverwrite("CoreScene")) return;
             if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;
             PrepareAssets(); BuildPrefabs(); BuildCoreScene(); OpenEditSetup();
         }
 
         [MenuItem("Tools/LHS_CATest/5. Rebuild Twilight only (마지막 챕터)", priority = 23)]
         public static void MenuTwilight() {
+            if (!ConfirmOverwrite("황혼")) return;
             if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;
             PrepareAssets(); BuildPrefabs(); BuildTwilightScene(); OpenEditSetup();
         }
 
         [MenuItem("Tools/LHS_CATest/6. Rebuild Title + Core (UI)", priority = 24)]
         public static void MenuTitle() {
+            if (!ConfirmOverwrite("CoreScene · 타이틀")) return;
             if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;
             PrepareAssets(); BuildPrefabs(); BuildCoreScene(); BuildTitleScene(); OpenEditSetup();
+        }
+
+        [MenuItem("Tools/LHS_CATest/7. Rebuild Prologue only (현실의 방)", priority = 25)]
+        public static void MenuPrologue() {
+            if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;
+            PrepareAssets(); BuildPrologueScene(); OpenEditSetup();
+        }
+
+        /// <summary>
+        /// 직접 다듬은 맵 씬(CoreScene / 숲 / 심해 / 황혼)을 건드리지 않고 새 기능만 만든다.
+        ///  - 새 씬: 프롤로그(현실의 방), 타이틀
+        ///  - 프리팹(Resources): 맵별 추가 효과, 게임 설정 창
+        ///  - 오디오 목록 에셋(없을 때만 생성 / 없는 칸만 추가)
+        /// 나머지는 실행 중에 코드가 붙인다(스트리밍 등록, 배경음 구역, 효과 프리팹, 설정 창 교체).
+        /// </summary>
+        [MenuItem("Tools/LHS_CATest/9. Build 새 기능만 (맵 씬 보존)", priority = 2)]
+        public static void MenuBuildAdditions() {
+            if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;
+            try {
+                EditorUtility.DisplayProgressBar("LHS_CATest", "Assets", 0.1f);
+                PrepareAssets();
+                EnsureAudioLibrary();
+                EditorUtility.DisplayProgressBar("LHS_CATest", "추가 효과 프리팹", 0.3f);
+                BuildBeautyPrefabs();
+                BuildSettingsPanelPrefab();
+                EditorUtility.DisplayProgressBar("LHS_CATest", "Prologue (현실의 방)", 0.55f);
+                BuildPrologueScene();
+                EditorUtility.DisplayProgressBar("LHS_CATest", "Title", 0.8f);
+                BuildTitleScene();
+                OpenEditSetup();
+                Debug.Log("[LHS_CATest] 새 기능 빌드 완료 — CoreScene/숲/심해/황혼 씬 파일은 바뀌지 않았습니다.");
+            }
+            finally {
+                EditorUtility.ClearProgressBar();
+            }
         }
 
         [MenuItem("Tools/LHS_CATest/Open Title (타이틀부터 Play)", priority = 42)]
@@ -121,6 +167,7 @@ namespace LHS_CATest.EditorTools {
             if (File.Exists(Forest2ScenePath)) EditorSceneManager.OpenScene(Forest2ScenePath, OpenSceneMode.Additive);
             if (File.Exists(DeepSeaScenePath)) EditorSceneManager.OpenScene(DeepSeaScenePath, OpenSceneMode.Additive);
             if (File.Exists(TwilightScenePath)) EditorSceneManager.OpenScene(TwilightScenePath, OpenSceneMode.Additive);
+            if (File.Exists(PrologueScenePath)) EditorSceneManager.OpenScene(PrologueScenePath, OpenSceneMode.Additive);
             SceneManager.SetActiveScene(SceneManager.GetSceneByPath(CoreScenePath));
         }
 
@@ -129,6 +176,13 @@ namespace LHS_CATest.EditorTools {
             if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;
             EditorSceneManager.OpenScene(CoreScenePath, OpenSceneMode.Single);
         }
+
+        /// <summary>씬을 새로 만드는 메뉴 앞에서 한 번 더 묻는다(직접 다듬은 씬이 덮어써지는 사고 방지).</summary>
+        private static bool ConfirmOverwrite(string scenes) =>
+            EditorUtility.DisplayDialog("LHS_CATest — 씬 다시 만들기",
+                $"다음 씬을 빌더가 처음부터 다시 만듭니다:\n{scenes}\n\n이 씬들에서 직접 수정·추가한 내용은 사라집니다.\n" +
+                "새 기능만 넣으려면 '9. Build 새 기능만 (맵 씬 보존)' 을 사용하세요.\n\n계속할까요?",
+                "다시 만들기", "취소");
 
         // ───────────────────────── Asset helpers ─────────────────────────
         public static void EnsureFolder(string path) {

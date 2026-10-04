@@ -14,6 +14,12 @@ namespace LHS_CATest {
     /// </summary>
     public static class CATestLines {
         public static readonly Dictionary<string, string[]> All = new() {
+            // ── 프롤로그: 현실의 방 ──
+            ["prologue_wake"] = new[] { "……으음.", "…몇 시지." },
+            ["prologue_up"] = new[] { "머리가… 멍해.", "물 좀 마셔야겠다…" },
+            ["prologue_door"] = new[] { "……어?", "문 너머가… 왜 이렇게 밝지?" },
+            ["prologue_pulled"] = new[] { "몸이… 끌려가…!" },
+
             // ── 오프닝 컷신 ──
             ["intro_fall"] = new[] { "……으윽." },
             ["intro_land"] = new[] { "……여긴 어디지..?", "분명 방금 전까지… 다른 곳에 있었는데.", "일단… 움직여 보자." },

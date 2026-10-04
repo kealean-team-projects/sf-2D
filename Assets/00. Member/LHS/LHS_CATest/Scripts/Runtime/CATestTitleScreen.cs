@@ -11,10 +11,8 @@ namespace LHS_CATest {
     ///   이어하기   : Save.sf2d(원본 저장 파일)가 있을 때만 활성. 마지막 세이브 지점 이름을 작게 표시.
     ///                → CoreScene 을 Continue 모드로 불러 그 위치에서 시작 (엔딩 뒤에는 "용의 둥지 앞" 세이브 지점)
     ///   새로 시작   : 기록이 있으면 확인 후 이어하기 기록만 지우고(엔딩 기록은 유지) 오프닝 컷신부터
-    ///   설정       : 설정 창
-    ///   진행도 초기화 : 확인 후 이어하기 기록 + 엔딩 기록 모두 삭제
+    ///   설정       : 설정 창 — 엔딩 기록(작게)과 오른쪽 아래 [데이터 초기화](이어하기 + 엔딩 기록 삭제)도 여기에 있음
     ///   게임 종료
-    /// ■ 엔딩 수집: 아래쪽에 ◆(본 엔딩) ◇(안 본 엔딩) 과 이름 표시
     /// ■ 시작 연출: 검은 화면에서 서서히 밝아지며 제목 → 메뉴 순으로 나타남
     /// </summary>
     public sealed class CATestTitleScreen : MonoBehaviour {
@@ -25,12 +23,7 @@ namespace LHS_CATest {
         [SerializeField] private Text continueSub;
         [SerializeField] private Button newGameBtn;
         [SerializeField] private Button settingsBtn;
-        [SerializeField] private Button resetBtn;
         [SerializeField] private Button quitBtn;
-        [SerializeField] private Image[] endingMarks;
-        [SerializeField] private Text[] endingNames;
-        [SerializeField] private Text endingCount;
-        [SerializeField] private Sprite markSeen, markUnseen;
         [SerializeField] private CATestSettingsPanel settingsPanel;
         [SerializeField] private CATestConfirmDialog confirm;
 
@@ -44,13 +37,16 @@ namespace LHS_CATest {
             if (continueBtn != null) continueBtn.onClick.AddListener(OnContinue);
             if (newGameBtn != null) newGameBtn.onClick.AddListener(OnNewGame);
             if (settingsBtn != null) settingsBtn.onClick.AddListener(() => { settingsPanel?.Open(); SetMenuInteractable(false); });
-            if (resetBtn != null) resetBtn.onClick.AddListener(OnReset);
             if (quitBtn != null) quitBtn.onClick.AddListener(() => confirm?.Ask("게임을 종료할까요?", "종료", CATestSceneFlow.QuitGame, () => Select(quitBtn)));
-            if (settingsPanel != null) settingsPanel.Closed += () => { SetMenuInteractable(true); Select(settingsBtn); };
+            if (settingsPanel != null) {
+                settingsPanel.Closed += () => { SetMenuInteractable(true); Select(settingsBtn); };
+                settingsPanel.DataReset += Refresh; // 데이터 초기화 → 이어하기 버튼 비활성 등 다시 그림
+            }
         }
 
         private void Start() {
             Refresh();
+            CATestAudio.PlayBgmNow("title", "amb_twilight"); // 소리 칸이 비어 있으면 아무 소리도 나지 않음
             Intro().Forget();
         }
 
@@ -67,18 +63,6 @@ namespace LHS_CATest {
                 var place = CATestSave.LastPlaceName;
                 continueSub.text = has ? (string.IsNullOrEmpty(place) ? "마지막 세이브 지점" : place) : "저장된 기록 없음";
             }
-            var seen = 0;
-            for (var i = 0; i < CATestSave.EndingCount; i++) {
-                var s = CATestSave.EndingSeen(i);
-                if (s) seen++;
-                if (endingMarks != null && i < endingMarks.Length && endingMarks[i] != null) {
-                    endingMarks[i].sprite = s ? markSeen : markUnseen;
-                    endingMarks[i].color = s ? CATestUIKit.Accent : new Color(1f, 1f, 1f, 0.45f);
-                }
-                if (endingNames != null && i < endingNames.Length && endingNames[i] != null)
-                    endingNames[i].text = s ? EndingTitles[i] : "???";
-            }
-            if (endingCount != null) endingCount.text = $"엔딩 기록  {seen} / {CATestSave.EndingCount}";
         }
 
         private async UniTaskVoid Intro() {
@@ -117,12 +101,6 @@ namespace LHS_CATest {
             }
             CATestSave.DeleteContinue();
             Leave(CATestStartMode.NewGame).Forget();
-        }
-
-        private void OnReset() {
-            if (confirm == null) return;
-            confirm.Ask("진행도를 초기화할까요?\n<size=24><color=#b9b0cc>이어하기 기록과 엔딩 기록이 모두 지워집니다. (설정은 유지)</color></size>",
-                "초기화", () => { CATestSave.ResetAll(); Refresh(); Select(newGameBtn); }, () => Select(resetBtn));
         }
 
         private async UniTaskVoid Leave(CATestStartMode mode) {

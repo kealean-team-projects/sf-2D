@@ -34,12 +34,31 @@ namespace LHS_CATest {
         private static void ResetStatics() => IsPaused = false;
 
         private void Awake() {
+            ReplaceSettingsPanel();
             CATestUIKit.Show(group, false);
             if (resume != null) resume.onClick.AddListener(Close);
             if (settings != null) settings.onClick.AddListener(OpenSettings);
             if (toTitle != null) toTitle.onClick.AddListener(AskTitle);
             if (quit != null) quit.onClick.AddListener(AskQuit);
             if (settingsPanel != null) settingsPanel.Closed += () => { if (IsPaused) SelectFirst(settings); };
+        }
+
+        /// <summary>
+        /// 새 설정 창(배경음/효과음 볼륨, 엔딩 기록 포함)을 Resources 프리팹에서 꺼내 기존 설정 창과 바꿔 끼운다.
+        /// CoreScene 파일을 다시 빌드하지 않고도 UI 를 갱신하기 위함. 프리팹이 없으면 기존 창을 그대로 쓴다.
+        /// </summary>
+        private void ReplaceSettingsPanel() {
+            if (settingsPanel == null) return;
+            var prefab = Resources.Load<CATestSettingsPanel>("CATestUI/SettingsPanel_Game");
+            if (prefab == null) return;
+            var old = settingsPanel;
+            var parent = old.transform.parent;
+            var index = old.transform.GetSiblingIndex();
+            var fresh = Instantiate(prefab, parent, false);
+            fresh.name = "SettingsPanel";
+            fresh.transform.SetSiblingIndex(index);
+            settingsPanel = fresh;
+            Destroy(old.gameObject);
         }
 
         private void OnDestroy() {
@@ -74,6 +93,7 @@ namespace LHS_CATest {
             _prevTimeScale = Time.timeScale;
             Time.timeScale = 0f;
             CATestCutscene.LockInput(true);
+            CATestAudio.PlayUi("ui_pause");
             if (placeText != null) placeText.text = string.IsNullOrEmpty(CATestHUD.LastTitle) ? "" : "현재 위치 · " + CATestHUD.LastTitle;
             CATestUIKit.Show(group, true);
             FadeIn().Forget();

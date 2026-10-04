@@ -599,7 +599,7 @@ namespace LHS_CATest.EditorTools {
             var cp = a.GetComponent<ClamTrapPlayer>();
             if (cp != null) {
                 cp.autoReopen = false;
-                cp.closeOnContact = true;
+                cp.closeOnContact = false; // 닫기는 CATestTrapBridge 가 함정 판정 상자 기준으로 직접 호출
                 cp.activationLayers = 1 << LayerPlayer;
             }
             foreach (var sr in a.GetComponentsInChildren<SpriteRenderer>(true)) {

@@ -39,6 +39,7 @@ namespace LHS_CATest {
                 if (rb != null && rb.bodyType == RigidbodyType2D.Dynamic && rb.mass >= minMass && rb.GetComponent<Player>() == null) on = true;
                 else if (playerCanPress && h.GetComponentInParent<Player>() != null) on = true;
             }
+            if (on && !IsOn) CATestAudio.PlaySfx("plate_press", transform.position);
             IsOn = on;
         }
 

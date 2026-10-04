@@ -37,6 +37,7 @@ namespace LHS_CATest {
             _broken = true;
             SetHighlight(false);
             if (debris != null) debris.Emit(40);
+            CATestAudio.PlaySfx("wall_break", transform.position);
             foreach (var c in blockers) if (c != null) c.enabled = false;
             foreach (var go in hideOnBreak) if (go != null) go.SetActive(false);
             foreach (var go in showOnBreak) if (go != null) go.SetActive(true);

@@ -40,6 +40,7 @@ namespace LHS_CATest {
                     break;
             }
             if (pullBurst != null) pullBurst.Play(true);
+            CATestAudio.PlaySfx("lever", transform.position);
         }
 
         private void Update() {

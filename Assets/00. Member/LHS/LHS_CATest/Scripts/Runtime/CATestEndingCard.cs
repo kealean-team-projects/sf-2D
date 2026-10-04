@@ -33,6 +33,7 @@ namespace LHS_CATest {
             for (var i = 0; i < lines.Length; i++) if (lines[i] != null) lines[i].text = epilogue != null && i < epilogue.Length ? epilogue[i] : "";
             // 배경을 서서히 원하는 색으로(검정/흰색 등) — 이미 화면이 덮여 있으므로 바로 시작
             await CATestCutscene.Wait(0.8f);
+            CATestAudio.PlaySfx("ending_card");
             await FadeText(label, 1.2f);
             await CATestCutscene.Wait(0.3f);
             await FadeText(title, 1.4f);

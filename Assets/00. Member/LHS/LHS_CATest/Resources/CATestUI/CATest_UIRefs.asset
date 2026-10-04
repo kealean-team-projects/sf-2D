@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75d002d479f44d1eb093da96563d3eea, type: 3}
+  m_Name: CATest_UIRefs
+  m_EditorClassIdentifier: 
+  useStaminaUI: 1
+  staminaUIPrefab: {fileID: 5945793393652042279, guid: 34e737d63d5df584f8a246d2bd8b7652, type: 3}
+  staminaSortingOrder: 5

@@ -90,7 +90,7 @@ namespace _02._Script._01_Players {
 
             Mover.CalculateAirTime(IsClimb);
 
-            _stats.StaminaUpdate(IsGrounded, IsMoving, IsClimb);
+            _stats.StaminaUpdate(IsGrounded, IsMoving, IsClimb, IsSprinting);
             SprintControl.Tick(IsMoving);
 
             ClimbSpeed = ClimbInput > 0f ? climbUpSpeed : climbDownSpeed;
@@ -193,6 +193,7 @@ namespace _02._Script._01_Players {
         private IFacingController _facingController;
 
         private IStats _stats;
+        public IStats Stats => _stats;
         private ICheckClimbWall _checkClimbWall;
         private DamageModule _damage;
 

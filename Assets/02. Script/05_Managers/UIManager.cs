@@ -10,6 +10,7 @@ namespace _02._Script._05_Managers {
     public class UIManager : MonoBehaviour {
         [SerializeField] private GameObject settingsPanel;
         [SerializeField] private StaminaUI staminaUI;
+        [SerializeField] private StaminaHUD staminaHUD;
         [SerializeField] private ForestSettings forestSettings;
         [SerializeField] private AudioHighPassFilter settingsFilter;
 
@@ -34,6 +35,7 @@ namespace _02._Script._05_Managers {
             ClearSettingsFilter();
             InitializeSettings();
             UIAudio.BindButtons();
+            if (currentPlayer == null && staminaHUD != null) staminaHUD.gameObject.SetActive(false);
         }
 
         private void Update() {
@@ -61,7 +63,7 @@ namespace _02._Script._05_Managers {
         }
 
         private void HandleStaminaChanged(float ratio) {
-            staminaUI.SetStamina(ratio);
+            if (staminaUI != null) staminaUI.SetStamina(ratio);
         }
 
         private void InitializeSettings() {
@@ -79,12 +81,17 @@ namespace _02._Script._05_Managers {
                 subscribedStats.OnStaminaChanged -= HandleStaminaChanged;
 
             currentPlayer = player;
-            subscribedStats = player.Stats;
-            subscribedStats.OnStaminaChanged += HandleStaminaChanged;
-
-            staminaUI.gameObject.SetActive(true);
-            staminaUI.SetTarget(player.transform);
-            HandleStaminaChanged(subscribedStats.StaminaRatio);
+            if (staminaUI != null) {
+                subscribedStats = player.Stats;
+                subscribedStats.OnStaminaChanged += HandleStaminaChanged;
+                staminaUI.gameObject.SetActive(true);
+                staminaUI.SetTarget(player.transform);
+                HandleStaminaChanged(subscribedStats.StaminaRatio);
+            } else if (staminaHUD != null) {
+                subscribedStats = null;
+                player.SetHUD(staminaHUD);
+                staminaHUD.gameObject.SetActive(true);
+            }
         }
 
         public void OpenSettings() {
