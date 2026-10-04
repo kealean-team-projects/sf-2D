@@ -12136,7 +12136,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9190810944098346844, guid: 13603ebfc0a52a342862e3da101faabc, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 29
+      value: 28.46
       objectReference: {fileID: 0}
     - target: {fileID: 9190810944098346844, guid: 13603ebfc0a52a342862e3da101faabc, type: 3}
       propertyPath: m_LocalPosition.z
@@ -14428,6 +14428,7 @@ MonoBehaviour:
     height: 40
   title: "\uBC14\uB78C \uBD80\uB294 \uB2E4\uB9AC"
   subtitle: 
+  showTitle: 1
 --- !u!1 &186257827
 GameObject:
   m_ObjectHideFlags: 0
@@ -112609,7 +112610,7 @@ Transform:
   m_GameObject: {fileID: 1592823759}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.54, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -122824,6 +122825,7 @@ MonoBehaviour:
     height: 40
   title: "\uC740\uBE5B \uAC15"
   subtitle: "\uD654\uCC3D\uD55C \uC232"
+  showTitle: 1
 --- !u!1 &1727370916
 GameObject:
   m_ObjectHideFlags: 0
@@ -126802,7 +126804,7 @@ SpriteShapeRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
+  m_DynamicOccludee: 0
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
@@ -126837,9 +126839,9 @@ SpriteShapeRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 1952283893
-  m_SortingLayer: 2
-  m_SortingOrder: -2
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: -34
   m_MaskInteraction: 0
   m_Color: {r: 0.52201253, g: 0.52201253, b: 0.52201253, a: 1}
   m_ShapeTexture: {fileID: 2800000, guid: 8480fe75e60aef84bad1411eb36f8f37, type: 3}

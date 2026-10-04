@@ -23185,6 +23185,7 @@ MonoBehaviour:
     height: 70
   title: "\uBC14\uB78C\uC758 \uC0B0"
   subtitle: "\uC815\uC0C1\uAE4C\uC9C0 \uC624\uB974\uC790"
+  showTitle: 0
 --- !u!1 &565791761
 GameObject:
   m_ObjectHideFlags: 0
@@ -51058,6 +51059,7 @@ MonoBehaviour:
     height: 40
   title: "\uC78A\uD78C \uC720\uC801"
   subtitle: 
+  showTitle: 0
 --- !u!1 &1202794657
 GameObject:
   m_ObjectHideFlags: 0
@@ -51894,6 +51896,7 @@ MonoBehaviour:
     height: 60
   title: "\uBABD\uD658\uC758 \uC232"
   subtitle: "\uC548\uAC1C\uAC00 \uAC77\uD78C \uC790\uB9AC"
+  showTitle: 1
 --- !u!1 &1236109815
 GameObject:
   m_ObjectHideFlags: 0
@@ -67346,6 +67349,7 @@ MonoBehaviour:
     height: 40
   title: "\uC0B0 \uC815\uC0C1"
   subtitle: "\uC2EC\uC5F0\uC73C\uB85C \uD1B5\uD558\uB294 \uAD6C\uBA4D"
+  showTitle: 1
 --- !u!1 &1530080422
 GameObject:
   m_ObjectHideFlags: 0

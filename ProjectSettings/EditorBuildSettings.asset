@@ -6,19 +6,28 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/00. Member/LHS/Scene/CoreScene.unity
-    guid: 1c506f46038f293458eea3a792489a72
+    path: Assets/00. Member/LHS/LHS_CATest/Scenes/CATest_Title.unity
+    guid: cf46dfec7cbf26541b28445afaab0230
   - enabled: 1
-    path: Assets/00. Member/LHS/Scene/MainMenu.unity
-    guid: 2d72cb103b402e14fb5a76208a7ec194
+    path: Assets/00. Member/LHS/LHS_CATest/Scenes/CATest_Prologue.unity
+    guid: c3571392b8f45af448f85c7f514d5a25
   - enabled: 1
-    path: Assets/00. Member/tyu/FirstMap_remakeCollider.unity
-    guid: 909eaf4987a333c47ae9c6107b5b40ba
+    path: Assets/00. Member/LHS/LHS_CATest/Scenes/CATest_Twilight.unity
+    guid: a670655c22422dd4cb807fbd2eac98f6
   - enabled: 1
-    path: Assets/00. Member/tyu/SecondMap_remakeCollider.unity
-    guid: f2ae88a4c1532304cb696b55729fc798
+    path: Assets/00. Member/LHS/LHS_CATest/Scenes/CATest_Forest2_DreamMountain.unity
+    guid: fb86baac35031704ba176094dc32fbc1
   - enabled: 1
-    path: Assets/00. Member/tyu/ThirdMap.unity
-    guid: 6c48e77e564fd3f498035c5a956e523a
+    path: Assets/00. Member/LHS/LHS_CATest/Scenes/CATest_Forest1_LushFog.unity
+    guid: a33a0a0864969b4438b39ebd57e71dba
+  - enabled: 1
+    path: Assets/00. Member/LHS/LHS_CATest/Scenes/CATest_Forest0_Sunny.unity
+    guid: d9fe01bb29b8cae469dbf071510b34b3
+  - enabled: 1
+    path: Assets/00. Member/LHS/LHS_CATest/Scenes/CATest_DeepSea.unity
+    guid: d748da93178a3144fa31d038b8098285
+  - enabled: 1
+    path: Assets/00. Member/LHS/LHS_CATest/Scenes/CATest_CoreScene.unity
+    guid: 7d916f5090e45a44394cf2e0676563b3
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
